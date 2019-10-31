@@ -16,14 +16,20 @@ const obj = {
   }
 };
 
-const func = (obj) => {
-    for (let value in obj) {
-        debugger;
-        if (typeof obj[value] === "object") {
-          func(obj[value]); 
-        } else {
-          console.log(obj[value]);
-        }
-      }
-}
+const func = obj => {
+  for (let value in obj) {
+    if (typeof obj[value] === "object") {
+      func(obj[value]);
+    } else {
+      console.log(obj[value]);
+    }
+  }
+};
 func(obj);
+
+const getConflict = (a = 3, b = 5) => {
+  debugger;
+ return console.log(a + b);;
+};
+
+getConflict(6, 12);
