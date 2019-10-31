@@ -28,8 +28,7 @@ const func = obj => {
 func(obj);
 
 const getConflict = (a = 3, b = 5) => {
-  debugger;
- return console.log(a + b);;
+ return console.log(a + b + a + b);;
 };
 
-getConflict(6, 12);
+getConflict(1, 13);
