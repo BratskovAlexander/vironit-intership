@@ -28,7 +28,29 @@ const func = obj => {
 func(obj);
 
 const getConflict = (a = 3, b = 5) => {
- return console.log(a + b + a + b);;
+  return console.log(a + b + a + b);
 };
 
 getConflict(1, 13);
+
+class Stock {
+  
+  constructor(product) {
+    this.product = product;
+  }
+
+  addProductToTheStock(product) {
+    
+    let arrayProduct = [];
+    arrayProduct.push(product);
+    return console.log(arrayProduct); 
+  }
+
+  getQuantityProduct(arrayProduct) {
+    let quantityProduct = arrayProduct;
+    quantityProduct = 132;
+  }
+}
+
+let stock = new Stock("TV");
+console.log(stock);
