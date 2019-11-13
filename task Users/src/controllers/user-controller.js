@@ -1,36 +1,41 @@
 const service = require("../services/user-service");
+
 class UserController {
   constructor() {}
-  getUser = async (req, res) => {
+  getUsers = (req, res) => {
     try {
-      const result = await service.get();
-      res.send(result);
-    } catch (e) {
-      res.status(400).send({ error: e.message });
+      const result = service.get();
+      res.status(201).send(result);
+    } catch (error) {
+      res.status(400).send(error);
     }
   };
-  addUser = async (req, res) => {
+
+  addUsers = (req, res) => {
     try {
-      const result = await service.create(req);
+      const result = service.post(req.body);
       res.status(201).send(result);
-    } catch (e) {
-      res.status(400).send({ error: e.message });
+    } catch (error) {
+      res.status(400).send(error);
     }
   };
-  deleteUser = async (req, res) => {
+
+  upDataUsers = (req, res) => {
     try {
-      const result = await service.del(req);
+      const result = service.put(req.body, req.params.id);
+    //   console.log(req.body, req.params.id);
       res.status(201).send(result);
-    } catch (e) {
-      res.status(400).send({ error: e.message });
+    } catch (error) {
+      res.status(400).send(error);
     }
   };
-  updateUser = async (req, res) => {
+
+  deleteUser = (req, res) => {
     try {
-      const result = await service.update(req);
+      const result = service.del(req.params.id);
       res.status(201).send(result);
-    } catch (e) {
-      res.status(400).send({ error: e.message });
+    } catch (error) {
+      res.status(400).send(error);
     }
   };
 }
