@@ -28,7 +28,7 @@ const post = req => {
 const put = (data, id) => {
   const index = users.findIndex(user => user.id === id);
   users[index] = { ...users[index], ...data };
-  if(index === -1) {
+  if (index === -1) {
     throw new Error(error);
   } else {
     fs.writeFile(
@@ -42,10 +42,11 @@ const put = (data, id) => {
 
 const del = id => {
   const index = users.findIndex(user => user.id === id);
-  if(index === -1) {
+  console.log(index);
+  if (index === -1) {
     throw new Error(error);
   } else {
-    users.splice(users[index], 1);
+    users.splice(index, 1);
     fs.writeFile(
       path.join(__dirname, "..", "users.json"),
       JSON.stringify(users),
