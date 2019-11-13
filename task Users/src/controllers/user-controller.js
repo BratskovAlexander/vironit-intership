@@ -2,7 +2,7 @@ const service = require("../services/user-service");
 
 class UserController {
   constructor() {}
-  getUsers = (res) => {
+  getUsers = (req, res) => {
     try {
       const result = service.get();
       res.status(201).send(result);
