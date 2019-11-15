@@ -1,59 +1,23 @@
-const fs = require("fs");
-const path = require("path");
-const uuidv4 = require("uuid/v4");
+const User = require("../models/user");
 
-const users = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "..", "users.json"))
-);
-
-const get = () => {
-  return users;
+const get = async function() {
+  return await User.find({});
 };
 
-const post = req => {
-  const user = {
-    id: uuidv4(),
+const post = async req => {
+  const newUser = new User({
     name: req.name,
     surname: req.surname
-  };
-  users.push(user);
-  fs.writeFile(
-    path.join(__dirname, "..", "users.json"),
-    JSON.stringify(users),
-    function() {}
-  );
-  return users;
+  });
+  await newUser.save();
 };
 
-const put = (data, id) => {
-  const index = users.findIndex(user => user.id === id);
-  users[index] = { ...users[index], ...data };
-  if (index === -1) {
-    throw new Error(error);
-  } else {
-    fs.writeFile(
-      path.join(__dirname, "..", "users.json"),
-      JSON.stringify(users),
-      function() {}
-    );
-  }
-  return users;
+const put = async (data, id) => {
+  await User.findByIdAndUpdate(id, data);
 };
 
-const del = id => {
-  const index = users.findIndex(user => user.id === id);
-  console.log(index);
-  if (index === -1) {
-    throw new Error(error);
-  } else {
-    users.splice(index, 1);
-    fs.writeFile(
-      path.join(__dirname, "..", "users.json"),
-      JSON.stringify(users),
-      function() {}
-    );
-  }
-  return users;
+const del = async id => {
+  await User.findByIdAndDelete(id);
 };
 
 module.exports = {

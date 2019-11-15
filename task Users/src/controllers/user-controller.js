@@ -2,36 +2,36 @@ const service = require("../services/user-service");
 
 class UserController {
   constructor() {}
-  getUsers = (req, res) => {
+  getUsers = async (req, res) => {
     try {
-      const result = service.get();
+      const result = await service.get();
       res.status(201).send(result);
     } catch (error) {
       res.status(400).send(error);
     }
   };
 
-  addUsers = (req, res) => {
+  addUsers = async (req, res) => {
     try {
-      const result = service.post(req.body);
+      const result = await service.post(req.body);
       res.status(201).send(result);
     } catch (error) {
       res.status(400).send(error);
     }
   };
 
-  upDataUsers = (req, res) => {
+  upDataUsers = async (req, res) => {
     try {
-      const result = service.put(req.body, req.params.id);
+      const result = await service.put(req.body, req.params.id);
       res.status(201).send(result);
     } catch (error) {
       res.status(400).send(error);
     }
   };
 
-  deleteUser = (req, res) => {
+  deleteUser = async (req, res) => {
     try {
-      const result = service.del(req.params.id);
+      const result = await service.del(req.params.id);
       res.status(201).send(result);
     } catch (error) {
       res.status(400).send(error);
