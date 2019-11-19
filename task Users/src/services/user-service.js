@@ -1,7 +1,38 @@
 const User = require("../models/user-model");
 
-const get = async function() {
-  return await User.find({});
+const get = async () => {
+  const result = await User.aggregate([
+    {
+      $lookup: {
+        from: "cities",
+        localField: "cityID",
+        foreignField: "_id",
+        as: "city"
+      }
+    }
+  ]);
+  return result;
+};
+
+const getUser = async name => {
+  console.log(name);
+  const result = await User.aggregate([
+    {
+      $match: {
+        name: name
+      }
+    },
+    {
+      $lookup: {
+        from: "cities",
+        localField: "cityID",
+        foreignField: "_id",
+        as: "city"
+      }
+    }
+  ]);
+
+  return result;
 };
 
 const post = async body => {
@@ -19,6 +50,7 @@ const del = async id => {
 
 module.exports = {
   get,
+  getUser,
   post,
   put,
   del
