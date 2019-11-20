@@ -9,13 +9,23 @@ const get = async () => {
         foreignField: "_id",
         as: "city"
       }
+    },
+    {
+      $unwind: "$city"
+    },
+    {
+      $project: {
+        name: "$name",
+        surname: "$surname",
+        city: "$city.city",
+        country: "$city.country"
+      }
     }
   ]);
   return result;
 };
 
 const getUser = async name => {
-  console.log(name);
   const result = await User.aggregate([
     {
       $match: {
