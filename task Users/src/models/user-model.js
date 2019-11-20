@@ -9,6 +9,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    login: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
     cityID: {
       type: mongoose.Types.ObjectId
     }
