@@ -11,9 +11,6 @@ const get = async () => {
       }
     },
     {
-      $unwind: "$city"
-    },
-    {
       $project: {
         name: "$name",
         surname: "$surname",
