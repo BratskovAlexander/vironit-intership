@@ -20,7 +20,7 @@ class UserController {
     }
   };
 
-  addUsers = async (req, res) => {
+  addUser = async (req, res) => {
     try {
       const result = await service.post(req.body);
       res.status(201).send(result);
@@ -29,7 +29,7 @@ class UserController {
     }
   };
 
-  upDataUsers = async (req, res) => {
+  upDataUser = async (req, res) => {
     try {
       const result = await service.put(req.body, req.params.id);
       res.status(201).send(result);
