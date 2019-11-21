@@ -18,7 +18,7 @@ const schema = Joi.object({
 
 const addUserValidation = async (req, res, next) => {
   try {
-    const value = await schema.validateAsync(req.body);
+    await schema.validateAsync(req.body);
     next();
   } catch (error) {
     res.status(400).send(error);
