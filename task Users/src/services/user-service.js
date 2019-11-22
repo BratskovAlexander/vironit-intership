@@ -14,6 +14,8 @@ const get = async () => {
       $project: {
         name: "$name",
         surname: "$surname",
+        login: "$login",
+        password: "You can't see it",
         city: "$city.city",
         country: "$city.country"
       }
