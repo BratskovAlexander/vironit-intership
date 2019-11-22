@@ -1,4 +1,5 @@
 const User = require("../models/user-model");
+const bcrypt = require('bcryptjs');
 
 const get = async () => {
   const result = await User.aggregate([
@@ -25,6 +26,7 @@ const get = async () => {
 };
 
 const getUser = async name => {
+  
   const result = await User.aggregate([
     {
       $match: {
@@ -45,9 +47,23 @@ const getUser = async name => {
 };
 
 const post = async body => {
+  body.password = bcrypt.hashSync(body.password);
   const newUser = new User(body);
   return await newUser.save();
 };
+
+const authUser = async body => {
+  const user = await User.findOne({ login: body.login})
+  if(!user) {
+    return "there is no such userLogin"
+  }
+  const checkLoginPass = await bcrypt.compare(body.password, user.password);
+  if (checkLoginPass) {
+    return user;
+  }
+  return "there is no such user"
+    
+}
 
 const put = async (data, id) => {
   return await User.findByIdAndUpdate(id, data);
@@ -61,6 +77,7 @@ module.exports = {
   get,
   getUser,
   post,
+  authUser,
   put,
   del
 };

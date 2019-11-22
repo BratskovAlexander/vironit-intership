@@ -11,6 +11,7 @@ const router = new express.Router();
 router.get("/", user_controller.getUsers);
 router.get("/:name", user_controller.getUser);
 router.post("/", validationMiddleware(addUserSchema), user_controller.addUser);
+router.post("/login", user_controller.authUser);
 router.put("/:id", validationMiddleware(upDateUserSchema), user_controller.upDataUser);
 router.delete("/:id", user_controller.deleteUser);
 

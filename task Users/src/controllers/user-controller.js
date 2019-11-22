@@ -29,6 +29,15 @@ class UserController {
     }
   };
 
+  authUser = async (req, res) => {
+    try {
+      const result = await service.authUser(req.body);
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(401).send(error);
+    }
+  }
+
   upDataUser = async (req, res) => {
     try {
       const result = await service.put(req.body, req.params.id);
