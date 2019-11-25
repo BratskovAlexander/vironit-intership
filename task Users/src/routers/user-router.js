@@ -2,6 +2,7 @@ const express = require("express");
 const upDateUserSchema = require("../middlewares/validation/userUpdate-validate");
 const addUserSchema = require("../middlewares/validation/user-validate");
 const validationMiddleware = require('../middlewares/validation/common-validation');
+const middlewares_auth = require('../middlewares/auth')
 
 const UserController = require("../controllers/user-controller");
 const user_controller = new UserController();
@@ -9,7 +10,7 @@ const user_controller = new UserController();
 const router = new express.Router();
 
 router.get("/", user_controller.getUsers);
-router.get("/:name", user_controller.getUser);
+router.get("/:login", middlewares_auth, user_controller.getUser);
 router.post("/", validationMiddleware(addUserSchema), user_controller.addUser);
 router.post("/login", user_controller.authUser);
 router.put("/:id", validationMiddleware(upDateUserSchema), user_controller.upDataUser);

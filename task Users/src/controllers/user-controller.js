@@ -13,7 +13,7 @@ class UserController {
 
   getUser = async (req, res) => {
     try {
-      const result = await service.getUser(req.params.name);
+      const result = await service.getUser(req.params.login);
       res.status(201).send(result);
     } catch (error) {
       res.status(400).send(error);

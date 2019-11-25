@@ -1,5 +1,6 @@
 const User = require("../models/user-model");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const get = async () => {
   const result = await User.aggregate([
@@ -25,12 +26,11 @@ const get = async () => {
   return result;
 };
 
-const getUser = async name => {
-  
+const getUser = async login => {
   const result = await User.aggregate([
     {
       $match: {
-        name: name
+        login
       }
     },
     {
@@ -53,17 +53,23 @@ const post = async body => {
 };
 
 const authUser = async body => {
-  const user = await User.findOne({ login: body.login})
-  if(!user) {
-    return "there is no such userLogin"
+  const user = await User.findOne({ login: body.login });
+  if (!user) {
+    return "Нет пользователя с таким Login";
   }
   const checkLoginPass = await bcrypt.compare(body.password, user.password);
   if (checkLoginPass) {
-    return user;
+    const access_token = jwt.sign(
+      {
+        login: body.login
+      },
+      "secret.key",
+      { algorithm: "HS256" }
+    );
+    return access_token;
   }
-  return "there is no such user"
-    
-}
+  return "Неправильный пароль";
+};
 
 const put = async (data, id) => {
   return await User.findByIdAndUpdate(id, data);
