@@ -25,7 +25,7 @@ class UserController {
       const result = await service.post(req.body);
       res.status(201).send(result);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send({ msg: error.message });
     }
   };
 
@@ -36,7 +36,7 @@ class UserController {
     } catch (error) {
       res.status(401).send(error);
     }
-  }
+  };
 
   upDataUser = async (req, res) => {
     try {

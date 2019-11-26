@@ -1,4 +1,5 @@
 const User = require("../models/user-model");
+const ObjectId = require("mongoose").Types.ObjectId;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -29,9 +30,7 @@ const get = async () => {
 const getUser = async login => {
   const result = await User.aggregate([
     {
-      $match: {
-        login
-      }
+      $match: { login: login }
     },
     {
       $lookup: {
@@ -42,14 +41,17 @@ const getUser = async login => {
       }
     }
   ]);
-
   return result;
 };
 
 const post = async body => {
-  body.password = bcrypt.hashSync(body.password);
-  const newUser = new User(body);
-  return await newUser.save();
+  try {
+    body.password = bcrypt.hashSync(body.password);
+    const newUser = new User(body);
+    return await newUser.save();
+  } catch (error) {
+    throw new Error("Есть пользователь с таким логином");
+  }
 };
 
 const authUser = async body => {
@@ -61,9 +63,9 @@ const authUser = async body => {
   if (checkLoginPass) {
     const access_token = jwt.sign(
       {
-        login: body.login
+        id: ObjectId(user.id)
       },
-      "secret.key",
+      "secretKey",
       { algorithm: "HS256" }
     );
     return access_token;
