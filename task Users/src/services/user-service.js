@@ -39,6 +39,15 @@ const getUser = async login => {
         foreignField: "_id",
         as: "city"
       }
+    },
+    {
+      $project: {
+        name: "$name",
+        surname: "$surname",
+        login: "$login",
+        city: "$city.city",
+        country: "$city.country"
+      }
     }
   ]);
   return result;
