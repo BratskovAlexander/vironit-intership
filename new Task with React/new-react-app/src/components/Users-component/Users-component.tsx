@@ -43,7 +43,6 @@ class Users extends React.Component<any, IUser> {
         </div>
         <div>
           <User
-            users={allUsers}
             thisUser={this.state.userProfile}
             active={this.state.selected}
             clearUser={this.clearUser}
