@@ -1,0 +1,25 @@
+.allUser {
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.user {
+    width: 300px;
+    padding: 10px;
+    margin: .5rem auto;
+    text-align: center;
+    border: 1px  solid gray;
+    border-radius: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: italic;
+    background-color:rgba(179, 179, 179, 0.164);
+}
+
+.user:hover {
+    transform: scale(1.1);
+}
+
+

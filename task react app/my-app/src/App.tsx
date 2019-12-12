@@ -2,16 +2,16 @@ import React from "react";
 import "./App.css";
 
 interface IState {
-  //   name: string;
-  //   surname: string;
-  //   cityID: string | number;
-  //   login: string;
-  //   password: string | number;
-  userProfile: any;
-  divVisible: boolean;
+    name?: string;
+    surname?: string;
+    cityID?: string | number;
+    login?: string;
+    password?: string | number;
+  userProfile?: any;
+  divVisible?: boolean;
 }
 
-const users: object[] = [
+const users: IState[] = [
   {
     name: "Alexander",
     surname: "Bratskov",
