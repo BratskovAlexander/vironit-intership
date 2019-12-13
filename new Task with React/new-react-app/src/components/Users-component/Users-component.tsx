@@ -1,18 +1,16 @@
-import { IUser } from "../../types/types";
+import { State } from "../../types/types";
 import React from "react";
-import { users } from "../../state";
 import User from "../User/User";
 import "./Users.css";
-import getUsers from "../service/service"
+import getUsers from "../service/service";
 
-const allUsers: Array<IUser> = users;
-
-class Users extends React.Component<any, IUser> {
+class Users extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {
       userProfile: {},
-      selected: false
+      selected: false,
+      allUsers: []
     };
   }
   seeUser = (elem: any, event: any) => {
@@ -28,19 +26,18 @@ class Users extends React.Component<any, IUser> {
     });
   };
 
-  componentDidMount = () => {
-   const users = getUsers.getAllUsers();
-   console.log(users);
-  }
+   async componentDidMount () {
+    const allUsers = await getUsers();
+    this.setState({
+      allUsers: allUsers.data
+    })
+  };
 
   render() {
     return (
-      <div>
-        <div>
-          {}
-        </div>
+      <div> 
         <div className="allUser">
-          {allUsers.map((user: any, index: number) => (
+          {this.state.allUsers.map((user: any, index: number) => (
             <div
               className="user"
               key={index}

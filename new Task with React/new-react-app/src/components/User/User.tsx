@@ -24,9 +24,10 @@ class User extends React.Component<any, any> {
           <div className={styles.user}>
             <p className={styles.elementUser}>{this.props.thisUser.name}</p>
             <p className={styles.elementUser}>{this.props.thisUser.surname}</p>
-            <p className={styles.elementUser}>{this.props.thisUser.cityID}</p>
             <p className={styles.elementUser}>{this.props.thisUser.login}</p>
             <p className={styles.elementUser}>{this.props.thisUser.password}</p>
+            <p className={styles.elementUser}>{this.props.thisUser.city}</p>
+            <p className={styles.elementUser}>{this.props.thisUser.country}</p>
           </div>
         ) : null}
         <button className={styles.btnClear} onClick={this.clearUser}>
