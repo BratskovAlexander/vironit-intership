@@ -4,8 +4,9 @@ const city_router = require("./routers/city-router");
 const mongoose = require("mongoose");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const cors = require('cors')
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3030;
 
 const app = express();
 
@@ -19,6 +20,7 @@ mongoose.connect(
   }
 );
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))

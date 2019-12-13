@@ -3,6 +3,7 @@ import React from "react";
 import { users } from "../../state";
 import User from "../User/User";
 import "./Users.css";
+import getUsers from "../service/service"
 
 const allUsers: Array<IUser> = users;
 
@@ -27,9 +28,17 @@ class Users extends React.Component<any, IUser> {
     });
   };
 
+  componentDidMount = () => {
+   const users = getUsers.getAllUsers();
+   console.log(users);
+  }
+
   render() {
     return (
       <div>
+        <div>
+          {}
+        </div>
         <div className="allUser">
           {allUsers.map((user: any, index: number) => (
             <div
