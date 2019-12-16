@@ -1,7 +1,9 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import "../App.css";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { NavLink } from "react-router-dom";
 
 export default function SimpleMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -15,16 +17,21 @@ export default function SimpleMenu() {
   };
 
   const authorization = () => {
-    console.log("authorization")
-  }
+    console.log("authorization");
+  };
 
   const logIn = () => {
-    console.log("logIn")
-  }
+    console.log("logIn");
+  };
 
   return (
     <div>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button 
+        className="btnMenu"
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
         Меню
       </Button>
       <Menu
@@ -34,8 +41,12 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={authorization}>Авторизация</MenuItem>
-        <MenuItem onClick={logIn}>Войти</MenuItem>
+        <MenuItem onClick={authorization}>
+          <NavLink to="registration">Регистрация</NavLink>
+        </MenuItem>
+        <MenuItem onClick={logIn}>
+          <NavLink to="login">Войти</NavLink>
+        </MenuItem>
         <MenuItem onClick={handleClose}>Закрыть меню</MenuItem>
       </Menu>
     </div>
