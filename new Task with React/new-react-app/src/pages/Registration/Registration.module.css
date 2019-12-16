@@ -1,0 +1,15 @@
+.form {
+    display: block;
+    width: 50%;
+    margin: 2rem auto;
+}
+
+.divBlockRegistration {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form .divBlockRegistration div{
+    margin: 5px;
+}

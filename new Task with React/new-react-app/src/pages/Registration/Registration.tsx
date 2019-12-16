@@ -1,8 +1,9 @@
 import React from "react";
+import style from "./Registration.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
-import service from "../components/service/service";
+import service from "../../components/service/service";
 
 class Registration extends React.Component<any, any> {
   constructor(props: any) {
@@ -31,27 +32,18 @@ class Registration extends React.Component<any, any> {
   createNewUser = async () => {
     try {
       await service.registration({ ...this.state.registrationUserData });
+      document.location.href = "/";
     } catch (error) {
-      console.log(`Есть пользователь с таким логином`);
+      return (document.location.href = "error-registration");
     }
   };
 
-  // getIdCity = async (event: any) => {
-  //   this.setState({
-  //     city: {
-  //       city: event.target.city,
-  //       country: event.target.country
-  //     }
-  //   });
-  //   console.log({ ...this.state.city });
-  // };
-
-  async componentDidMount () {
-      const changeCity = await service.getCity();
-      this.setState({
-            city: changeCity
-          });
-    }
+  async componentDidMount() {
+    const changeCity = await service.getCity();
+    this.setState({
+      city: changeCity
+    });
+  }
 
   handleChange = (event: any) => {
     this.setState({
@@ -59,15 +51,17 @@ class Registration extends React.Component<any, any> {
         ...this.state.registrationUserData,
         cityID: event.target.value
       }
-    })
-  }
+    });
+  };
 
   render() {
     return (
       <>
-        <form>
-          <div>
+        <form className={style.form}>
+          <h2>Регистрация пользователя</h2>
+          <div className={style.divBlockRegistration}>
             <TextField
+              className="inputRegistration"
               id="name"
               label="Name"
               variant="outlined"
@@ -75,6 +69,7 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
+              className="inputRegistration"
               id="surname"
               label="SurName"
               variant="outlined"
@@ -82,6 +77,7 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
+              className="inputRegistration"
               id="login"
               label="Login"
               variant="outlined"
@@ -89,25 +85,21 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
+              className="inputRegistration"
               id="password"
               label="Password"
               variant="outlined"
               value={this.state.registrationUserData.password}
               onChange={this.getValueInput}
             />
-            {/* <TextField
-              id="cityID"
-              label="cityID"
-              variant="outlined"
-              onChange={this.getValueInput}
-            /> */}
-
             <TextField
+              className="inputRegistration"
               select
-              label="Select"
+              label="Город"
+              
               value={this.state.registrationUserData.cityID}
               onChange={this.handleChange}
-              helperText="Please select your currency"
+              helperText="Выберите город"
             >
               {this.state.city.map((city: any) => (
                 <MenuItem key={city.city} value={city._id}>
