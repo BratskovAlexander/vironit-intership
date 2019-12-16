@@ -110,7 +110,7 @@ class Registration extends React.Component<any, any> {
               helperText="Please select your currency"
             >
               {this.state.city.map((city: any) => (
-                <MenuItem key={city.city} value={city._idadded}>
+                <MenuItem key={city.city} value={city._id}>
                   {`${city.city}, ${city.country}`}
                 </MenuItem>
               ))}
