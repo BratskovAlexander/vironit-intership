@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter, NavLink } from "react-router-dom";
 import style from "./Registration.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -16,7 +17,8 @@ class Registration extends React.Component<any, any> {
         password: "",
         cityID: ""
       },
-      city: []
+      city: [],
+      classError: false
     };
   }
 
@@ -31,10 +33,14 @@ class Registration extends React.Component<any, any> {
 
   createNewUser = async () => {
     try {
-      await service.registration({ ...this.state.registrationUserData });
-      document.location.href = "/";
+      let a: any = await service.registration({
+        ...this.state.registrationUserData
+      });
+      if (a) {
+        this.props.history.push("/");
+      }
     } catch (error) {
-      return (document.location.href = "error-registration");
+      this.props.history.push("/error-registration");
     }
   };
 
@@ -61,7 +67,6 @@ class Registration extends React.Component<any, any> {
           <h2>Регистрация пользователя</h2>
           <div className={style.divBlockRegistration}>
             <TextField
-              className="inputRegistration"
               id="name"
               label="Name"
               variant="outlined"
@@ -69,7 +74,6 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
-              className="inputRegistration"
               id="surname"
               label="SurName"
               variant="outlined"
@@ -77,7 +81,6 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
-              className="inputRegistration"
               id="login"
               label="Login"
               variant="outlined"
@@ -85,7 +88,6 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
-              className="inputRegistration"
               id="password"
               label="Password"
               variant="outlined"
@@ -93,10 +95,8 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
-              className="inputRegistration"
               select
               label="Город"
-              
               value={this.state.registrationUserData.cityID}
               onChange={this.handleChange}
               helperText="Выберите город"
@@ -108,13 +108,18 @@ class Registration extends React.Component<any, any> {
               ))}
             </TextField>
           </div>
+          <div className={style.btns}>
           <Button onClick={this.createNewUser} variant="contained">
             Зарегистрироваться
           </Button>
+          <Button variant="contained">
+            <NavLink className={style.textBtnBack} to="/">Назад</NavLink>
+          </Button>
+          </div>
         </form>
       </>
     );
   }
 }
 
-export default Registration;
+export default withRouter(Registration);

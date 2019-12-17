@@ -1,5 +1,5 @@
 import React from "react";
-import "../../App.css";
+import style from './Home.module.css';
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -16,18 +16,11 @@ export default function SimpleMenu() {
     setAnchorEl(null);
   };
 
-  const authorization = () => {
-    console.log("authorization");
-  };
-
-  const logIn = () => {
-    console.log("logIn");
-  };
 
   return (
     <div>
       <Button 
-        className="btnMenu"
+        className={style.btnMenu}
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
@@ -41,11 +34,11 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={authorization}>
-          <NavLink to="registration">Регистрация</NavLink>
+        <MenuItem>
+          <NavLink className={style.textBtnBack} to="registration">Регистрация</NavLink>
         </MenuItem>
-        <MenuItem onClick={logIn}>
-          <NavLink to="login">Войти</NavLink>
+        <MenuItem>
+          <NavLink className={style.textBtnBack} to="login">Войти</NavLink>
         </MenuItem>
         <MenuItem onClick={handleClose}>Закрыть меню</MenuItem>
       </Menu>

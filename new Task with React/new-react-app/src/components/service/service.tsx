@@ -11,12 +11,13 @@ const service = {
     return getCity.data;
   },
 
-  registration: (body: any) => {
-    axios.post("http://localhost:3030/users", qs.stringify(body), {
+  registration: async (body: any) => {
+    const registration = await axios.post("http://localhost:3030/users", qs.stringify(body), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
     });
+    return registration.data
   }
 };
 

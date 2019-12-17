@@ -13,3 +13,18 @@
 .form .divBlockRegistration div{
     margin: 5px;
 }
+
+div div .error input {
+    border: solid 5px red;
+}
+
+.textBtnBack {
+    text-decoration: none;
+    color: black;
+}
+
+.btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
