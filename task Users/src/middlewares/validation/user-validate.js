@@ -5,7 +5,6 @@ const addUserSchema = Joi.object({
   surname: Joi.string(),
   cityID: Joi.string(),
   login: Joi.string()
-    .alphanum()
     .min(4)
     .max(30)
     .required(),
