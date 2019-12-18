@@ -1,0 +1,223 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample express server.",
+    "version": "1.0.0",
+    "title": "Swagger Doc",
+    "contact": {
+      "email": "bratskov.alexander@gmail.com"
+    },
+    "license": {
+      "name": "ISC"
+    }
+  },
+  "host": "localhost:3000",
+  "tags": [
+    {
+      "name": "users",
+      "description": "Operations with Users"
+    }
+  ],
+  "schemes": ["http"],
+  "securityDefinition": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "bearerFormat": "JWT",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Get users",
+        "description": "get list of all existing users",
+        "operationId": "getAllUser",
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "Create user",
+        "description": "This can any user.",
+        "operationId": "createUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "put": {
+        "tags": ["users"],
+        "summary": "Update user by ID",
+        "description": "return update user",
+        "operationId": "updateUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pet not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["users"],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The user name for login and password",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful"
+          }
+        }
+      }
+    },
+    "/users/{login}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": ["users"],
+        "summary": "Find User by login",
+        "description": "Returns a single user",
+        "operationId": "getUserByLogin",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cityID": {
+          "type": "string"
+      }
+    }
+  }
+}
+}

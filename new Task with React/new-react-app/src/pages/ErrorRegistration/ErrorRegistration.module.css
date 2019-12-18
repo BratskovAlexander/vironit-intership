@@ -1,0 +1,17 @@
+.blockMessage{
+    display: block;
+    width: 50%;
+    margin: 2rem auto;
+    border: solid 1px gray;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.btnBack{
+display: flex;
+justify-content: center;
+}
+
+.textBtnBack{
+    text-decoration: none;
+}
