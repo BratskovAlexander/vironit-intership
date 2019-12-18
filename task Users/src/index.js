@@ -27,6 +27,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use("/users", user_router);
 app.use("/cities", city_router);
 
+
 app.listen(PORT, () => {
   console.log(`Server has been started`);
 });
