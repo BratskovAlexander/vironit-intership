@@ -18,7 +18,9 @@ export default function SimpleMenu() {
 
 
   return (
-    <div>
+    <>
+    <header>
+    <div className={style.menu}>
       <Button 
         className={style.btnMenu}
         aria-controls="simple-menu"
@@ -43,5 +45,7 @@ export default function SimpleMenu() {
         <MenuItem onClick={handleClose}>Закрыть меню</MenuItem>
       </Menu>
     </div>
+    </header>
+    </>
   );
 }

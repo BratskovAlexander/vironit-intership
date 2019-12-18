@@ -18,7 +18,29 @@ const service = {
       }
     });
     return registration.data
+  },
+
+  authorization: async (body: any) => {
+    const authorization = await axios.post("http://localhost:3030/users/login", qs.stringify(body), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    });
+    return authorization.data;
+  },
+
+  getAuthorizationUser: async (login: string, jwtToken: string) => {
+    const getAuthorizationUser = await axios.get(`http://localhost:3030/users/user`, {
+      headers: {
+        Authorization: jwtToken
+      }
+    });
+    console.log(getAuthorizationUser.data[0]);
+    return getAuthorizationUser.data[0];
   }
+
+
+
 };
 
 export default service;

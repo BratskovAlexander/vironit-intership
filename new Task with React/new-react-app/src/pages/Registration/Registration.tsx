@@ -33,10 +33,10 @@ class Registration extends React.Component<any, any> {
 
   createNewUser = async () => {
     try {
-      let a: any = await service.registration({
+      const registrationUserData: any = await service.registration({
         ...this.state.registrationUserData
       });
-      if (a) {
+      if (registrationUserData) {
         this.props.history.push("/");
       }
     } catch (error) {
@@ -74,21 +74,21 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
-              id="surname"
+            id="surname"
               label="SurName"
               variant="outlined"
               value={this.state.registrationUserData.surname}
               onChange={this.getValueInput}
             />
             <TextField
-              id="login"
+            id="login"
               label="Login"
               variant="outlined"
               value={this.state.registrationUserData.login}
               onChange={this.getValueInput}
             />
             <TextField
-              id="password"
+            id="password"
               label="Password"
               variant="outlined"
               value={this.state.registrationUserData.password}
@@ -96,7 +96,6 @@ class Registration extends React.Component<any, any> {
             />
             <TextField
               select
-              label="Город"
               value={this.state.registrationUserData.cityID}
               onChange={this.handleChange}
               helperText="Выберите город"
@@ -113,7 +112,7 @@ class Registration extends React.Component<any, any> {
             Зарегистрироваться
           </Button>
           <Button variant="contained">
-            <NavLink className={style.textBtnBack} to="/">Назад</NavLink>
+            <NavLink className={style.textBtnBack} to="/">На главную</NavLink>
           </Button>
           </div>
         </form>

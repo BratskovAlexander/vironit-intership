@@ -27,10 +27,10 @@ const get = async () => {
   return result;
 };
 
-const getUser = async login => {
+const getUser = async req => {
   const result = await User.aggregate([
     {
-      $match: { login: login }
+      $match: { login: req.user.login }
     },
     {
       $lookup: {

@@ -10,7 +10,7 @@ const user_controller = new UserController();
 const router = new express.Router();
 
 router.get("/", user_controller.getUsers);
-router.get("/:login", auth, user_controller.getUser);
+router.get("/user", auth, user_controller.getUser);
 router.post("/", validationMiddleware(addUserSchema), user_controller.addUser);
 router.post("/login", user_controller.authUser);
 router.put(

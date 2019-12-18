@@ -11,7 +11,7 @@ class ErrorRegistration extends React.Component<any, any> {
         <h1>Попробуйте еще раз, вы что-то сделали не так!!!</h1>
         <div className={style.btnBack}>
           <Button variant="contained">
-            <NavLink className={style.textBtnBack} to="registration">назад</NavLink>
+            <NavLink className={style.textBtnBack} to="/">На главную</NavLink>
           </Button>
         </div>
       </div>
