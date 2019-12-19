@@ -11,7 +11,7 @@ const service = {
     return getCity.data;
   },
 
-  registration: async (body: any) => {
+  registrationUser: async (body: any) => {
     const registration = await axios.post("http://localhost:3030/users", qs.stringify(body), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -20,7 +20,7 @@ const service = {
     return registration.data
   },
 
-  authorization: async (body: any) => {
+  authorizationUser: async (body: any) => {
     const authorization = await axios.post("http://localhost:3030/users/login", qs.stringify(body), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -29,15 +29,33 @@ const service = {
     return authorization.data;
   },
 
-  getAuthorizationUser: async (login: string, jwtToken: string) => {
+  getAuthorizationUser: async () => {
     const getAuthorizationUser = await axios.get(`http://localhost:3030/users/user`, {
       headers: {
-        Authorization: jwtToken
+        Authorization: sessionStorage.getItem('access-token')
       }
     });
-    console.log(getAuthorizationUser.data[0]);
     return getAuthorizationUser.data[0];
-  }
+  },
+  
+  updateUser: async (id: any, body: any) => {
+    const updateUser = await axios.put(`http://localhost:3030/users/${id}`, qs.stringify(body), {
+      headers: {
+        Authorization: sessionStorage.getItem('access-token')
+      }
+    });
+    return updateUser.data
+  },
+
+  deleteUser: async (id: any) => {
+    const updateUser = await axios.delete(`http://localhost:3030/users/${id}`, {
+      headers: {
+        Authorization: sessionStorage.getItem('access-token')
+      }
+    });
+    
+    return updateUser.data
+  },
 
 
 

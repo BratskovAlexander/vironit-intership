@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
-import style from "./Login.module.css";
+import style from "./Authorization.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import service from "../../components/service/service";
@@ -18,32 +18,33 @@ class Login extends React.Component<any, any> {
   }
 
   getInputValue = async (event: any) => {
-        this.setState({
-            authorizationUserData: {
-            ...this.state.authorizationUserData,
-            [event.target.id]: event.target.value
-          }
-        });
+    this.setState({
+      authorizationUserData: {
+        ...this.state.authorizationUserData,
+        [event.target.id]: event.target.value
+      }
+    });
   };
 
   authorizationUser = async () => {
-   try {
-    const authorizationUser = await service.authorization({
+    try {
+      const authorizationUser = await service.authorizationUser({
         ...this.state.authorizationUserData
-    });
-    const getAuthorizationUser = await service.getAuthorizationUser( this.state.authorizationUserData.login, authorizationUser);
-    console.log(getAuthorizationUser); 
-    // if(getAuthorizationUser) {
-    //     this.props.history.push("/user");
-    // }
+      });
+      console.log(authorizationUser);
+      if(authorizationUser !== "Нет пользователя с таким Login") {
+        sessionStorage.setItem("access-token", authorizationUser);
+      this.props.history.push("/profile");
+      } else {
+        console.log("object");
+        this.props.history.push("/error-registration");
+      }
+      
+    } catch (error) {
+      this.props.history.push("/error-registration");
+    }
+  };
 
-   } catch (error) {
-    this.props.history.push("/error-registration");
-   }
-  }
-
-
-  
   render() {
     return (
       <>

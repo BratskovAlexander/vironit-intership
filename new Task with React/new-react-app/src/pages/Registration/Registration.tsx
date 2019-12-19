@@ -17,8 +17,7 @@ class Registration extends React.Component<any, any> {
         password: "",
         cityID: ""
       },
-      city: [],
-      classError: false
+      city: []
     };
   }
 
@@ -33,7 +32,7 @@ class Registration extends React.Component<any, any> {
 
   createNewUser = async () => {
     try {
-      const registrationUserData: any = await service.registration({
+      const registrationUserData: any = await service.registrationUser({
         ...this.state.registrationUserData
       });
       if (registrationUserData) {
@@ -99,6 +98,7 @@ class Registration extends React.Component<any, any> {
               value={this.state.registrationUserData.cityID}
               onChange={this.handleChange}
               helperText="Выберите город"
+              variant="outlined"
             >
               {this.state.city.map((city: any) => (
                 <MenuItem key={city.city} value={city._id}>

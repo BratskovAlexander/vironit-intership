@@ -1,0 +1,29 @@
+.header {
+  text-align: center;
+  margin: 1rem;
+}
+
+.blockImgAvatar, .dataUser{
+    margin: 1rem;
+}
+
+.imgAvatar {
+  width: 150px;
+  border-radius: 50%;
+  border: solid 1px rgba(35, 200, 241, 0.781) 
+}
+
+.blockProfile {
+  width: 30%;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border: solid 1px rgba(35, 200, 241, 0.781);
+  border-radius: 10px;
+  background-color: rgba(100, 212, 240, 0.212);
+}
+
+div .btn {
+    margin: 10px;
+}
