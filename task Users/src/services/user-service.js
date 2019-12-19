@@ -83,7 +83,7 @@ const authUser = async body => {
 };
 
 const put = async (data, id) => {
-  return await User.findByIdAndUpdate(id, data);
+  return await User.findByIdAndUpdate({_id: id}, {...data}, {new: true});
 };
 
 const del = async id => {
