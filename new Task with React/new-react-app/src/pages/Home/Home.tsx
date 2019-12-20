@@ -1,51 +1,79 @@
 import React from "react";
-import style from './Home.module.css';
+import style from "./Home.module.css";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
-export default function SimpleMenu() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+class Home extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      visible: false,
+      anchorEl: null
+    };
+  }
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  handleClick = (event: any) => {
+    this.setState({
+      visible: true,
+      anchorEl: event.currentTarget
+    });
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  handleClose = () => {
+    this.setState({
+      visible: false,
+      anchorEl: null
+    });
   };
 
+  openMenu = (event: any) => {
+    switch (event.target.innerHTML) {
+      case "Регистрация":
+        return this.props.history.push("/registration");
+      case "Войти":
+        return this.props.history.push("/login");
+      case "Профиль":
+        return this.props.history.push("/profile");
+    }
+  };
 
-  return (
-    <>
-    <header>
-    <div className={style.menu}>
-      <Button 
-        className={style.btnMenu}
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        Меню
-      </Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem>
-          <NavLink className={style.textBtnBack} to="registration">Регистрация</NavLink>
-        </MenuItem>
-        <MenuItem>
-          <NavLink className={style.textBtnBack} to="login">Войти</NavLink>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>Закрыть меню</MenuItem>
-      </Menu>
-    </div>
-    </header>
-    </>
-  );
+  render() {
+    return (
+      <>
+        <header>
+          <div className={style.menu}>
+            <Button
+              className={style.btnMenu}
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={this.handleClick}
+            >
+              Меню
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={this.state.anchorEl}
+              open={this.state.visible}
+              onClose={this.handleClose}
+              onClick={this.openMenu}
+            >
+              <MenuItem>
+                <span>Регистрация</span>
+              </MenuItem>
+              <MenuItem>
+                <span>Войти</span>
+              </MenuItem>
+              <MenuItem>
+                <span>Профиль</span>
+              </MenuItem>
+            </Menu>
+          </div>
+        </header>
+      </>
+    );
+  }
 }
+
+export default withRouter(Home);

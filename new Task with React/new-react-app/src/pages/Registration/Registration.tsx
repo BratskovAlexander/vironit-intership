@@ -1,10 +1,12 @@
 import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
+import Home from "../Home/Home";
 import style from "./Registration.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
-import service from "../../components/service/service";
+import service from "../../service/service";
+import ModalPage from "../../component/ModalPage/ModalPage";
 
 class Registration extends React.Component<any, any> {
   constructor(props: any) {
@@ -17,7 +19,8 @@ class Registration extends React.Component<any, any> {
         password: "",
         cityID: ""
       },
-      city: []
+      city: [],
+      modalWindow: false
     };
   }
 
@@ -32,15 +35,21 @@ class Registration extends React.Component<any, any> {
 
   createNewUser = async () => {
     try {
-      const registrationUserData: any = await service.registrationUser({
+      await service.registrationUser({
         ...this.state.registrationUserData
       });
-      if (registrationUserData) {
-        this.props.history.push("/");
-      }
+      this.setState({
+        modalWindow: true
+      });
     } catch (error) {
       this.props.history.push("/error-registration");
     }
+  };
+
+  closeModalWindow = async () => {
+    this.setState({
+      modalWindow: !this.state.modalWindow
+    });
   };
 
   async componentDidMount() {
@@ -62,6 +71,7 @@ class Registration extends React.Component<any, any> {
   render() {
     return (
       <>
+        <Home />
         <form className={style.form}>
           <h2>Регистрация пользователя</h2>
           <div className={style.divBlockRegistration}>
@@ -73,21 +83,21 @@ class Registration extends React.Component<any, any> {
               onChange={this.getValueInput}
             />
             <TextField
-            id="surname"
+              id="surname"
               label="SurName"
               variant="outlined"
               value={this.state.registrationUserData.surname}
               onChange={this.getValueInput}
             />
             <TextField
-            id="login"
+              id="login"
               label="Login"
               variant="outlined"
               value={this.state.registrationUserData.login}
               onChange={this.getValueInput}
             />
             <TextField
-            id="password"
+              id="password"
               label="Password"
               variant="outlined"
               value={this.state.registrationUserData.password}
@@ -108,12 +118,25 @@ class Registration extends React.Component<any, any> {
             </TextField>
           </div>
           <div className={style.btns}>
-          <Button onClick={this.createNewUser} variant="contained">
-            Зарегистрироваться
-          </Button>
-          <Button variant="contained">
-            <NavLink className={style.textBtnBack} to="/">На главную</NavLink>
-          </Button>
+            <Button onClick={this.createNewUser} variant="contained">
+              Зарегистрироваться
+            </Button>
+            <Button variant="contained">
+              <NavLink className={style.textBtnBack} to="/">
+                На главную
+              </NavLink>
+            </Button>
+            {this.state.modalWindow ? (
+              <ModalPage
+                message="Добро пожлаовать "
+                user={this.state.registrationUserData.name}
+                path="/"
+                nameBtn="ok"
+                closeModalWindow={this.closeModalWindow}
+              />
+            ) : (
+              ""
+            )}
           </div>
         </form>
       </>

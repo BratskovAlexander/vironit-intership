@@ -1,10 +1,9 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import style from "../src/pages/ErrorRegistration/ErrorRegistration.module.css";
-
 import { NavLink } from "react-router-dom";
 
-class modalPageUpdate extends React.Component<any, any> {
+class ModalPageUpdate extends React.Component<any, any> {
   render() {
     return (
       <div className={style.blockMessage}>
@@ -14,7 +13,7 @@ class modalPageUpdate extends React.Component<any, any> {
             <NavLink className={style.textBtnBack} to="/">На главную</NavLink>
           </Button>
           <Button variant="contained">
-            <NavLink className={style.textBtnBack} to="/profile">К профилю</NavLink>
+            <NavLink className={style.textBtnBack} onClick={this.props.closeModalUpdateWindow} to="/profile">К профилю</NavLink>
           </Button>
         </div>
       </div>
@@ -22,4 +21,4 @@ class modalPageUpdate extends React.Component<any, any> {
   }
 }
 
-export default modalPageUpdate;
+export default ModalPageUpdate;

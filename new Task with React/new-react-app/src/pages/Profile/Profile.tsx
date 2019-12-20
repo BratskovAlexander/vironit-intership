@@ -1,9 +1,12 @@
 import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
-import service from "../../components/service/service";
+import service from "../../service/service";
+import Home from "../Home/Home";
 import style from "./Profile.module.css";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+import { Button, MenuItem } from "@material-ui/core";
+import ModalPageUpdate from "../../ModalPageUpdate";
+import ModalPageDelete from "../../ModalPageDelete";
 
 class Profile extends React.Component<any, any> {
   constructor(props: any) {
@@ -14,10 +17,12 @@ class Profile extends React.Component<any, any> {
         surname: "",
         login: "",
         password: "",
-        city: "",
-        country: ""
+        cityID: ""
       },
-      updateUserData: {}
+      updateUserData: {},
+      city: [],
+      userUpdate: false,
+      userDelete: false
     };
   }
 
@@ -60,6 +65,28 @@ class Profile extends React.Component<any, any> {
     });
   };
 
+  getValueInputPassword = (event: any) => {
+    this.setState({
+      updateUserData: {
+        ...this.state.updateUserData,
+        password: event.target.value
+      }
+    });
+  };
+
+  getValueInputCity = (event: any) => {
+    this.setState({
+      user: {
+        ...this.state.user,
+        cityID: event.target.value
+      },
+      updateUserData: {
+        ...this.state.updateUserData,
+        cityID: event.target.value
+      }
+    });
+  };
+
   updateUser = async () => {
     try {
       const updateUserData: any = await service.updateUser(
@@ -69,7 +96,9 @@ class Profile extends React.Component<any, any> {
         }
       );
       if (updateUserData) {
-        this.props.history.push("/modal-page-update");
+        this.setState({
+          userUpdate: true
+        });
       }
     } catch (error) {
       this.props.history.push("/profile");
@@ -79,32 +108,47 @@ class Profile extends React.Component<any, any> {
   deleteUser = async () => {
     try {
       const updateUserData: any = await service.deleteUser(this.state.user._id);
-
       if (updateUserData) {
         window.sessionStorage.removeItem("access-token");
-        this.props.history.push("/modal-page-delete");
+        this.setState({
+          userDelete: true
+        });
       }
     } catch (error) {
       this.props.history.push("/error-registration");
     }
   };
 
+  closeModalUpdateWindow = async () => {
+    this.setState({
+      userUpdate: !this.state.userUpdate
+    });
+  };
+
+  closeModalDeleteWindow = async () => {
+    this.setState({
+      userDelete: !this.state.userDelete
+    });
+  };
+
   componentDidMount = async () => {
-      console.log(sessionStorage.getItem("access-token"));
+    const changeCity = await service.getCity();
     if (sessionStorage.getItem("access-token")) {
       const getAuthorizationUser: any = await service.getAuthorizationUser();
       this.setState({
-        user: getAuthorizationUser
+        user: { ...getAuthorizationUser },
+        city: changeCity
       });
       return getAuthorizationUser;
     } else {
-        this.props.history.push("/error-registration");
+      this.props.history.push("/error-registration");
     }
   };
 
   render() {
     return (
       <>
+        <Home />
         <h1 className={style.header}>Привет {this.state.user.name}</h1>
         <div className={style.blockProfile}>
           <div className={style.blockImgAvatar}>
@@ -157,49 +201,36 @@ class Profile extends React.Component<any, any> {
                 onChange={this.getValueInputLogin}
               />
             </div>
-            {/* <div>
+            <div>
               <TextField
-              type="text"
+                type="password"
                 id="password"
                 label="Пароль"
                 margin="normal"
-                value={this.state.user.password}
-                // InputLabelProps={{
-                //   shrink: true
-                // }}
-                variant="outlined"
-                // onChange={this.getValueInputPassword}
-              />
-            </div> */}
-            <div>
-              <TextField
-                type="text"
-                id="city"
-                label="Город"
-                margin="normal"
-                value={this.state.user.city}
                 InputLabelProps={{
                   shrink: true
                 }}
                 variant="outlined"
-                disabled
-                // onChange={this.getValueInput}
+                onChange={this.getValueInputPassword}
               />
             </div>
             <div>
               <TextField
-                type="text"
-                id="country"
-                label="Страна"
+                select
+                id="city"
+                label="Город"
                 margin="normal"
-                value={this.state.user.country}
-                InputLabelProps={{
-                  shrink: true
-                }}
+                value={this.state.user.cityID}
+                onChange={this.getValueInputCity}
+                helperText="Изменить город"
                 variant="outlined"
-                disabled
-                // onChange={this.getValueInput}
-              />
+              >
+                {this.state.city.map((city: any, index: number) => (
+                  <MenuItem key={index} value={city._id}>
+                    {`${city.city}, ${city.country}`}
+                  </MenuItem>
+                ))}
+              </TextField>
             </div>
             <div>
               <Button
@@ -221,6 +252,20 @@ class Profile extends React.Component<any, any> {
                   На главную
                 </NavLink>
               </Button>
+              {this.state.userUpdate ? (
+                <ModalPageUpdate
+                  closeModalUpdateWindow={this.closeModalUpdateWindow}
+                />
+              ) : (
+                ""
+              )}
+              {this.state.userDelete ? (
+                <ModalPageDelete
+                  closeModalDeleteWindow={this.closeModalDeleteWindow}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

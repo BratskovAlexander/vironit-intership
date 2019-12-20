@@ -4,7 +4,7 @@ import style from "../src/pages/ErrorRegistration/ErrorRegistration.module.css";
 
 import { NavLink } from "react-router-dom";
 
-class modalPageDelete extends React.Component<any, any> {
+class ModalPageDelete extends React.Component<any, any> {
   render() {
     return (
       <div className={style.blockMessage}>
@@ -19,4 +19,4 @@ class modalPageDelete extends React.Component<any, any> {
   }
 }
 
-export default modalPageDelete;
+export default ModalPageDelete;

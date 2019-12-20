@@ -1,9 +1,10 @@
 import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
+import Home from "../Home/Home";
 import style from "./Authorization.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import service from "../../components/service/service";
+import service from "../../service/service";
 
 class Login extends React.Component<any, any> {
   constructor(props: any) {
@@ -31,12 +32,10 @@ class Login extends React.Component<any, any> {
       const authorizationUser = await service.authorizationUser({
         ...this.state.authorizationUserData
       });
-      console.log(authorizationUser);
-      if(authorizationUser !== "Нет пользователя с таким Login") {
+      if(authorizationUser !== "Нет пользователя с таким Login" && authorizationUser !== "Неправильный пароль") {
         sessionStorage.setItem("access-token", authorizationUser);
       this.props.history.push("/profile");
       } else {
-        console.log("object");
         this.props.history.push("/error-registration");
       }
       
@@ -48,6 +47,7 @@ class Login extends React.Component<any, any> {
   render() {
     return (
       <>
+        <Home />
         <form className={style.form}>
           <div className={style.divBlockRegistration}>
             <TextField
