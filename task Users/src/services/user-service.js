@@ -39,15 +39,6 @@ const getUser = async req => {
         foreignField: "_id",
         as: "city"
       }
-    },
-    {
-      $project: {
-        name: "$name",
-        surname: "$surname",
-        login: "$login",
-        city: "$city.city",
-        country: "$city.country"
-      }
     }
   ]);
   return result;
@@ -83,6 +74,9 @@ const authUser = async body => {
 };
 
 const put = async (data, id) => {
+  if(data.password){
+    data.password = bcrypt.hashSync(data.password);
+  }
   return await User.findByIdAndUpdate({_id: id}, {...data}, {new: true});
 };
 
