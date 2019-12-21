@@ -1,12 +1,11 @@
 import React from "react";
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import service from "../../service/service";
 import Home from "../Home/Home";
 import style from "./Profile.module.css";
 import TextField from "@material-ui/core/TextField";
 import { Button, MenuItem } from "@material-ui/core";
-import ModalPageUpdate from "../../ModalPageUpdate";
-import ModalPageDelete from "../../ModalPageDelete";
+import ModalPage from "../../component/ModalPage/ModalPage";
 
 class Profile extends React.Component<any, any> {
   constructor(props: any) {
@@ -21,8 +20,8 @@ class Profile extends React.Component<any, any> {
       },
       updateUserData: {},
       city: [],
-      userUpdate: false,
-      userDelete: false
+      modalWindowUpdate: false,
+      modalWindowDelete: false
     };
   }
 
@@ -97,7 +96,7 @@ class Profile extends React.Component<any, any> {
       );
       if (updateUserData) {
         this.setState({
-          userUpdate: true
+          modalWindowUpdate: true
         });
       }
     } catch (error) {
@@ -111,7 +110,7 @@ class Profile extends React.Component<any, any> {
       if (updateUserData) {
         window.sessionStorage.removeItem("access-token");
         this.setState({
-          userDelete: true
+          modalWindowDelete: true
         });
       }
     } catch (error) {
@@ -119,17 +118,23 @@ class Profile extends React.Component<any, any> {
     }
   };
 
-  closeModalUpdateWindow = async () => {
+
+  closeModalWindowUpdate = () => {
     this.setState({
-      userUpdate: !this.state.userUpdate
+      modalWindowUpdate: !this.state.modalWindowUpdate
     });
   };
 
-  closeModalDeleteWindow = async () => {
+  closeModalWindowDelete = () => {
     this.setState({
-      userDelete: !this.state.userDelete
+      modalWindowDelete: !this.state.modalWindowDelete
     });
   };
+
+  logOutUser = () => {
+      window.sessionStorage.removeItem("access-token");
+      this.props.history.push("/login");
+  }
 
   componentDidMount = async () => {
     const changeCity = await service.getCity();
@@ -247,22 +252,26 @@ class Profile extends React.Component<any, any> {
               >
                 удалить
               </Button>
-              <Button className={style.btn} variant="contained">
-                <NavLink className={style.textBtnBack} to="/">
-                  На главную
-                </NavLink>
+              <Button className={style.btn} onClick={this.logOutUser} variant="contained">
+                  Выйти
               </Button>
-              {this.state.userUpdate ? (
-                <ModalPageUpdate
-                  closeModalUpdateWindow={this.closeModalUpdateWindow}
-                />
+              {this.state.modalWindowUpdate ? ( 
+               <ModalPage
+               message={`Пользователь ${this.state.user.name} обновлен `}
+               path="/profile"
+               nameBtn="ok"
+               closeModalWindow={this.closeModalWindowUpdate}
+             />
               ) : (
                 ""
               )}
-              {this.state.userDelete ? (
-                <ModalPageDelete
-                  closeModalDeleteWindow={this.closeModalDeleteWindow}
-                />
+              {this.state.modalWindowDelete ? ( 
+               <ModalPage
+               message={`Пользователь ${this.state.user.name} удален `}
+               path="/login"
+               nameBtn="ok"
+               closeModalWindow={this.closeModalWindowDelete}
+             />
               ) : (
                 ""
               )}

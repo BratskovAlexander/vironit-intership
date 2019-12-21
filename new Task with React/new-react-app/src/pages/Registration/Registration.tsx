@@ -20,7 +20,8 @@ class Registration extends React.Component<any, any> {
         cityID: ""
       },
       city: [],
-      modalWindow: false
+      modalWindow: false,
+      modalWindowError: false
     };
   }
 
@@ -42,7 +43,11 @@ class Registration extends React.Component<any, any> {
         modalWindow: true
       });
     } catch (error) {
-      this.props.history.push("/error-registration");
+      this.setState({
+        modalWindowError: true
+      });
+      console.log("error");
+      // this.props.history.push("/error-registration");
     }
   };
 
@@ -131,6 +136,16 @@ class Registration extends React.Component<any, any> {
                 message="Добро пожлаовать "
                 user={this.state.registrationUserData.name}
                 path="/"
+                nameBtn="ok"
+                closeModalWindow={this.closeModalWindow}
+              />
+            ) : (
+              ""
+            )}
+            {this.state.modalWindowError ? (
+              <ModalPage
+                message="Вы допустили ошибку "
+                path="/registration"
                 nameBtn="ok"
                 closeModalWindow={this.closeModalWindow}
               />
