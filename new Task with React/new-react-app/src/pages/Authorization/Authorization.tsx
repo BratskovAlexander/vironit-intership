@@ -71,7 +71,7 @@ class Login extends React.Component<any, any> {
       <Redirect to="/profile" />
     ) : (
       <>
-        <Home />
+        <Home items={["Регистрация", 'Главная']}/>
         <form className={style.form} onSubmit={this.authorizationUser}>
           <div className={style.divBlockRegistration}>
             <TextField

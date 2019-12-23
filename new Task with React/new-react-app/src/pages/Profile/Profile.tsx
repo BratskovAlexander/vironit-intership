@@ -6,6 +6,7 @@ import style from "./Profile.module.css";
 import TextField from "@material-ui/core/TextField";
 import { Button, MenuItem } from "@material-ui/core";
 import ModalPage from "../../component/ModalPage/ModalPage";
+import AdminPage from "../../component/Admin/AdminPage";
 
 class Profile extends React.Component<any, any> {
   constructor(props: any) {
@@ -18,6 +19,14 @@ class Profile extends React.Component<any, any> {
         password: "",
         cityID: ""
       },
+      admin: {
+        name: "",
+        surname: "",
+        login: "",
+        password: "",
+        cityID: ""
+      },
+      userList: false,
       updateUserData: {},
       city: [],
       modalWindowUpdate: false,
@@ -118,7 +127,6 @@ class Profile extends React.Component<any, any> {
     }
   };
 
-
   closeModalWindowUpdate = () => {
     this.setState({
       modalWindowUpdate: !this.state.modalWindowUpdate
@@ -132,19 +140,25 @@ class Profile extends React.Component<any, any> {
   };
 
   logOutUser = () => {
-      window.sessionStorage.removeItem("access-token");
-      this.props.history.push("/login");
-  }
+    window.sessionStorage.removeItem("access-token");
+    this.props.history.push("/login");
+  };
 
   componentDidMount = async () => {
     const changeCity = await service.getCity();
     if (sessionStorage.getItem("access-token")) {
       const getAuthorizationUser: any = await service.getAuthorizationUser();
+      if (getAuthorizationUser.login === "admin") {
+        this.setState({
+          admin: { ...getAuthorizationUser },
+          userList: true,
+          city: changeCity
+        });
+      }
       this.setState({
         user: { ...getAuthorizationUser },
         city: changeCity
       });
-      return getAuthorizationUser;
     } else {
       this.props.history.push("/login");
     }
@@ -252,32 +266,37 @@ class Profile extends React.Component<any, any> {
               >
                 удалить
               </Button>
-              <Button className={style.btn} onClick={this.logOutUser} variant="contained">
-                  Выйти
+              <Button
+                className={style.btn}
+                onClick={this.logOutUser}
+                variant="contained"
+              >
+                Выйти
               </Button>
-              {this.state.modalWindowUpdate ? ( 
-               <ModalPage
-               message={`Пользователь ${this.state.user.name} обновлен `}
-               path="/profile"
-               nameBtn="ok"
-               closeModalWindow={this.closeModalWindowUpdate}
-             />
+              {this.state.modalWindowUpdate ? (
+                <ModalPage
+                  message={`Пользователь ${this.state.user.name} обновлен `}
+                  path="/profile"
+                  nameBtn="ok"
+                  closeModalWindow={this.closeModalWindowUpdate}
+                />
               ) : (
                 ""
               )}
-              {this.state.modalWindowDelete ? ( 
-               <ModalPage
-               message={`Пользователь ${this.state.user.name} удален `}
-               path="/login"
-               nameBtn="ok"
-               closeModalWindow={this.closeModalWindowDelete}
-             />
+              {this.state.modalWindowDelete ? (
+                <ModalPage
+                  message={`Пользователь ${this.state.user.name} удален `}
+                  path="/login"
+                  nameBtn="ok"
+                  closeModalWindow={this.closeModalWindowDelete}
+                />
               ) : (
                 ""
               )}
             </div>
           </div>
         </div>
+        {this.state.userList ? <AdminPage /> : ""}
       </>
     );
   }

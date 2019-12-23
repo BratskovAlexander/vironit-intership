@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 class Home extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
+    console.log(props.items)
     this.state = {
       visible: false,
       anchorEl: null
@@ -29,21 +30,20 @@ class Home extends React.Component<any, any> {
   };
 
   openMenu = (event: any) => {
-    console.log(event.target.innerHTML);
     switch (event.target.innerHTML) {
-      case "Регистрация":
+      case this.props.items[0] : 
         return this.props.history.push("/registration");
-      case "Войти":
-        return this.props.history.push("/login");
-      case "Профиль":
-        return this.props.history.push("/profile");
+      case  this.props.items[1] :
+        return this.props.history.push("/");
+      // case "Профиль":
+      //   return this.props.history.push("/profile");
     }
   };
 
   render() {
     return (
       <>
-        <header>
+        <header> 
           <div className={style.menu}>
             <Button
               className={style.btnMenu}
@@ -61,14 +61,14 @@ class Home extends React.Component<any, any> {
               onClick={this.openMenu}
             >
               <MenuItem>
-                <span>Регистрация</span>
+                <span>{this.props.items[0]}</span>
               </MenuItem>
               <MenuItem>
-                <span>Войти</span>
+                <span>{this.props.items[1]}</span>
               </MenuItem>
-              <MenuItem>
+              {/* <MenuItem>
                 <span>Профиль</span>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </div>
         </header>
