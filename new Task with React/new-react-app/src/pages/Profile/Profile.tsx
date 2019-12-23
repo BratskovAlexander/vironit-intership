@@ -114,7 +114,7 @@ class Profile extends React.Component<any, any> {
         });
       }
     } catch (error) {
-      this.props.history.push("/error-registration");
+      this.props.history.push("/profile");
     }
   };
 
@@ -146,7 +146,7 @@ class Profile extends React.Component<any, any> {
       });
       return getAuthorizationUser;
     } else {
-      this.props.history.push("/error-registration");
+      this.props.history.push("/login");
     }
   };
 

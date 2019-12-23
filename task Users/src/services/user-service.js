@@ -57,7 +57,7 @@ const post = async body => {
 const authUser = async body => {
   const user = await User.findOne({ login: body.login });
   if (!user) {
-    return "Нет пользователя с таким Login";
+    throw new Error ("Нет пользователя с таким Login");
   }
   const checkLoginPass = await bcrypt.compare(body.password, user.password);
   if (checkLoginPass) {
@@ -70,7 +70,7 @@ const authUser = async body => {
     );
     return access_token;
   }
-  return "Неправильный пароль";
+  throw new Error ("Неправильный пароль");
 };
 
 const put = async (data, id) => {

@@ -1,11 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const accessToken: any = sessionStorage.getItem("access-token");
-
 class PrivateRouter extends React.Component<any, any> {
   isAccessToken = () => {
-    if (accessToken) {
+    if (sessionStorage.getItem("access-token")) {
       return true;
     }
     return false;

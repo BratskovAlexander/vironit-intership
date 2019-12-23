@@ -29,6 +29,7 @@ class Home extends React.Component<any, any> {
   };
 
   openMenu = (event: any) => {
+    console.log(event.target.innerHTML);
     switch (event.target.innerHTML) {
       case "Регистрация":
         return this.props.history.push("/registration");

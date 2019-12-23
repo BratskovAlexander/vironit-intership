@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter, NavLink, Redirect } from "react-router-dom";
 import Home from "../Home/Home";
 import style from "./Registration.module.css";
 import TextField from "@material-ui/core/TextField";
@@ -39,6 +39,7 @@ class Registration extends React.Component<any, any> {
       await service.registrationUser({
         ...this.state.registrationUserData
       });
+      console.log({...this.state.registrationUserData});
       this.setState({
         modalWindow: true
       });
@@ -46,8 +47,6 @@ class Registration extends React.Component<any, any> {
       this.setState({
         modalWindowError: true
       });
-      console.log("error");
-      // this.props.history.push("/error-registration");
     }
   };
 
@@ -74,7 +73,9 @@ class Registration extends React.Component<any, any> {
   };
 
   render() {
-    return (
+    return sessionStorage.getItem("access-token") ? (
+      <Redirect to="/profile" />
+    ) : (
       <>
         <Home />
         <form className={style.form}>
@@ -135,7 +136,7 @@ class Registration extends React.Component<any, any> {
               <ModalPage
                 message="Добро пожлаовать "
                 user={this.state.registrationUserData.name}
-                path="/"
+                path="/login"
                 nameBtn="ok"
                 closeModalWindow={this.closeModalWindow}
               />

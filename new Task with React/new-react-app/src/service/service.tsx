@@ -11,6 +11,15 @@ const service = {
     return getCity.data;
   },
 
+  getAllUsers: async () => {
+    const getAllUsers = await axios.get("http://localhost:3030/users", {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
+      return getAllUsers.data;
+    },
+
   registrationUser: async (body: any) => {
     const registration = await axios.post("http://localhost:3030/users", qs.stringify(body), {
       headers: {

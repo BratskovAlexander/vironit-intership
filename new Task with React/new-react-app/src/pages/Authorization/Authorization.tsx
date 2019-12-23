@@ -1,10 +1,11 @@
 import React from "react";
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter, NavLink, Redirect } from "react-router-dom";
 import Home from "../Home/Home";
 import style from "./Authorization.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import service from "../../service/service";
+import ModalPage from "../../component/ModalPage/ModalPage";
 
 class Login extends React.Component<any, any> {
   constructor(props: any) {
@@ -14,7 +15,9 @@ class Login extends React.Component<any, any> {
         login: "",
         password: ""
       },
-      token: ""
+      token: "",
+      modalWindowErrorLogin: false,
+      modalWindowErrorPassword: false
     };
   }
 
@@ -27,28 +30,49 @@ class Login extends React.Component<any, any> {
     });
   };
 
-  authorizationUser = async () => {
+  authorizationUser = async (event: any) => {
+    event.preventDefault();
     try {
       const authorizationUser = await service.authorizationUser({
         ...this.state.authorizationUserData
       });
-      if(authorizationUser !== "Нет пользователя с таким Login" && authorizationUser !== "Неправильный пароль") {
+      if (authorizationUser) {
         sessionStorage.setItem("access-token", authorizationUser);
-      this.props.history.push("/profile");
-      } else {
-        this.props.history.push("/error-registration");
+        this.props.history.push("/profile");
       }
-      
     } catch (error) {
-      this.props.history.push("/error-registration");
+      if (error.response.data.msg === "Нет пользователя с таким Login") {
+        this.setState({
+          modalWindowErrorLogin: true
+        });
+      }
+      if (error.response.data.msg === "Неправильный пароль") {
+        this.setState({
+          modalWindowErrorPassword: true
+        });
+      }
     }
   };
 
+  closeModalWindowErrorLogin = async () => {
+    this.setState({
+      modalWindowErrorLogin: !this.state.modalWindowErrorLogin
+    });
+  };
+
+  closeModalWindowErrorPassword = async () => {
+    this.setState({
+      modalWindowErrorPassword: !this.state.modalWindowErrorPassword
+    });
+  };
+
   render() {
-    return (
+    return sessionStorage.getItem("access-token") ? (
+      <Redirect to="/profile" />
+    ) : (
       <>
         <Home />
-        <form className={style.form}>
+        <form className={style.form} onSubmit={this.authorizationUser}>
           <div className={style.divBlockRegistration}>
             <TextField
               required
@@ -70,7 +94,7 @@ class Login extends React.Component<any, any> {
             />
           </div>
           <div className={style.btns}>
-            <Button onClick={this.authorizationUser} variant="contained">
+            <Button type="submit" variant="contained">
               Войти
             </Button>
             <Button variant="contained">
@@ -80,6 +104,26 @@ class Login extends React.Component<any, any> {
             </Button>
           </div>
         </form>
+        {this.state.modalWindowErrorLogin ? (
+          <ModalPage
+            message="Нет пользователя с таким логином "
+            path="/login"
+            nameBtn="ok"
+            closeModalWindow={this.closeModalWindowErrorLogin}
+          />
+        ) : (
+          ""
+        )}
+        {this.state.modalWindowErrorPassword ? (
+          <ModalPage
+            message="Неправильно ввели пароль "
+            path="/login"
+            nameBtn="ok"
+            closeModalWindow={this.closeModalWindowErrorPassword}
+          />
+        ) : (
+          ""
+        )}
       </>
     );
   }
