@@ -1,12 +1,12 @@
 import React from "react";
 import { withRouter, NavLink, Redirect } from "react-router-dom";
-import Home from "../Home/Home";
 import style from "./Registration.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import service from "../../service/service";
 import ModalPage from "../../component/ModalPage/ModalPage";
+import Header from "../../component/Header/Header";
 
 class Registration extends React.Component<any, any> {
   constructor(props: any) {
@@ -77,7 +77,7 @@ class Registration extends React.Component<any, any> {
       <Redirect to="/profile" />
     ) : (
       <>
-        <Home />
+        <Header path={['/login', '/']} items={["Войти", 'Главная']} />
         <form className={style.form}>
           <h2>Регистрация пользователя</h2>
           <div className={style.divBlockRegistration}>

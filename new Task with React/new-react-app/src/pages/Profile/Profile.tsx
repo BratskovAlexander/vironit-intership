@@ -1,12 +1,12 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import service from "../../service/service";
-import Home from "../Home/Home";
 import style from "./Profile.module.css";
 import TextField from "@material-ui/core/TextField";
 import { Button, MenuItem } from "@material-ui/core";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import AdminPage from "../../component/Admin/AdminPage";
+import Header from "../../component/Header/Header";
 
 class Profile extends React.Component<any, any> {
   constructor(props: any) {
@@ -167,7 +167,7 @@ class Profile extends React.Component<any, any> {
   render() {
     return (
       <>
-        <Home />
+        <Header path={['/']} items={["Главная"]} />
         <h1 className={style.header}>Привет {this.state.user.name}</h1>
         <div className={style.blockProfile}>
           <div className={style.blockImgAvatar}>
