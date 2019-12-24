@@ -139,9 +139,12 @@ class Profile extends React.Component<any, any> {
     });
   };
 
-  logOutUser = () => {
-    window.sessionStorage.removeItem("access-token");
-    this.props.history.push("/login");
+  getAllUsers = () => {
+    if (this.state.user.login === "admin") {
+      this.setState({
+        userList: !this.state.userList
+      });
+    }
   };
 
   componentDidMount = async () => {
@@ -151,7 +154,6 @@ class Profile extends React.Component<any, any> {
       if (getAuthorizationUser.login === "admin") {
         this.setState({
           admin: { ...getAuthorizationUser },
-          userList: true,
           city: changeCity
         });
       }
@@ -167,7 +169,7 @@ class Profile extends React.Component<any, any> {
   render() {
     return (
       <>
-        <Header path={['/']} items={["Главная"]} />
+        <Header path={["/"]} items={["Главная"]} />
         <h1 className={style.header}>Привет {this.state.user.name}</h1>
         <div className={style.blockProfile}>
           <div className={style.blockImgAvatar}>
@@ -266,13 +268,17 @@ class Profile extends React.Component<any, any> {
               >
                 удалить
               </Button>
-              <Button
-                className={style.btn}
-                onClick={this.logOutUser}
-                variant="contained"
-              >
-                Выйти
-              </Button>
+              {this.state.user.login === "admin" ? (
+                <Button
+                  className={style.btn}
+                  onClick={this.getAllUsers}
+                  variant="contained"
+                >
+                  Список пользователей
+                </Button>
+              ) : (
+                ""
+              )}
               {this.state.modalWindowUpdate ? (
                 <ModalPage
                   message={`Пользователь ${this.state.user.name} обновлен `}

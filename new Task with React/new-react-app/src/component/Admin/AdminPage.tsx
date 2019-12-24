@@ -16,6 +16,11 @@ class AdminPage extends React.Component<any, any> {
 
   componentDidMount = async () => {
     const getAllUsers = await service.getAllUsers();
+    getAllUsers.forEach((user: any, idx: number) => {
+      if (user.login === "admin") {
+        getAllUsers.splice(idx, 1);
+      }
+    });
     if (getAllUsers) {
       this.setState({
         users: getAllUsers,
@@ -28,13 +33,13 @@ class AdminPage extends React.Component<any, any> {
     return (
       <>
         <h2 className={style.header}>Список пользователей</h2>
-          <div className={style.users}>
-            {this.state.visible
-              ? this.state.users.map((user: IUser) => (
-                  <UserList key={user.login} user={user} />
-                ))
-              : null}
-          </div>
+        <div className={style.users}>
+          {this.state.visible
+            ? this.state.users.map((user: IUser) => (
+                <UserList key={user.login} user={user} />
+              ))
+            : null}
+        </div>
       </>
     );
   }

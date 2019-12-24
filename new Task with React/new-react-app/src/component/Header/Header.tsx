@@ -27,6 +27,7 @@ class Header extends React.Component<any, any> {
     super(props);
     this.state = {
       visible: false,
+      visibleBtn: false,
       anchorEl: null
     };
   }
@@ -45,56 +46,89 @@ class Header extends React.Component<any, any> {
     });
   };
 
+  logOutUser = () => {
+    window.sessionStorage.removeItem("access-token");
+    this.props.history.push("/login");
+  };
+
   openMenu = (event: any) => {
     for (let i = 0; i < this.props.items.length; i++) {
       switch (event.target.innerHTML) {
         case this.props.items[i]:
           return this.props.history.push(this.props.path[i]);
       }
-      //   case  this.props.items[1] :
-      //     return this.props.history.push(this.props.path[1]);
-      //   case  this.props.items[2] :
-      //     return this.props.history.push(this.props.path[2]);
-      //   case  this.props.items[3] :
-      //     return this.props.history.push(this.props.path[3]);
     }
   };
 
+  componentDidMount() {
+    if (sessionStorage.getItem("access-token")) {
+      this.setState({
+        visibleBtn: true
+      });
+    }
+  }
+
   render() {
-    return (
-      <>
-        <header>
-          <div className={style.menu}>
-            <Button
-              className={style.btnMenu}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={this.handleClick}
-            >
-              Меню
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={this.state.anchorEl}
-              open={this.state.visible}
-              onClose={this.handleClose}
-              onClick={this.openMenu}
-            >
-              {/* <MenuItem>
-                <span>{this.props.items[0]}</span>
+    return sessionStorage.getItem("access-token") ? (
+      <header>
+        <div className={style.menu}>
+          <Button
+            className={style.btnMenu}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={this.handleClick}
+          >
+            Меню
+          </Button>
+          <Button
+            className={style.btnLogOutUser}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={this.logOutUser}
+          >
+            Выйти
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={this.state.anchorEl}
+            open={this.state.visible}
+            onClose={this.handleClose}
+            onClick={this.openMenu}
+          >
+            {this.props.items.map((item: string, idx: number) => (
+              <MenuItem key={idx}>
+                <span>{item}</span>
               </MenuItem>
-              <MenuItem>
-                <span>{this.props.items[1]}</span>
-              </MenuItem> */}
-              {this.props.items.map((item: string, idx: number) => (
-                <MenuItem>
-                  <span key={idx}>{item}</span>
-                </MenuItem>
-              ))}
-            </Menu>
-          </div>
-        </header>
-      </>
+            ))}
+          </Menu>
+        </div>
+      </header>
+    ) : (
+      <header>
+        <div className={style.menu}>
+          <Button
+            className={style.btnMenu}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={this.handleClick}
+          >
+            Меню
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={this.state.anchorEl}
+            open={this.state.visible}
+            onClose={this.handleClose}
+            onClick={this.openMenu}
+          >
+            {this.props.items.map((item: string, idx: number) => (
+              <MenuItem key={idx}>
+                <span>{item}</span>
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
+      </header>
     );
   }
 }

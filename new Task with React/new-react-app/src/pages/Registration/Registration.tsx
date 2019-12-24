@@ -39,7 +39,6 @@ class Registration extends React.Component<any, any> {
       await service.registrationUser({
         ...this.state.registrationUserData
       });
-      console.log({...this.state.registrationUserData});
       this.setState({
         modalWindow: true
       });
@@ -77,7 +76,7 @@ class Registration extends React.Component<any, any> {
       <Redirect to="/profile" />
     ) : (
       <>
-        <Header path={['/login', '/']} items={["Войти", 'Главная']} />
+        <Header path={["/", "/login"]} items={["Главная", "Войти"]} />
         <form className={style.form}>
           <h2>Регистрация пользователя</h2>
           <div className={style.divBlockRegistration}>
