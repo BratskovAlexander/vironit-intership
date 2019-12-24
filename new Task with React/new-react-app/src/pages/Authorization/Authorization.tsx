@@ -36,8 +36,16 @@ class Login extends React.Component<any, any> {
       const authorizationUser = await service.authorizationUser({
         ...this.state.authorizationUserData
       });
-      if (authorizationUser) {
-        sessionStorage.setItem("access-token", authorizationUser);
+
+
+      const getTokens = await service.getTokens({
+        ...this.state.authorizationUserData
+      });
+      console.log(getTokens);
+
+      if (authorizationUser.access_token) {
+        sessionStorage.setItem("access-token", authorizationUser.access_token);
+        localStorage.setItem("refresh-token", authorizationUser.refresh_token);
         this.props.history.push("/profile");
       }
     } catch (error) {

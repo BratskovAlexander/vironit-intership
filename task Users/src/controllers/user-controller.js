@@ -38,6 +38,15 @@ class UserController {
     }
   };
 
+  getTokens = async (req, res) => {
+    try {
+      const result = await service.getTokens(req.body);
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(401).send({ msg: error.message });
+    }
+  };
+
   upDataUser = async (req, res) => {
     try {
       const result = await service.put(req.body, req.params.id);

@@ -13,6 +13,7 @@ router.get("/", user_controller.getUsers);
 router.get("/user", auth, user_controller.getUser);
 router.post("/", validationMiddleware(addUserSchema), user_controller.addUser);
 router.post("/login", user_controller.authUser);
+router.post("/token", user_controller.getTokens);
 router.put(
   "/:id",
   validationMiddleware(upDateUserSchema),

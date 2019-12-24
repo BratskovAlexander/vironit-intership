@@ -63,12 +63,49 @@ const authUser = async body => {
   if (checkLoginPass) {
     const access_token = jwt.sign(
       {
-        id: ObjectId(user.id)
+        id: ObjectId(user.id),
+        expiresIn: 10
       },
       "secretKey",
       { algorithm: "HS256" }
     );
-    return access_token;
+    const refresh_token = jwt.sign(
+      {
+        id: ObjectId(user.id),
+        expiresIn: 15
+      },
+      "secretKey",
+      { algorithm: "HS256" }
+    );
+    return {access_token, refresh_token};
+  }
+  throw new Error ("Неправильный пароль");
+};
+
+const getTokens = async body => {
+  const user = await User.findOne({ login: body.login });
+  if (!user) {
+    throw new Error ("Нет пользователя с таким Login");
+  }
+  const checkLoginPass = await bcrypt.compare(body.password, user.password);
+  if (checkLoginPass) {
+    const access_token = jwt.sign(
+      {
+        id: ObjectId(user.id),
+        expiresIn: 10
+      },
+      "secretKey",
+      { algorithm: "HS256" }
+    );
+    const refresh_token = jwt.sign(
+      {
+        id: ObjectId(user.id),
+        expiresIn: 15
+      },
+      "secretKey",
+      { algorithm: "HS256" }
+    );
+    return {access_token, refresh_token};
   }
   throw new Error ("Неправильный пароль");
 };
@@ -89,6 +126,7 @@ module.exports = {
   getUser,
   post,
   authUser,
+  getTokens,
   put,
   del
 };
