@@ -47,8 +47,8 @@ class Header extends React.Component<any, any> {
   };
 
   logOutUser = () => {
-    window.sessionStorage.removeItem("access-token");
-    window.localStorage.removeItem("refresh-token");
+    sessionStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
     this.props.history.push("/login");
   };
 

@@ -59,16 +59,11 @@ const service = {
   },
 
   getTokens: async (token: any) => {
-    console.log(token);
-    const getTokens = await axios.get(
-      `http://localhost:3030/users/token`,
-      {
-        headers: {
-          Authorization: token
-        }
+    const getTokens = await axios.get(`http://localhost:3030/users/token`, {
+      headers: {
+        Authorization: token
       }
-    );
-    console.log(getTokens.data.access_token);
+    });
     return getTokens.data;
   },
 

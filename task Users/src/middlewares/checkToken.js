@@ -1,13 +1,15 @@
 const jwt = require("jsonwebtoken");
 
 const checkToken = async (req, res, next) => {
-  try { 
+  try {
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = jwt.verify(token, "secretKey");
-    req.decoded = decoded
+    req.decoded = decoded;
     next();
   } catch (error) {
-    res.status(401).send({ error: "Please autentificate" });
+    res
+      .status(401)
+      .send({ error: "Error in checktoken. Please get new access-token" });
   }
 };
 
