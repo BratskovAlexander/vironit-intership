@@ -40,7 +40,7 @@ class UserController {
 
   getTokens = async (req, res) => {
     try {
-      const result = await service.getTokens(req.body);
+      const result = await service.getTokens(req.decoded.id);
       res.status(200).send(result);
     } catch (error) {
       res.status(401).send({ msg: error.message });

@@ -57,7 +57,7 @@ const post = async body => {
 const authUser = async body => {
   const user = await User.findOne({ login: body.login });
   if (!user) {
-    throw new Error ("Нет пользователя с таким Login");
+    throw new Error("Нет пользователя с таким Login");
   }
   const checkLoginPass = await bcrypt.compare(body.password, user.password);
   if (checkLoginPass) {
@@ -77,44 +77,36 @@ const authUser = async body => {
       "secretKey",
       { algorithm: "HS256" }
     );
-    return {access_token, refresh_token};
+    return { access_token, refresh_token };
   }
-  throw new Error ("Неправильный пароль");
+  throw new Error("Неправильный пароль");
 };
 
-const getTokens = async body => {
-  const user = await User.findOne({ login: body.login });
-  if (!user) {
-    throw new Error ("Нет пользователя с таким Login");
-  }
-  const checkLoginPass = await bcrypt.compare(body.password, user.password);
-  if (checkLoginPass) {
-    const access_token = jwt.sign(
-      {
-        id: ObjectId(user.id),
-        expiresIn: 10
-      },
-      "secretKey",
-      { algorithm: "HS256" }
-    );
-    const refresh_token = jwt.sign(
-      {
-        id: ObjectId(user.id),
-        expiresIn: 15
-      },
-      "secretKey",
-      { algorithm: "HS256" }
-    );
-    return {access_token, refresh_token};
-  }
-  throw new Error ("Неправильный пароль");
+const getTokens = async id => {
+  const access_token = jwt.sign(
+    {
+      id: ObjectId(id),
+      expiresIn: 10
+    },
+    "secretKey",
+    { algorithm: "HS256" }
+  );
+  const refresh_token = jwt.sign(
+    {
+      id: ObjectId(id),
+      expiresIn: 15
+    },
+    "secretKey",
+    { algorithm: "HS256" }
+  );
+  return { access_token, refresh_token };
 };
 
 const put = async (data, id) => {
-  if(data.password){
+  if (data.password) {
     data.password = bcrypt.hashSync(data.password);
   }
-  return await User.findByIdAndUpdate({_id: id}, {...data}, {new: true});
+  return await User.findByIdAndUpdate({ _id: id }, { ...data }, { new: true });
 };
 
 const del = async id => {
