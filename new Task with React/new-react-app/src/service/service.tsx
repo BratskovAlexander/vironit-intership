@@ -68,7 +68,7 @@ const service = {
         }
       }
     );
-    console.log(getTokens.data);
+    console.log(getTokens.data.access_token);
     return getTokens.data;
   },
 

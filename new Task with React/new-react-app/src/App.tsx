@@ -9,8 +9,31 @@ import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
 import service from "./service/service";
 
 class App extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      token: ""
+    };
+  }
+
   componentDidMount = async () => {
-    await service.getTokens(sessionStorage.getItem("access-token"));
+    try {
+     const getTokens = await service.getTokens(sessionStorage.getItem("access-token"));
+      console.log(getTokens);
+    } catch (error) {
+      console.log(error);
+    }
+
+    // if (sessionStorage.getItem("access-token")) {
+    //   console.log(sessionStorage.getItem("access-token"));
+    //   const getTokens = await service.getTokens(
+    //     sessionStorage.getItem("access-token")
+    //   );
+    //   this.setState({
+    //     token: getTokens
+    //   });
+    //   console.log(this.state.token.access_token);
+    // }
   };
 
   render() {

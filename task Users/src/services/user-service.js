@@ -63,18 +63,18 @@ const authUser = async body => {
   if (checkLoginPass) {
     const access_token = jwt.sign(
       {
-        id: ObjectId(user.id),
-        expiresIn: 10
+        id: ObjectId(user.id)
       },
       "secretKey",
+      { expiresIn: 10 },
       { algorithm: "HS256" }
     );
     const refresh_token = jwt.sign(
       {
-        id: ObjectId(user.id),
-        expiresIn: 15
+        id: ObjectId(user.id)
       },
       "secretKey",
+      { expiresIn: 600 },
       { algorithm: "HS256" }
     );
     return { access_token, refresh_token };
@@ -85,18 +85,18 @@ const authUser = async body => {
 const getTokens = async id => {
   const access_token = jwt.sign(
     {
-      id: ObjectId(id),
-      expiresIn: 10
+      id: ObjectId(id)
     },
     "secretKey",
+    { expiresIn: 10 },
     { algorithm: "HS256" }
   );
   const refresh_token = jwt.sign(
     {
-      id: ObjectId(id),
-      expiresIn: 15
+      id: ObjectId(id)
     },
     "secretKey",
+    { expiresIn: 600 },
     { algorithm: "HS256" }
   );
   return { access_token, refresh_token };

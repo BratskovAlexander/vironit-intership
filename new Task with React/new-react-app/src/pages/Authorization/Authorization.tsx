@@ -36,15 +36,12 @@ class Login extends React.Component<any, any> {
       const authorizationUser = await service.authorizationUser({
         ...this.state.authorizationUserData
       });
+      console.log(authorizationUser);
 
-      if (authorizationUser.access_token) {
+      if (authorizationUser) {
         sessionStorage.setItem("access-token", authorizationUser.access_token);
         localStorage.setItem("refresh-token", authorizationUser.refresh_token);
         this.props.history.push("/profile");
-        const getTokens = await service.getTokens({
-          ...this.state.authorizationUserData
-        });
-        console.log(getTokens);
       }
     } catch (error) {
       if (error.response.data.msg === "Нет пользователя с таким Login") {
