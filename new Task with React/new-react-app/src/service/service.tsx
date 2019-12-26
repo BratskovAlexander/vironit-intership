@@ -58,12 +58,16 @@ const service = {
     return getAuthorizationUser.data[0];
   },
 
-  getTokens: async (body: any) => {
-    const getTokens = await axios.post(`http://localhost:3030/users/token`, qs.stringify(body), {
-      headers: {
-        Authorization: sessionStorage.getItem("access-token")
+  getTokens: async (token: any) => {
+    console.log(token);
+    const getTokens = await axios.get(
+      `http://localhost:3030/users/token`,
+      {
+        headers: {
+          Authorization: token
+        }
       }
-    }); 
+    );
     console.log(getTokens.data);
     return getTokens.data;
   },

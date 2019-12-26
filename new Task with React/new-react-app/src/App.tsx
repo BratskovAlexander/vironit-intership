@@ -6,19 +6,30 @@ import Registration from "./pages/Registration/Registration";
 import Profile from "./pages/Profile/Profile";
 import Authorization from "./pages/Authorization/Authorization";
 import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
+import service from "./service/service";
 
+class App extends React.Component<any, any> {
+  componentDidMount = async () => {
+    await service.getTokens(sessionStorage.getItem("access-token"));
+  };
 
-const App: React.FC = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/registration" component={Registration} />
-        <Route exact path="/login" component={Authorization} />
-        <PrivateRouter exact path="/profile" component={Profile} redirect='/login' />       
-      </Switch>
-    </BrowserRouter>
-  );
-};
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/registration" component={Registration} />
+          <Route exact path="/login" component={Authorization} />
+          <PrivateRouter
+            exact
+            path="/profile"
+            component={Profile}
+            redirect="/login"
+          />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
+}
 
 export default App;
