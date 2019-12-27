@@ -17,55 +17,58 @@ class App extends React.Component<any, any> {
   }
 
   componentDidMount = async () => {
-    try {
-      // if (localStorage.getItem("refresh-token") !== null) {
-      //   console.log("Зашел в условие, значит рефреш токен есть");
-      //   if (sessionStorage.getItem("access-token") === null) {
-      //     console.log(
-      //       "нахожусь в условии, значит есть рефреш токен, но нет аксесс токена"
-      //     );
-      //     const getTokens = await service.getTokens(
-      //       localStorage.getItem("refresh-token")
-      //     );
-      //     console.log("сходил за новыми токенами и сейчаас их добавлю");
-      //     sessionStorage.setItem("access-token", getTokens.access_token);
-      //     localStorage.setItem("refresh-token", getTokens.refresh_token);
-      //   } else {
-      //     console.log(
-      //       "зашел в условие, значит есть аксесс токен и сейчас зайду в интервал"
-      //     );
-      //     setInterval(async () => {
-      //       console.log(
-      //         "зашел в сетИнтервал и буду сейчас делать постоянный запрос на бэк"
-      //       );
-      //       if (localStorage.getItem("refresh-token")) {
-      //         console.log("зашел в интервал и в условие");
-      //         const getTokens = await service.getTokens(
-      //           sessionStorage.getItem("access-token")
-      //         );
-      //         sessionStorage.setItem("access-token", getTokens.access_token);
-      //         localStorage.setItem("refresh-token", getTokens.refresh_token);
-      //       }
-      //     }, 8000);
-      //   }
-        console.log("ничего не должен запрашивать, нет никаких токенов");
-      // }
-
-    //   if (localStorage.getItem("refresh-token")) {
-    //       if(sessionStorage.getItem("access-token")) {
-    //     setInterval(async () => {
-    //         await service.getTokens(
-    //           sessionStorage.getItem("access-token")
-    //         );
-    //       return console.log("finita lya comedia");
-    //       }, 8000);
-    //     }
-    //   }
-    //   this.props.history.push("/login");
-    } catch (error) {
-      console.log(
-        "ошибка в АппДжС, значит не получил токен с бэка "
+    if (localStorage.getItem("refresh-token")) {
+      const getTokens = await service.getTokens(
+        localStorage.getItem("refresh-token")
       );
+      sessionStorage.setItem("access-token", getTokens.access_token);
+      if (sessionStorage.getItem("access-token")) {
+        try {
+          const getTokens = await service.getTokens(
+            sessionStorage.getItem("access-token")
+          );
+          sessionStorage.setItem("access-token", getTokens.access_token);
+          setInterval(async () => {
+            const getTokens = await service.getTokens(
+              sessionStorage.getItem("access-token")
+            );
+            sessionStorage.setItem("access-token", getTokens.access_token);
+          }, 5000);
+        } catch (error) {
+          console.log("ololo");
+          const getTokens = await service.getTokens(
+            localStorage.getItem("refresh-token")
+          );
+          sessionStorage.setItem("access-token", getTokens.access_token);
+          setInterval(async () => {
+            const getTokens = await service.getTokens(
+              sessionStorage.getItem("access-token")
+            );
+            sessionStorage.setItem("access-token", getTokens.access_token);
+          }, 5000);
+        }
+      } else {
+        const getTokens = await service.getTokens(
+          localStorage.getItem("refresh-token")
+        );
+        sessionStorage.setItem("access-token", getTokens.access_token);
+        setInterval(async () => {
+          const getTokens = await service.getTokens(
+            sessionStorage.getItem("access-token")
+          );
+          sessionStorage.setItem("access-token", getTokens.access_token);
+        }, 5000);
+      }
+    }
+  };
+
+  componentWillUnmount = async () => {
+    try {
+      if (localStorage.getItem("refresh-token")) {
+        console.log("hello");
+      }
+    } catch (error) {
+      console.log("oshibo4ka");
     }
   };
 

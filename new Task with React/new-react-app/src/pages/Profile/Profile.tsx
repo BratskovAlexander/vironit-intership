@@ -150,32 +150,21 @@ class Profile extends React.Component<any, any> {
 
   componentDidMount = async () => {
     const changeCity = await service.getCity();
-    if (localStorage.getItem("refresh-token")) {
-      // console.log("зашел в условие  котором проверил есть рефреш токен, значит есть");
-      if (sessionStorage.getItem("access-token")) {
-        // console.log("зашел в условие, значит есть аксесс токен и можно дать доступ для профиля");
-        const getAuthorizationUser: any = await service.getAuthorizationUser();
-        if (getAuthorizationUser.login === "admin") {
-          // console.log("зашел в условие, значит я не просто пользователь а еще и админ");
-          this.setState({
-            admin: { ...getAuthorizationUser },
-            city: changeCity
-          });
-        }
+    if (sessionStorage.getItem("access-token")) {
+      const getAuthorizationUser: any = await service.getAuthorizationUser();
+      if (getAuthorizationUser.login === "admin") {
         this.setState({
-          user: { ...getAuthorizationUser },
+          admin: { ...getAuthorizationUser },
           city: changeCity
         });
       }
-      // console.log("я как бы в условии, но нету аксес токена, значит надо сгонять на сервак и обновить всё");
-      await service.getTokens(
-        localStorage.getItem("refresh-token")
-      );
-      // console.log("всё сделал");
+      this.setState({
+        user: { ...getAuthorizationUser },
+        city: changeCity
+      });
     } else {
       this.props.history.push("/login");
     }
-    // console.log("вышел из всех циклов, значит все гуд!");
   };
 
   render() {

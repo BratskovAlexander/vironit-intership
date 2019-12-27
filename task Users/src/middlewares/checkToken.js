@@ -7,6 +7,7 @@ const checkToken = async (req, res, next) => {
     req.decoded = decoded;
     next();
   } catch (error) {
+    console.log(error.message);
     res
       .status(401)
       .send({ error: "Error in checktoken. Please get new access-token" });
