@@ -51,8 +51,9 @@ class Registration extends React.Component<any, any> {
 
   closeModalWindow = async () => {
     this.setState({
-      modalWindow: !this.state.modalWindow
+      modalWindowError: !this.state.modalWindowError
     });
+    console.log(this.state.modalWindowError);
   };
 
   async componentDidMount() {
