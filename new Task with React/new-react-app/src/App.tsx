@@ -7,6 +7,9 @@ import Profile from "./pages/Profile/Profile";
 import Authorization from "./pages/Authorization/Authorization";
 import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
 import service from "./service/service";
+import { store } from "./store/store";
+import { Provider } from "react-redux";
+
 
 class App extends React.Component<any, any> {
   constructor(props: any) {
@@ -74,19 +77,21 @@ class App extends React.Component<any, any> {
 
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/registration" component={Registration} />
-          <Route exact path="/login" component={Authorization} />
-          <PrivateRouter
-            exact
-            path="/profile"
-            component={Profile}
-            redirect="/login"
-          />
-        </Switch>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/registration" component={Registration} />
+            <Route exact path="/login" component={Authorization} />
+            <PrivateRouter
+              exact
+              path="/profile"
+              component={Profile}
+              redirect="/login"
+            />
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
