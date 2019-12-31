@@ -150,6 +150,7 @@ class Profile extends React.Component<any, any> {
 
   componentDidMount = async () => {
     const changeCity = await service.getCity();
+    console.log(changeCity);
     if (sessionStorage.getItem("access-token")) {
       const getAuthorizationUser: any = await service.getAuthorizationUser();
       if (getAuthorizationUser.login === "admin") {
