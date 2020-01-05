@@ -1,16 +1,16 @@
 // import service from "../service/service";
 
 // const getAuthorizationUser = async () => {
-//   const getAuthorizationUser: any = await service.getAuthorizationUser();
-//   console.log(getAuthorizationUser);
-//   return getAuthorizationUser;
+//   await service.getAuthorizationUser();
+//   // const getAuthorizationUser: any = ;
+//   // console.log(getAuthorizationUser);
+//   // return getAuthorizationUser.login;
 // };
 
 export const initialState = {
   user: {
-      name: "Саня",
-      surname: "Брацков"
-
+    name: "Саня",
+    surname: "Брацков"
   }
 };
 
