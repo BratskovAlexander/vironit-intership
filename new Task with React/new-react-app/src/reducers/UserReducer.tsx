@@ -1,7 +1,13 @@
 import { SET_USER } from "../const/conts";
 
 export const initialState = {
-  user: undefined
+  user: {
+    name: "",
+    surname: "",
+    login: "",
+    password: "",
+    cityID: ""
+  }
 };
 
 export const userReducer = (state: any = initialState, action: any) => {

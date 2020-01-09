@@ -17,20 +17,8 @@ class Profile extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      user: {
-        name: "",
-        surname: "",
-        login: "",
-        password: "",
-        cityID: ""
-      },
-      admin: {
-        name: "",
-        surname: "",
-        login: "",
-        password: "",
-        cityID: ""
-      },
+      user: { ...this.props.user, cityID: "" },
+      admin: { ...this.props.user, cityID: "" },
       userList: false,
       updateUserData: {},
       city: [],
@@ -157,7 +145,7 @@ class Profile extends React.Component<any, any> {
     const changeCity = await service.getCity();
     if (sessionStorage.getItem("access-token")) {
       const getAuthorizationUser = await service.getAuthorizationUser();
-      const getAllUsers: any = await service.getAllUsers();
+      const getAllUsers = await service.getAllUsers();
       this.props.setUserAction(getAuthorizationUser);
       this.props.setAllUsersAction(getAllUsers);
       if (getAuthorizationUser.login === "admin") {
@@ -319,8 +307,8 @@ class Profile extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    user: store.user,
-    users: store.users
+    userProfile: store.user.user,
+    allUsers: store.users.users
   };
 };
 
