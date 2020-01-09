@@ -1,19 +1,15 @@
-// import service from "../service/service";
-
-// const getAuthorizationUser = async () => {
-//   await service.getAuthorizationUser();
-//   // const getAuthorizationUser: any = ;
-//   // console.log(getAuthorizationUser);
-//   // return getAuthorizationUser.login;
-// };
+import { SET_USER } from "../const/conts";
 
 export const initialState = {
-  user: {
-    name: "Саня",
-    surname: "Брацков"
-  }
+  user: undefined
 };
 
-export const userReducer = (state: any = initialState) => {
-  return state;
+export const userReducer = (state: any = initialState, action: any) => {
+  switch (action.type) {
+    case SET_USER:
+      return { ...state, user: action.payload };
+
+    default:
+      return state;
+  }
 };

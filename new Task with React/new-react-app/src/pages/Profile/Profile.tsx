@@ -7,8 +7,13 @@ import { Button, MenuItem } from "@material-ui/core";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import AdminPage from "../../component/Admin/AdminPage";
 import Header from "../../component/Header/Header";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getUser } from "../../actions/userAction";
+import { getAllUsers } from "../../actions/getAllUsers";
 
 class Profile extends React.Component<any, any> {
+  static propTypes: any;
   constructor(props: any) {
     super(props);
     this.state = {
@@ -150,11 +155,11 @@ class Profile extends React.Component<any, any> {
 
   componentDidMount = async () => {
     const changeCity = await service.getCity();
-    const getAuthorizationUser: any = await service.getAuthorizationUser();
-    console.log(getAuthorizationUser.login); 
     if (sessionStorage.getItem("access-token")) {
-      const getAuthorizationUser: any = await service.getAuthorizationUser();
-      console.log(getAuthorizationUser); 
+      const getAuthorizationUser = await service.getAuthorizationUser();
+      const getAllUsers: any = await service.getAllUsers();
+      this.props.setUserAction(getAuthorizationUser);
+      this.props.setAllUsersAction(getAllUsers);
       if (getAuthorizationUser.login === "admin") {
         this.setState({
           admin: { ...getAuthorizationUser },
@@ -312,4 +317,28 @@ class Profile extends React.Component<any, any> {
   }
 }
 
-export default withRouter(Profile);
+const mapStateToProps = (store: any) => {
+  return {
+    user: store.user,
+    users: store.users
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUserAction: (user: any) => dispatch(getUser(user)),
+    setAllUsersAction: (users: any) => dispatch(getAllUsers(users))
+  };
+};
+
+Profile.propTypes = {
+  user: PropTypes.object.isRequired,
+  users: PropTypes.object.isRequired,
+  setUserAction: PropTypes.func.isRequired,
+  setAllUsersAction: PropTypes.func.isRequired
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Profile));
