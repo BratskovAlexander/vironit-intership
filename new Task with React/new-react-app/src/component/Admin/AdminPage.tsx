@@ -4,12 +4,13 @@ import service from "../../service/service";
 import style from "./AdminPage.module.css";
 import { IUser } from "../../types/types";
 import UserList from "../UserList/UserList";
+import { connect } from "react-redux";
 
 class AdminPage extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      users: [],
+      users: { ...this.props.users },
       visible: false
     };
   }
@@ -45,4 +46,12 @@ class AdminPage extends React.Component<any, any> {
   }
 }
 
-export default withRouter(AdminPage);
+
+const mapStateToProps = (store: any) => {
+  return {
+    userProfile: store.user.user,
+    allUsers: store.users.users
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(AdminPage));

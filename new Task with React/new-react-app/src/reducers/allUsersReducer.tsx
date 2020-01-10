@@ -1,7 +1,7 @@
 import { SET_ALL_USERS } from "../const/conts";
 
 export const initialState = {
-  users: undefined
+  users: "undefined"
 };
 
 export const allUsersReducer = (state: any = initialState, action: any) => {

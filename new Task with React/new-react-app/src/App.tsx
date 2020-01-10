@@ -7,6 +7,7 @@ import Profile from "./pages/Profile/Profile";
 import Authorization from "./pages/Authorization/Authorization";
 import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
 import service from "./service/service";
+// import Sidebar from "./component/ProfileSidebar/Sidebar";
 
 class App extends React.Component<any, any> {
   constructor(props: any) {
@@ -62,15 +63,15 @@ class App extends React.Component<any, any> {
     }
   };
 
-  componentWillUnmount = async () => {
-    try {
-      if (localStorage.getItem("refresh-token")) {
-        console.log("hello");
-      }
-    } catch (error) {
-      console.log("oshibo4ka");
-    }
-  };
+  // componentWillUnmount = async () => {
+  //   try {
+  //     if (localStorage.getItem("refresh-token")) {
+  //       console.log("hello");
+  //     }
+  //   } catch (error) {
+  //     console.log("oshibo4ka");
+  //   }
+  // };
 
   render() {
     return (

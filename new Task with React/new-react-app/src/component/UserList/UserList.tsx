@@ -1,16 +1,12 @@
 import React from "react";
 import style from "./UserList.module.css";
+import { connect } from "react-redux";
 
 class UserList extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      user: {
-        name: "",
-        surname: "",
-        login: "",
-        cityID: ""
-      }
+      user: { ...this.props.user }
     };
   }
 
@@ -26,10 +22,28 @@ class UserList extends React.Component<any, any> {
             />
           </div>
           <div className={style.dataUser}>
-            <p>Имя: <span className={style.textDataUser}>{this.props.user.name}</span></p>
-            <p>Фамилия: <span className={style.textDataUser}>{this.props.user.surname}</span></p>
-            <p>Логин: <span className={style.textDataUser}>{this.props.user.login}</span></p>
-            <p>Город: <span className={style.textDataUser}>{this.props.user.city}, {this.props.user.country}</span></p>
+            <p>
+              Имя:{" "}
+              <span className={style.textDataUser}>{this.props.user.name}</span>
+            </p>
+            <p>
+              Фамилия:{" "}
+              <span className={style.textDataUser}>
+                {this.props.user.surname}
+              </span>
+            </p>
+            <p>
+              Логин:{" "}
+              <span className={style.textDataUser}>
+                {this.props.user.login}
+              </span>
+            </p>
+            <p>
+              Город:{" "}
+              <span className={style.textDataUser}>
+                {this.props.user.city}, {this.props.user.country}
+              </span>
+            </p>
           </div>
         </div>
       </>
@@ -37,4 +51,11 @@ class UserList extends React.Component<any, any> {
   }
 }
 
-export default UserList;
+const mapStateToProps = (store: any) => {
+  return {
+    userProfile: store.user.user,
+    allUsers: store.users.users
+  };
+};
+
+export default connect(mapStateToProps)(UserList);

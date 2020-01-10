@@ -21,6 +21,7 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withRouter } from "react-router-dom";
+import Sidebar from "../ProfileSidebar/Sidebar";
 
 class Header extends React.Component<any, any> {
   constructor(props: any) {
@@ -71,6 +72,7 @@ class Header extends React.Component<any, any> {
 
   render() {
     return sessionStorage.getItem("access-token") ? (
+      <>
       <header>
         <div className={style.menu}>
           <Button
@@ -104,6 +106,8 @@ class Header extends React.Component<any, any> {
           </Menu>
         </div>
       </header>
+      <Sidebar />
+      </>
     ) : (
       <header>
         <div className={style.menu}>
