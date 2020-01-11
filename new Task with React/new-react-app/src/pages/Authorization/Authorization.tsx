@@ -73,8 +73,8 @@ class Login extends React.Component<any, any> {
     ) : (
       <>
         <Header
-          path={["/registration", "/"]}
-          items={["Регистрация", "Главная"]}
+          path={["/", "/registration"]}
+          items={["Главная", "Регистрация"]}
         />
         <form className={style.form} onSubmit={this.authorizationUser}>
           <div className={style.divBlockRegistration}>

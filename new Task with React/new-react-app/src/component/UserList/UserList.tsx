@@ -1,14 +1,19 @@
 import React from "react";
 import style from "./UserList.module.css";
 import { connect } from "react-redux";
+import service from "../../service/service";
+import { getAllUsers } from "../../actions/getAllUsers";
 
 class UserList extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      user: { ...this.props.user }
-    };
+    this.state = {};
   }
+
+  componentDidMount = async () => {
+    const getAllUsers = await service.getAllUsers();
+    this.props.setAllUsersAction(getAllUsers);
+  };
 
   render() {
     return (
@@ -53,9 +58,14 @@ class UserList extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    userProfile: store.user.user,
     allUsers: store.users.users
   };
 };
 
-export default connect(mapStateToProps)(UserList);
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setAllUsersAction: (users: any) => dispatch(getAllUsers(users))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);

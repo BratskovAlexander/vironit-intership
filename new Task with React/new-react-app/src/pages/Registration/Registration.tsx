@@ -53,7 +53,6 @@ class Registration extends React.Component<any, any> {
     this.setState({
       modalWindowError: !this.state.modalWindowError
     });
-    console.log(this.state.modalWindowError);
   };
 
   async componentDidMount() {

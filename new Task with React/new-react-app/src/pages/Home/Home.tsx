@@ -5,7 +5,7 @@ import Header from "../../component/Header/Header";
 class Home extends React.Component<any, any> {
   render() {
     return sessionStorage.getItem("access-token") ? (
-      <Header path={["/profile"]} items={["Профиль"]} visible={true} />
+      <Header visible={true} />
     ) : (
       <Header
         path={["/registration", "/login"]}

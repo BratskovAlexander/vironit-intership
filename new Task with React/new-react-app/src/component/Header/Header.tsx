@@ -1,27 +1,9 @@
-// import React from 'react';
-// import style from './Header.module.css'
-// import { withRouter } from "react-router-dom";
-
-// class Header extends React.Component<any, any> {
-
-//     render() {
-//         return(
-//             <>
-
-//             </>
-//         )
-//     }
-// };
-
-// export default Header;
-
 import React from "react";
 import style from "./Header.module.css";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withRouter } from "react-router-dom";
-import Sidebar from "../ProfileSidebar/Sidebar";
 
 class Header extends React.Component<any, any> {
   constructor(props: any) {
@@ -75,14 +57,14 @@ class Header extends React.Component<any, any> {
       <>
       <header>
         <div className={style.menu}>
-          <Button
+          {/* <Button
             className={style.btnMenu}
             aria-controls="simple-menu"
             aria-haspopup="true"
             onClick={this.handleClick}
           >
             Меню
-          </Button>
+          </Button> */}
           <Button
             className={style.btnLogOutUser}
             aria-controls="simple-menu"
@@ -91,7 +73,7 @@ class Header extends React.Component<any, any> {
           >
             Выйти
           </Button>
-          <Menu
+          {/* <Menu
             id="simple-menu"
             anchorEl={this.state.anchorEl}
             open={this.state.visible}
@@ -103,10 +85,9 @@ class Header extends React.Component<any, any> {
                 <span>{item}</span>
               </MenuItem>
             ))}
-          </Menu>
+          </Menu> */}
         </div>
       </header>
-      <Sidebar />
       </>
     ) : (
       <header>

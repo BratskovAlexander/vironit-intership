@@ -7,16 +7,11 @@ import Profile from "./pages/Profile/Profile";
 import Authorization from "./pages/Authorization/Authorization";
 import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
 import service from "./service/service";
-// import Sidebar from "./component/ProfileSidebar/Sidebar";
+import Settings from "./component/Settings/Settings";
+import Messages from "./component/Messages/Messages";
+import AdminPage from "./component/Admin/AdminPage";
 
 class App extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      token: ""
-    };
-  }
-
   componentDidMount = async () => {
     if (localStorage.getItem("refresh-token")) {
       const getTokens = await service.getTokens(
@@ -63,16 +58,6 @@ class App extends React.Component<any, any> {
     }
   };
 
-  // componentWillUnmount = async () => {
-  //   try {
-  //     if (localStorage.getItem("refresh-token")) {
-  //       console.log("hello");
-  //     }
-  //   } catch (error) {
-  //     console.log("oshibo4ka");
-  //   }
-  // };
-
   render() {
     return (
       <BrowserRouter>
@@ -84,6 +69,24 @@ class App extends React.Component<any, any> {
             exact
             path="/profile"
             component={Profile}
+            redirect="/login"
+          />
+          <PrivateRouter
+            exact
+            path="/friends"
+            component={AdminPage}
+            redirect="/login"
+          />
+          <PrivateRouter
+            exact
+            path="/settings"
+            component={Settings}
+            redirect="/login"
+          />
+          <PrivateRouter
+            exact
+            path="/messages"
+            component={Messages}
             redirect="/login"
           />
         </Switch>

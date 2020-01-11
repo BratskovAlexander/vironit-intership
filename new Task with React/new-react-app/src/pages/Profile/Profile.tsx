@@ -5,12 +5,12 @@ import style from "./Profile.module.css";
 import TextField from "@material-ui/core/TextField";
 import { Button, MenuItem } from "@material-ui/core";
 import ModalPage from "../../component/ModalPage/ModalPage";
-import AdminPage from "../../component/Admin/AdminPage";
 import Header from "../../component/Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getUser } from "../../actions/userAction";
-import { getAllUsers } from "../../actions/getAllUsers";
+import Sidebar from "../../component/Sidebar/Sidebar";
+import Louder from "../../component/Louder/Louder";
 
 class Profile extends React.Component<any, any> {
   static propTypes: any;
@@ -19,7 +19,7 @@ class Profile extends React.Component<any, any> {
     this.state = {
       user: { ...this.props.user, cityID: "" },
       admin: { ...this.props.user, cityID: "" },
-      userList: false,
+      louder: true,
       updateUserData: {},
       city: [],
       modalWindowUpdate: false,
@@ -133,21 +133,11 @@ class Profile extends React.Component<any, any> {
     });
   };
 
-  getAllUsers = () => {
-    if (this.state.user.login === "admin") {
-      this.setState({
-        userList: !this.state.userList
-      });
-    }
-  };
-
   componentDidMount = async () => {
-    const changeCity = await service.getCity();
     if (sessionStorage.getItem("access-token")) {
+      const changeCity = await service.getCity();
       const getAuthorizationUser = await service.getAuthorizationUser();
-      const getAllUsers = await service.getAllUsers();
       this.props.setUserAction(getAuthorizationUser);
-      this.props.setAllUsersAction(getAllUsers);
       if (getAuthorizationUser.login === "admin") {
         this.setState({
           admin: { ...getAuthorizationUser },
@@ -155,175 +145,164 @@ class Profile extends React.Component<any, any> {
         });
       }
       this.setState({
+        louder: false,
         user: { ...getAuthorizationUser },
         city: changeCity
       });
-    } else {
-      this.props.history.push("/login");
     }
   };
 
   render() {
-    return (
-      <>
-        <Header path={["/"]} items={["Главная"]} />
-        <h1 className={style.header}>Привет {this.state.user.name}</h1>
-        <div className={style.blockProfile}>
-          <div className={style.blockImgAvatar}>
-            <img
-              className={style.imgAvatar}
-              alt="avatar"
-              src="https://st3.depositphotos.com/3236579/16813/v/1600/depositphotos_168136540-stock-illustration-beatiful-reindeer-avatar.jpg"
-            />
-          </div>
-          <div className={style.dataUser}>
-            <div>
-              <TextField
-                type="text"
-                id="name"
-                label="Имя"
-                margin="normal"
-                value={this.state.user.name}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                variant="outlined"
-                onChange={this.getValueInputName}
+    return this.state.louder ? (
+      <Louder />
+    ) : (
+      <div>
+        <Header />
+        <main>
+          <Sidebar />
+          <div className={style.blockProfile}>
+            {/* <h1 className={style.header}>Привет {this.state.user.name}</h1> */}
+            <div className={style.blockImgAvatar}>
+              <img
+                className={style.imgAvatar}
+                alt="avatar"
+                src="https://st3.depositphotos.com/3236579/16813/v/1600/depositphotos_168136540-stock-illustration-beatiful-reindeer-avatar.jpg"
               />
             </div>
-            <div>
-              <TextField
-                type="text"
-                id="surname"
-                label="Фамилия"
-                margin="normal"
-                value={this.state.user.surname}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                variant="outlined"
-                onChange={this.getValueInputSurname}
-              />
-            </div>
-            <div>
-              <TextField
-                type="text"
-                id="login"
-                label="Логин"
-                margin="normal"
-                value={this.state.user.login}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                variant="outlined"
-                onChange={this.getValueInputLogin}
-              />
-            </div>
-            <div>
-              <TextField
-                type="password"
-                id="password"
-                label="Пароль"
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true
-                }}
-                variant="outlined"
-                onChange={this.getValueInputPassword}
-              />
-            </div>
-            <div>
-              <TextField
-                select
-                id="city"
-                label="Город"
-                margin="normal"
-                value={this.state.user.cityID}
-                onChange={this.getValueInputCity}
-                helperText="Изменить город"
-                variant="outlined"
-              >
-                {this.state.city.map((city: any, index: number) => (
-                  <MenuItem key={index} value={city._id}>
-                    {`${city.city}, ${city.country}`}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div>
-              <Button
-                className={style.btn}
-                onClick={this.updateUser}
-                variant="contained"
-              >
-                обновить
-              </Button>
-              <Button
-                className={style.btn}
-                onClick={this.deleteUser}
-                variant="contained"
-              >
-                удалить
-              </Button>
-              {this.state.user.login === "admin" ? (
+            <div className={style.dataUser}>
+              <div>
+                <TextField
+                  type="text"
+                  id="name"
+                  label="Имя"
+                  margin="normal"
+                  value={this.state.user.name}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  variant="outlined"
+                  onChange={this.getValueInputName}
+                />
+              </div>
+              <div>
+                <TextField
+                  type="text"
+                  id="surname"
+                  label="Фамилия"
+                  margin="normal"
+                  value={this.state.user.surname}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  variant="outlined"
+                  onChange={this.getValueInputSurname}
+                />
+              </div>
+              <div>
+                <TextField
+                  type="text"
+                  id="login"
+                  label="Логин"
+                  margin="normal"
+                  value={this.state.user.login}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  variant="outlined"
+                  onChange={this.getValueInputLogin}
+                />
+              </div>
+              <div>
+                <TextField
+                  type="password"
+                  id="password"
+                  label="Пароль"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  variant="outlined"
+                  onChange={this.getValueInputPassword}
+                />
+              </div>
+              <div>
+                <TextField
+                  select
+                  id="city"
+                  label="Город"
+                  margin="normal"
+                  value={this.state.user.cityID}
+                  onChange={this.getValueInputCity}
+                  helperText="Изменить город"
+                  variant="outlined"
+                >
+                  {this.state.city.map((city: any, index: number) => (
+                    <MenuItem key={index} value={city._id}>
+                      {`${city.city}, ${city.country}`}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </div>
+              <div>
                 <Button
                   className={style.btn}
-                  onClick={this.getAllUsers}
+                  onClick={this.updateUser}
                   variant="contained"
                 >
-                  Список пользователей
+                  обновить
                 </Button>
-              ) : (
-                ""
-              )}
-              {this.state.modalWindowUpdate ? (
-                <ModalPage
-                  message={`Пользователь ${this.state.user.name} обновлен `}
-                  path="/profile"
-                  nameBtn="ok"
-                  closeModalWindow={this.closeModalWindowUpdate}
-                />
-              ) : (
-                ""
-              )}
-              {this.state.modalWindowDelete ? (
-                <ModalPage
-                  message={`Пользователь ${this.state.user.name} удален `}
-                  path="/login"
-                  nameBtn="ok"
-                  closeModalWindow={this.closeModalWindowDelete}
-                />
-              ) : (
-                ""
-              )}
+                <Button
+                  className={style.btn}
+                  onClick={this.deleteUser}
+                  variant="contained"
+                >
+                  удалить
+                </Button>
+                {this.state.modalWindowUpdate ? (
+                  <ModalPage
+                    message={`Пользователь ${this.state.user.name} обновлен `}
+                    path="/profile"
+                    nameBtn="ok"
+                    closeModalWindow={this.closeModalWindowUpdate}
+                  />
+                ) : (
+                  ""
+                )}
+                {this.state.modalWindowDelete ? (
+                  <ModalPage
+                    message={`Пользователь ${this.state.user.name} удален `}
+                    path="/login"
+                    nameBtn="ok"
+                    closeModalWindow={this.closeModalWindowDelete}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        {this.state.userList ? <AdminPage /> : ""}
-      </>
+        </main>
+      </div>
     );
   }
 }
 
 const mapStateToProps = (store: any) => {
   return {
-    userProfile: store.user.user,
-    allUsers: store.users.users
+    userProfile: store.user.user
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (user: any) => dispatch(getUser(user)),
-    setAllUsersAction: (users: any) => dispatch(getAllUsers(users))
+    setUserAction: (user: any) => dispatch(getUser(user))
   };
 };
 
 Profile.propTypes = {
-  user: PropTypes.object.isRequired,
-  users: PropTypes.object.isRequired,
-  setUserAction: PropTypes.func.isRequired,
-  setAllUsersAction: PropTypes.func.isRequired
+  user: PropTypes.object,
+  users: PropTypes.object,
+  setUserAction: PropTypes.func
 };
 
 export default connect(

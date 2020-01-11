@@ -3,10 +3,6 @@
   margin: 1rem;
 }
 
-.sidebar {
-  width: 300px;
-}
-
 .users {
   display: flex;
   flex-direction: row;
