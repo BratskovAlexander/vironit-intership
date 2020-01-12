@@ -4,7 +4,6 @@ import style from "./ModalPage.module.css";
 import { NavLink } from "react-router-dom";
 
 class ModalPage extends React.Component<any, any> {
-
   render() {
     return (
       <div className={style.blockMessage}>

@@ -36,12 +36,14 @@ class AdminPage extends React.Component<any, any> {
   };
 
   render() {
-    return (this.state.louder ? <Louder /> : (
+    return this.state.louder ? (
+      <Louder />
+    ) : (
       <>
         <Header />
         <main>
           <Sidebar />
-          <div>
+          <div className={style.blockPage}>
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
               {this.state.visible
@@ -53,7 +55,7 @@ class AdminPage extends React.Component<any, any> {
           </div>
         </main>
       </>
-    ));
+    );
   }
 }
 

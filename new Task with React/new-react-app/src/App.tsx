@@ -7,9 +7,10 @@ import Profile from "./pages/Profile/Profile";
 import Authorization from "./pages/Authorization/Authorization";
 import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
 import service from "./service/service";
-import Settings from "./component/Settings/Settings";
 import Messages from "./component/Messages/Messages";
 import AdminPage from "./component/Admin/AdminPage";
+import UserProfile from "./component/UserProfile/UserProfile";
+import SettingsUser from "./component/SettingsUser/SettingsUser";
 
 class App extends React.Component<any, any> {
   componentDidMount = async () => {
@@ -73,6 +74,12 @@ class App extends React.Component<any, any> {
           />
           <PrivateRouter
             exact
+            path="/user-profile"
+            component={UserProfile}
+            redirect="/login"
+          />
+          <PrivateRouter
+            exact
             path="/friends"
             component={AdminPage}
             redirect="/login"
@@ -80,7 +87,7 @@ class App extends React.Component<any, any> {
           <PrivateRouter
             exact
             path="/settings"
-            component={Settings}
+            component={SettingsUser}
             redirect="/login"
           />
           <PrivateRouter

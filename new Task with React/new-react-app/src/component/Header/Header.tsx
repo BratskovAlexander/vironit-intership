@@ -53,41 +53,20 @@ class Header extends React.Component<any, any> {
   }
 
   render() {
-    return sessionStorage.getItem("access-token") ? (
+    return sessionStorage.getItem("access-token") !== null ? (
       <>
-      <header>
-        <div className={style.menu}>
-          {/* <Button
-            className={style.btnMenu}
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={this.handleClick}
-          >
-            Меню
-          </Button> */}
-          <Button
-            className={style.btnLogOutUser}
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            onClick={this.logOutUser}
-          >
-            Выйти
-          </Button>
-          {/* <Menu
-            id="simple-menu"
-            anchorEl={this.state.anchorEl}
-            open={this.state.visible}
-            onClose={this.handleClose}
-            onClick={this.openMenu}
-          >
-            {this.props.items.map((item: string, idx: number) => (
-              <MenuItem key={idx}>
-                <span>{item}</span>
-              </MenuItem>
-            ))}
-          </Menu> */}
-        </div>
-      </header>
+        <header>
+          <div className={style.menu}>
+            <Button
+              className={style.btnLogOutUser}
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={this.logOutUser}
+            >
+              Выйти
+            </Button>
+          </div>
+        </header>
       </>
     ) : (
       <header>

@@ -7,8 +7,16 @@ import { getAllUsers } from "../../actions/getAllUsers";
 class UserList extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.state = {};
+    this.state = {
+      dataUser: false
+    };
   }
+
+  seeDataUser = () => {
+    this.setState({
+      dataUser: !this.state.dataUser
+    });
+  };
 
   componentDidMount = async () => {
     const getAllUsers = await service.getAllUsers();
@@ -18,37 +26,38 @@ class UserList extends React.Component<any, any> {
   render() {
     return (
       <>
-        <div className={style.user}>
+        <div onClick={this.seeDataUser} className={style.user}>
           <div className={style.blockImgAvatar}>
             <img
               className={style.imgAvatar}
               alt="avatar"
-              src="https://st3.depositphotos.com/3236579/16813/v/1600/depositphotos_168136540-stock-illustration-beatiful-reindeer-avatar.jpg"
+              src="https://klike.net/uploads/posts/2019-03/1551512876_4.jpg"
             />
           </div>
           <div className={style.dataUser}>
             <p>
-              Имя:{" "}
-              <span className={style.textDataUser}>{this.props.user.name}</span>
-            </p>
-            <p>
-              Фамилия:{" "}
               <span className={style.textDataUser}>
-                {this.props.user.surname}
+                {this.props.user.surname} {this.props.user.name}
               </span>
             </p>
-            <p>
-              Логин:{" "}
-              <span className={style.textDataUser}>
-                {this.props.user.login}
+            {this.state.dataUser ? (
+              <span>
+                <p>
+                  Логин:{" "}
+                  <span className={style.textDataUser}>
+                    {this.props.user.login}
+                  </span>
+                </p>
+                <p>
+                  Город:{" "}
+                  <span className={style.textDataUser}>
+                    {this.props.user.city}, {this.props.user.country}
+                  </span>
+                </p>
               </span>
-            </p>
-            <p>
-              Город:{" "}
-              <span className={style.textDataUser}>
-                {this.props.user.city}, {this.props.user.country}
-              </span>
-            </p>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </>

@@ -7,9 +7,13 @@
   width: 300px;
 }
 
+.blockPage {
+  width: 100%;
+}
+
 .users {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   margin: 1rem;
   flex-wrap: wrap;
