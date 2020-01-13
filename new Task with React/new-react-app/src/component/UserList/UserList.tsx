@@ -1,8 +1,7 @@
 import React from "react";
 import style from "./UserList.module.css";
 import { connect } from "react-redux";
-import service from "../../service/service";
-import { getAllUsers } from "../../actions/getAllUsers";
+import { getAllUsers } from "../../actions/getAllUsersAction";
 
 class UserList extends React.Component<any, any> {
   constructor(props: any) {
@@ -19,8 +18,7 @@ class UserList extends React.Component<any, any> {
   };
 
   componentDidMount = async () => {
-    const getAllUsers = await service.getAllUsers();
-    this.props.setAllUsersAction(getAllUsers);
+    this.props.setAllUsersAction();
   };
 
   render() {
@@ -73,7 +71,7 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setAllUsersAction: (users: any) => dispatch(getAllUsers(users))
+    setAllUsersAction: () => dispatch(getAllUsers())
   };
 };
 

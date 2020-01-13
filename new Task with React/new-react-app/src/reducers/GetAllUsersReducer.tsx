@@ -1,10 +1,10 @@
-import { SET_ALL_USERS } from "../const/conts";
+import { SET_ALL_USERS } from "../const/const";
 
 export const initialState = {
-  users: "undefined"
+  users: []
 };
 
-export const allUsersReducer = (state: any = initialState, action: any) => {
+export const getAllUsersReducer = (state: any = initialState, action: any) => {
   switch (action.type) {
     case SET_ALL_USERS:
       return { ...state, users: action.payload };

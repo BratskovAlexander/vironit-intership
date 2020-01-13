@@ -1,8 +1,12 @@
 import { combineReducers } from "redux";
-import { userReducer } from "./UserReducer";
-import { allUsersReducer } from "./allUsersReducer";
+import { getUserReducer } from "./GetUserReducer";
+import { getAllUsersReducer } from "./GetAllUsersReducer";
+import { registrationUserReducer } from "./RegistrationUserReducer";
+import { authorizationUserReducer } from "./authorizationUserReducer";
 
 export const rootReducer = combineReducers({
-    user: userReducer,
-    users: allUsersReducer
+    registrationUserData: registrationUserReducer,
+    authorizationUserData: authorizationUserReducer,
+    userData: getUserReducer,
+    usersData: getAllUsersReducer
 })

@@ -1,32 +1,35 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import service from "../../service/service";
 import style from "./userProfile.module.css";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUser } from "../../actions/userAction";
+import { getUser } from "../../actions/getUserAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
+import { store } from "../../store/configureStore";
 
 class UserProfile extends React.Component<any, any> {
   static propTypes: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.user, cityID: "" },
+      user: { ...this.props.userProfile, cityID: "" },
       louder: true
     };
+   
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     if (sessionStorage.getItem("access-token")) {
-      const getAuthorizationUser = await service.getAuthorizationUser();
-      this.props.setUserAction(getAuthorizationUser);
-      this.setState({
+      this.props.setUserAction();
+    store.subscribe(()=>{
+      if (store.getState().authorizationUserData.userProfile) {
+         this.setState({
         louder: false,
-        user: { ...getAuthorizationUser }
       });
+      }
+    })    
     }
   };
 
@@ -54,8 +57,10 @@ class UserProfile extends React.Component<any, any> {
             </div>
             <div className={style.dataUser}>
               <span>Место проживания: </span>
-              {this.props.userProfile.city[0].city},{" "}
-              {this.props.userProfile.city[0].country}{" "}
+              {store.getState().userData.user.city[0].city}, {" "}
+              {store.getState().userData.user.city[0].country}
+              {/* {this.props.userProfile.city[0].city},{" "}
+              {this.props.userProfile.city[0].country}{" "} */}
             </div>
           </div>
         </main>
@@ -65,21 +70,20 @@ class UserProfile extends React.Component<any, any> {
 }
 
 const mapStateToProps = (store: any) => {
-  console.log(store);
+  console.log(store.authorizationUserData.userProfile);
   return {
-    userProfile: store.user.user
+    userProfile: store.authorizationUserData.userProfile
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (user: any) => dispatch(getUser(user))
+    setUserAction: (body: any) => dispatch(getUser(body))
   };
 };
 
 UserProfile.propTypes = {
-  user: PropTypes.object,
-  setUserAction: PropTypes.func
+  userProfile: PropTypes.object
 };
 
 export default connect(

@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import service from "../../service/service";
+// import service from "../../service/service";
 import style from "./AdminPage.module.css";
 import { IUser } from "../../types/types";
 import UserList from "../UserList/UserList";
@@ -8,31 +8,49 @@ import { connect } from "react-redux";
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
+import { getAllUsers } from "../../actions/getAllUsersAction";
+import { getUser } from "../../actions/getUserAction";
+import { store } from "../../store/configureStore";
 
 class AdminPage extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
+    console.log(props.usersData);
     this.state = {
-      users: { ...this.props.users },
+      user: { ...this.props.user, cityID: "" },
+      users: { ...this.props.usersData },
       visible: false,
       louder: true
     };
   }
 
   componentDidMount = async () => {
-    const getAllUsers = await service.getAllUsers();
-    getAllUsers.forEach((user: any, idx: number) => {
+    this.props.setUserAction();
+    this.props.setAllUsersAction();
+    console.log(this.state.users);
+    store.subscribe(() => {
+      console.log(store.getState().usersData.users);
+      console.log(this.props);
+      this.setState({
+        louder: false
+        // users: getAllUsers,
+        // visible: true
+      });
+    });
+
+    this.props.allUsers.forEach((user: any, idx: number) => {
+      console.log(user.login);
       if (user.login === this.props.userProfile.login) {
-        getAllUsers.splice(idx, 1);
+        this.state.users.splice(idx, 1);
       }
     });
-    if (getAllUsers) {
-      this.setState({
-        louder: false,
-        users: getAllUsers,
-        visible: true
-      });
-    }
+    // if (getAllUsers) {
+    //   this.setState({
+    //     louder: false,
+    //     users: getAllUsers,
+    //     visible: true
+    //   });
+    // }
   };
 
   render() {
@@ -60,10 +78,21 @@ class AdminPage extends React.Component<any, any> {
 }
 
 const mapStateToProps = (store: any) => {
+  console.log(store.usersData.users);
   return {
-    userProfile: store.user.user,
-    allUsers: store.users.users
+    userProfile: store.userData.user,
+    allUsers: store.usersData.users
   };
 };
 
-export default connect(mapStateToProps)(withRouter(AdminPage));
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUserAction: (body: any) => dispatch(getUser(body)),
+    setAllUsersAction: () => dispatch(getAllUsers())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AdminPage));

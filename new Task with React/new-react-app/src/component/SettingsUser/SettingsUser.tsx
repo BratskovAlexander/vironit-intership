@@ -8,7 +8,7 @@ import ModalPage from "../ModalPage/ModalPage";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUser } from "../../actions/userAction";
+import { getUser } from "../../actions/getUserAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 
@@ -288,7 +288,7 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (user: any) => dispatch(getUser(user))
+    setUserAction: (body: any) => dispatch(getUser(body))
   };
 };
 

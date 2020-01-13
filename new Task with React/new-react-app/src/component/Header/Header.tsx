@@ -32,7 +32,7 @@ class Header extends React.Component<any, any> {
   logOutUser = () => {
     sessionStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
-    this.props.history.push("/login");
+    // this.props.history.push("/login");
   };
 
   openMenu = (event: any) => {
@@ -62,6 +62,7 @@ class Header extends React.Component<any, any> {
               aria-controls="simple-menu"
               aria-haspopup="true"
               onClick={this.logOutUser}
+              href="/login"
             >
               Выйти
             </Button>

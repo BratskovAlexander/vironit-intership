@@ -3,17 +3,21 @@ import { withRouter, NavLink, Redirect } from "react-router-dom";
 import style from "./Authorization.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import service from "../../service/service";
+// import service from "../../service/service";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
+import { connect } from "react-redux";
+// import { authorizationUser } from "../../actions/authorizationUserAction";
+import { store } from "../../store/configureStore";
+import { getUser } from "../../actions/getUserAction";
 
 class Login extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      authorizationUserData: {
-        login: "",
-        password: ""
+      authorizationUserData: { ...this.props.authorizationUserData
+        // login: "",
+        // password: ""
       },
       token: "",
       modalWindowErrorLogin: false,
@@ -32,27 +36,11 @@ class Login extends React.Component<any, any> {
 
   authorizationUser = async (event: any) => {
     event.preventDefault();
-    try {
-      const authorizationUser = await service.authorizationUser({
-        ...this.state.authorizationUserData
-      });
-      if (authorizationUser) {
-        sessionStorage.setItem("access-token", authorizationUser.access_token);
-        localStorage.setItem("refresh-token", authorizationUser.refresh_token);
-        this.props.history.push("/profile");
+    this.props.setUser(this.state.authorizationUserData);
+    store.subscribe(() => {
+      if (store.getState()) {
       }
-    } catch (error) {
-      if (error.response.data.msg === "Нет пользователя с таким Login") {
-        this.setState({
-          modalWindowErrorLogin: true
-        });
-      }
-      if (error.response.data.msg === "Неправильный пароль") {
-        this.setState({
-          modalWindowErrorPassword: true
-        });
-      }
-    }
+    })
   };
 
   closeModalWindowErrorLogin = async () => {
@@ -133,4 +121,16 @@ class Login extends React.Component<any, any> {
   }
 }
 
-export default withRouter(Login);
+const mapStateToProps = (store: any) => { 
+  return {
+    authorizationUserData: store.authorizationUserData
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUser: (body: any) => dispatch(getUser(body))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

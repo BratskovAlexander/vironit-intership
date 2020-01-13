@@ -7,17 +7,20 @@ import MenuItem from "@material-ui/core/MenuItem";
 import service from "../../service/service";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
+import { registrationUser } from "../../actions/registrationUserAction";
+import { connect } from "react-redux";
 
 class Registration extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
+    console.log(props);
     this.state = {
-      registrationUserData: {
-        name: "",
-        surname: "",
-        login: "",
-        password: "",
-        cityID: ""
+      registrationUserData: { ...this.props.registrationUserData
+        // name: "", 
+        // surname: "",
+        // login: "",
+        // password: "",
+        // cityID: ""
       },
       city: [],
       modalWindow: false,
@@ -36,9 +39,7 @@ class Registration extends React.Component<any, any> {
 
   createNewUser = async () => {
     try {
-      await service.registrationUser({
-        ...this.state.registrationUserData
-      });
+      this.props.registrationUser(this.state.registrationUserData)
       this.setState({
         modalWindow: true
       });
@@ -159,4 +160,16 @@ class Registration extends React.Component<any, any> {
   }
 }
 
-export default withRouter(Registration);
+const mapStateToProps = (store: any) => {
+  return {
+    registrationUserData: {...store.registrationUserData.registrationUserData}
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    registrationUser: (body: any) => dispatch(registrationUser(body))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Registration));

@@ -1,4 +1,4 @@
-import { SET_USER } from "../const/conts";
+import { SET_USER } from "../const/const";
 
 export const initialState = {
   user: {
@@ -10,7 +10,7 @@ export const initialState = {
   }
 };
 
-export const userReducer = (state: any = initialState, action: any) => {
+export const getUserReducer = (state: any = initialState, action: any) => {
   switch (action.type) {
     case SET_USER:
       return { ...state, user: action.payload };

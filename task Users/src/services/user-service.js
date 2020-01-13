@@ -77,7 +77,10 @@ const authUser = async body => {
       { expiresIn: 600 },
       { algorithm: "HS256" }
     );
-    return { access_token, refresh_token };
+    return { 
+      userProfile: user,
+      access_token,
+      refresh_token };
   }
   throw new Error("Неправильный пароль");
 };
