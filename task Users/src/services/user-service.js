@@ -91,7 +91,7 @@ const getTokens = async id => {
       id: ObjectId(id)
     },
     "secretKey",
-    { expiresIn: 10 },
+    { expiresIn: 60 },
     { algorithm: "HS256" }
   );
   const refresh_token = jwt.sign(

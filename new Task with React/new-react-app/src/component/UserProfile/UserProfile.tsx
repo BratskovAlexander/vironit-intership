@@ -8,29 +8,27 @@ import { getUser } from "../../actions/getUserAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
+import { getNewTokens } from "../../actions/getTokensActions";
 
 class UserProfile extends React.Component<any, any> {
   static propTypes: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.userProfile, cityID: "" },
+      user: { ...this.props.userProfile },
       louder: true
     };
-   
   }
 
   componentDidMount = () => {
-    if (sessionStorage.getItem("access-token")) {
       this.props.setUserAction();
-    store.subscribe(()=>{
-      if (store.getState().authorizationUserData.userProfile) {
-         this.setState({
-        louder: false,
+      store.subscribe(() => {
+        if (store.getState().authorizationUserData.userProfile) {
+          this.setState({
+            louder: false
+          });
+        }
       });
-      }
-    })    
-    }
   };
 
   render() {
@@ -57,7 +55,7 @@ class UserProfile extends React.Component<any, any> {
             </div>
             <div className={style.dataUser}>
               <span>Место проживания: </span>
-              {store.getState().userData.user.city[0].city}, {" "}
+              {store.getState().userData.user.city[0].city},{" "}
               {store.getState().userData.user.city[0].country}
               {/* {this.props.userProfile.city[0].city},{" "}
               {this.props.userProfile.city[0].country}{" "} */}
@@ -70,7 +68,6 @@ class UserProfile extends React.Component<any, any> {
 }
 
 const mapStateToProps = (store: any) => {
-  console.log(store.authorizationUserData.userProfile);
   return {
     userProfile: store.authorizationUserData.userProfile
   };
@@ -78,7 +75,8 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (body: any) => dispatch(getUser(body))
+    setUserAction: (body: any) => dispatch(getUser(body)),
+    getTokens: () => dispatch(getNewTokens())
   };
 };
 

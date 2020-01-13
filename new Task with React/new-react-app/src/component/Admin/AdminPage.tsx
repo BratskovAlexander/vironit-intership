@@ -16,28 +16,27 @@ class AdminPage extends React.Component<any, any> {
     super(props);
     this.state = {
       user: { ...this.props.user, cityID: "" },
-      users: { ...this.props.usersData },
+      users: { ...this.props.allUsers },
       visible: false,
       louder: true
     };
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     this.props.setUserAction();
     this.props.setAllUsersAction();
     store.subscribe(() => {
-      if (store.getState().usersData.users) {
+      if (store.getState().usersData) {
         this.setState({
           louder: false,
-          users: store.getState().usersData.users,
+          users: this.props.allUsers,
           visible: true
         });
-      }
-    });
-
-    store.getState().usersData.users.forEach((user: any, idx: number) => {
-      if (user.login === this.props.userProfile.login) {
-        this.state.users.splice(idx, 1);
+        this.props.allUsers.forEach((user: any, idx: number) => {
+          if (user.login === this.props.userProfile.login) {
+            this.props.allUsers.splice(idx, 1);
+          }
+        });
       }
     });
   };
@@ -54,11 +53,9 @@ class AdminPage extends React.Component<any, any> {
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
               {this.state.visible
-                ? store
-                    .getState()
-                    .usersData.users.map((user: IUser) => (
-                      <UserList key={user.login} user={user} />
-                    ))
+                ? this.props.allUsers.map((user: IUser) => (
+                    <UserList key={user.login} user={user} />
+                  ))
                 : null}
             </div>
           </div>

@@ -3,23 +3,19 @@ import { withRouter, NavLink, Redirect } from "react-router-dom";
 import style from "./Authorization.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-// import service from "../../service/service";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
 import { connect } from "react-redux";
-// import { authorizationUser } from "../../actions/authorizationUserAction";
-import { store } from "../../store/configureStore";
 import { getUser } from "../../actions/getUserAction";
 
 class Login extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      authorizationUserData: { ...this.props.authorizationUserData
-        // login: "",
-        // password: ""
+      authorizationUserData: { 
+        login: "",
+        password: ""
       },
-      token: "",
       modalWindowErrorLogin: false,
       modalWindowErrorPassword: false
     };
@@ -37,10 +33,6 @@ class Login extends React.Component<any, any> {
   authorizationUser = async (event: any) => {
     event.preventDefault();
     this.props.setUser(this.state.authorizationUserData);
-    store.subscribe(() => {
-      if (store.getState()) {
-      }
-    })
   };
 
   closeModalWindowErrorLogin = async () => {
@@ -57,7 +49,7 @@ class Login extends React.Component<any, any> {
 
   render() {
     return sessionStorage.getItem("access-token") ? (
-      <Redirect to="/profile" />
+      <Redirect to="/user-profile" />
     ) : (
       <>
         <Header
