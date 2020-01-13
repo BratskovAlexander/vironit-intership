@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-// import service from "../../service/service";
 import style from "./AdminPage.module.css";
 import { IUser } from "../../types/types";
 import UserList from "../UserList/UserList";
@@ -15,7 +14,6 @@ import { store } from "../../store/configureStore";
 class AdminPage extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    console.log(props.usersData);
     this.state = {
       user: { ...this.props.user, cityID: "" },
       users: { ...this.props.usersData },
@@ -27,30 +25,21 @@ class AdminPage extends React.Component<any, any> {
   componentDidMount = async () => {
     this.props.setUserAction();
     this.props.setAllUsersAction();
-    console.log(this.state.users);
     store.subscribe(() => {
-      console.log(store.getState().usersData.users);
-      console.log(this.props);
-      this.setState({
-        louder: false
-        // users: getAllUsers,
-        // visible: true
-      });
+      if (store.getState().usersData.users) {
+        this.setState({
+          louder: false,
+          users: store.getState().usersData.users,
+          visible: true
+        });
+      }
     });
 
-    this.props.allUsers.forEach((user: any, idx: number) => {
-      console.log(user.login);
+    store.getState().usersData.users.forEach((user: any, idx: number) => {
       if (user.login === this.props.userProfile.login) {
         this.state.users.splice(idx, 1);
       }
     });
-    // if (getAllUsers) {
-    //   this.setState({
-    //     louder: false,
-    //     users: getAllUsers,
-    //     visible: true
-    //   });
-    // }
   };
 
   render() {
@@ -65,9 +54,11 @@ class AdminPage extends React.Component<any, any> {
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
               {this.state.visible
-                ? this.state.users.map((user: IUser) => (
-                    <UserList key={user.login} user={user} />
-                  ))
+                ? store
+                    .getState()
+                    .usersData.users.map((user: IUser) => (
+                      <UserList key={user.login} user={user} />
+                    ))
                 : null}
             </div>
           </div>
@@ -78,7 +69,6 @@ class AdminPage extends React.Component<any, any> {
 }
 
 const mapStateToProps = (store: any) => {
-  console.log(store.usersData.users);
   return {
     userProfile: store.userData.user,
     allUsers: store.usersData.users

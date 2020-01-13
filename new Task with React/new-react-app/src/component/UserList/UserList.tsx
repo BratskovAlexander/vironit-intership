@@ -1,7 +1,5 @@
 import React from "react";
 import style from "./UserList.module.css";
-import { connect } from "react-redux";
-import { getAllUsers } from "../../actions/getAllUsersAction";
 
 class UserList extends React.Component<any, any> {
   constructor(props: any) {
@@ -15,10 +13,6 @@ class UserList extends React.Component<any, any> {
     this.setState({
       dataUser: !this.state.dataUser
     });
-  };
-
-  componentDidMount = async () => {
-    this.props.setAllUsersAction();
   };
 
   render() {
@@ -63,16 +57,4 @@ class UserList extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (store: any) => {
-  return {
-    allUsers: store.users.users
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setAllUsersAction: () => dispatch(getAllUsers())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default UserList;
