@@ -7,7 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
 import { connect } from "react-redux";
-import { getAllCities } from "../../actions/getAllCitiesAction";
+import { getAllCities } from "../../actions/citiesAction";
 import service from "../../service/service";
 
 class Registration extends React.Component<any, any> {
@@ -162,7 +162,7 @@ class Registration extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    allCities: store.allCities.cities
+    allCities: store.listAllCities.cities
   };
 };
 

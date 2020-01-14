@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { userReducer } from "./userReducer";
 import { getAllUsersReducer } from "./GetAllUsersReducer";
-import { getAllCitiesReducer } from "./getAllCities";
+import { citiesReducer } from "./citiesReducer";
 
 export const rootReducer = combineReducers({
     userData: userReducer,
-    usersData: getAllUsersReducer,
-    allCities: getAllCitiesReducer
+    listAllUsers: getAllUsersReducer,
+    listAllCities: citiesReducer
 })

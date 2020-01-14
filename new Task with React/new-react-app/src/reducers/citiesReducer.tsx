@@ -4,7 +4,7 @@ export const initialState = {
   cities: []
 };
 
-export const getAllCitiesReducer = (state: any = initialState, action: any) => {
+export const citiesReducer = (state: any = initialState, action: any) => {
   switch (action.type) {
     case SET_ALL_CITIES:
       return { ...state, cities: action.payload };
