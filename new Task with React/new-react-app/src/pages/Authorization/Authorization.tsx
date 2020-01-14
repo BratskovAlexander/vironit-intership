@@ -1,13 +1,12 @@
 import React from "react";
 import { withRouter, NavLink, Redirect } from "react-router-dom";
-import style from "./Authorization.module.css";
+import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import style from "./Authorization.module.css";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
-import { connect } from "react-redux";
-import { getAuthorizationUser } from "../../actions/userAction";
-import { getAllCities } from "../../actions/getAllCitiesAction";
+import { getAuthorizationUser, getUser } from "../../actions/userAction";
 
 class Login extends React.Component<any, any> {
   constructor(props: any) {
@@ -33,9 +32,8 @@ class Login extends React.Component<any, any> {
 
   authorizationUser = async (event: any) => {
     event.preventDefault();
+    this.props.getUser();
     this.props.setAuthorizationUser(this.state.authorizationUserData);
-    this.props.setAuthorizationUser();
-    this.props.getAllCities();
   };
 
   closeModalWindowErrorLogin = async () => {
@@ -116,18 +114,11 @@ class Login extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (store: any) => {
-  return {
-    user: store.authorizationUserData,
-    allCities: store.allCities.cities
-  };
-};
-
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setAuthorizationUser: (body: any) => dispatch(getAuthorizationUser(body)),
-    getAllCities: () => dispatch(getAllCities())
+    getUser: () => dispatch(getUser()),
+    setAuthorizationUser: (body: any) => dispatch(getAuthorizationUser(body))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+export default connect( null , mapDispatchToProps)(withRouter(Login));
