@@ -66,7 +66,7 @@ const authUser = async body => {
         id: ObjectId(user.id)
       },
       "secretKey",
-      { expiresIn: 10 },
+      { expiresIn: 60 },
       { algorithm: "HS256" }
     );
     const refresh_token = jwt.sign(
