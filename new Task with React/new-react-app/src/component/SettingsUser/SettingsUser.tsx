@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import service from "../../service/service";
 import style from "./SettingsUser.module.css";
 import TextField from "@material-ui/core/TextField";
 import { Button, MenuItem } from "@material-ui/core";
@@ -8,20 +7,21 @@ import ModalPage from "../ModalPage/ModalPage";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUser } from "../../actions/getUserAction";
+import { getUser, updateUser, deleteUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
+// import { getAllCities } from "../../actions/getAllCitiesAction";
+import { store } from "../../store/configureStore";
 
 class SettingsUser extends React.Component<any, any> {
   static propTypes: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.user, cityID: "" },
-      admin: { ...this.props.user, cityID: "" },
+      user: { ...this.props.userProfile, cityID: this.props.userProfile.cityID },
       louder: true,
       updateUserData: {},
-      city: [],
+      city: { ...this.props.allCities },
       modalWindowUpdate: false,
       modalWindowDelete: false
     };
@@ -90,32 +90,31 @@ class SettingsUser extends React.Component<any, any> {
 
   updateUser = async () => {
     try {
-      const updateUserData: any = await service.updateUser(
-        this.state.user._id,
-        {
-          ...this.state.updateUserData
+      this.props.updateUser(this.state.user._id, {
+        ...this.state.updateUserData
+      });
+      store.subscribe(() => {
+        if (store.getState().updateUserData) {
+          this.setState({
+            modalWindowUpdate: true
+          });
         }
-      );
-      if (updateUserData) {
-        this.setState({
-          modalWindowUpdate: true
-        });
-      }
+      });
     } catch (error) {
-      this.props.history.push("/profile");
+      this.props.history.push("/user-profile");
     }
   };
 
   deleteUser = async () => {
     try {
-      const updateUserData: any = await service.deleteUser(this.state.user._id);
-      if (updateUserData) {
-        sessionStorage.removeItem("access-token");
-        localStorage.removeItem("refresh-token");
-        this.setState({
-          modalWindowDelete: true
-        });
-      }
+      this.props.deleteUser(this.state.user._id);
+      store.subscribe(() => {
+        if (store.getState().userProfile._id) {
+          this.setState({
+            modalWindowDelete: true
+          });
+        }
+      });
     } catch (error) {
       this.props.history.push("/login");
     }
@@ -133,17 +132,11 @@ class SettingsUser extends React.Component<any, any> {
     });
   };
 
-  componentDidMount = async () => {
-    if (sessionStorage.getItem("access-token")) {
-      const changeCity = await service.getCity();
-      const getAuthorizationUser = await service.getAuthorizationUser();
-      this.props.setUserAction(getAuthorizationUser);
-      this.setState({
-        louder: false,
-        user: { ...getAuthorizationUser },
-        city: changeCity
-      });
-    }
+  componentDidMount = () => {
+    this.props.setUserAction();
+    this.setState({
+      louder: false
+    });
   };
 
   render() {
@@ -229,7 +222,7 @@ class SettingsUser extends React.Component<any, any> {
                   helperText="Изменить город"
                   variant="outlined"
                 >
-                  {this.state.city.map((city: any, index: number) => (
+                  {this.state.users.map((city: any, index: number) => (
                     <MenuItem key={index} value={city._id}>
                       {`${city.city}, ${city.country}`}
                     </MenuItem>
@@ -282,20 +275,27 @@ class SettingsUser extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    userProfile: store.user.user
+    userProfile: store.userData.user,
+    allCities: store.allCities.cities
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (body: any) => dispatch(getUser(body))
+    setUserAction: () => dispatch(getUser()),
+    // getAllCities: () => dispatch(getAllCities()),
+    updateUser: (id: any, body: any) => dispatch(updateUser(id, body)),
+    deleteUser: (id: any) => dispatch(deleteUser(id))
   };
 };
 
 SettingsUser.propTypes = {
-  user: PropTypes.object,
-  users: PropTypes.object,
-  setUserAction: PropTypes.func
+  userProfile: PropTypes.object,
+  allCities: PropTypes.array,
+  setUserAction: PropTypes.func,
+  getAllCities: PropTypes.func,
+  updateUser: PropTypes.func,
+  deleteUser: PropTypes.func
 };
 
 export default connect(

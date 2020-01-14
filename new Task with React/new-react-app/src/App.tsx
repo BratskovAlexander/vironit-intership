@@ -17,11 +17,11 @@ import { connect } from "react-redux";
 class App extends React.Component<any, any> {
   componentDidMount = async () => {
 
-if (localStorage.getItem("refresh-token")) {
-   setInterval(() => {
-      this.props.getTokens();
-    }, 55000);
-}
+// if (localStorage.getItem("refresh-token")) {
+//    setInterval(() => {
+//       this.props.getTokens();
+//     }, 55000);
+// }
    
 
 
@@ -121,7 +121,7 @@ if (localStorage.getItem("refresh-token")) {
 
 const mapStateToProps = (store: any) => {
   return {
-    userProfile: store.authorizationUserData.userProfile
+    userProfile: store
   };
 };
 

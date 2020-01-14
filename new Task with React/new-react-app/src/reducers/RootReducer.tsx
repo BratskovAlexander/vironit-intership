@@ -1,12 +1,10 @@
 import { combineReducers } from "redux";
-import { getUserReducer } from "./GetUserReducer";
+import { userReducer } from "./userReducer";
 import { getAllUsersReducer } from "./GetAllUsersReducer";
-import { registrationUserReducer } from "./RegistrationUserReducer";
-import { authorizationUserReducer } from "./authorizationUserReducer";
+import { getAllCitiesReducer } from "./getAllCities";
 
 export const rootReducer = combineReducers({
-    registrationUserData: registrationUserReducer,
-    authorizationUserData: authorizationUserReducer,
-    userData: getUserReducer,
-    usersData: getAllUsersReducer
+    userData: userReducer,
+    usersData: getAllUsersReducer,
+    allCities: getAllCitiesReducer
 })

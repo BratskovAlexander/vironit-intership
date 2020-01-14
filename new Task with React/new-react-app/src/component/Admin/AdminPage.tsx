@@ -8,7 +8,7 @@ import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { getAllUsers } from "../../actions/getAllUsersAction";
-import { getUser } from "../../actions/getUserAction";
+import { getUser } from "../../actions/userAction";
 import { store } from "../../store/configureStore";
 
 class AdminPage extends React.Component<any, any> {
@@ -32,7 +32,7 @@ class AdminPage extends React.Component<any, any> {
           users: this.props.allUsers,
           visible: true
         });
-        this.props.allUsers.forEach((user: any, idx: number) => {
+        this.state.users.forEach((user: any, idx: number) => {
           if (user.login === this.props.userProfile.login) {
             this.props.allUsers.splice(idx, 1);
           }
@@ -53,7 +53,7 @@ class AdminPage extends React.Component<any, any> {
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
               {this.state.visible
-                ? this.props.allUsers.map((user: IUser) => (
+                ? this.state.users.map((user: IUser) => (
                     <UserList key={user.login} user={user} />
                   ))
                 : null}
@@ -74,7 +74,7 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (body: any) => dispatch(getUser(body)),
+    setUserAction: () => dispatch(getUser()),
     setAllUsersAction: () => dispatch(getAllUsers())
   };
 };

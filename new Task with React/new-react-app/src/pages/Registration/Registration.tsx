@@ -4,25 +4,23 @@ import style from "./Registration.module.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
-import service from "../../service/service";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
-import { registrationUser } from "../../actions/registrationUserAction";
 import { connect } from "react-redux";
+import { getAllCities } from "../../actions/getAllCitiesAction";
+import service from "../../service/service";
 
 class Registration extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    console.log(props);
     this.state = {
-      registrationUserData: { ...this.props.registrationUserData
-        // name: "", 
-        // surname: "",
-        // login: "",
-        // password: "",
-        // cityID: ""
+      registrationUserData: {
+        name: "",
+        surname: "",
+        login: "",
+        password: "",
+        cityID: ""
       },
-      city: [],
       modalWindow: false,
       modalWindowError: false
     };
@@ -39,29 +37,27 @@ class Registration extends React.Component<any, any> {
 
   createNewUser = async () => {
     try {
-      this.props.registrationUser(this.state.registrationUserData)
-      this.setState({
-        modalWindow: true
-      });
+      const registrationUser = await service.registrationUser(
+        this.state.registrationUserData
+      );
+      if (registrationUser) {
+        this.setState({
+          modalWindow: true
+        });
+      }
     } catch (error) {
       this.setState({
-        modalWindowError: true
+        modalWindow: true
       });
     }
   };
 
   closeModalWindow = async () => {
     this.setState({
-      modalWindowError: !this.state.modalWindowError
+      modalWindowError: false,
+      modalWindow: false
     });
   };
-
-  async componentDidMount() {
-    const changeCity = await service.getCity();
-    this.setState({
-      city: changeCity
-    });
-  }
 
   handleChange = (event: any) => {
     this.setState({
@@ -72,9 +68,13 @@ class Registration extends React.Component<any, any> {
     });
   };
 
+  componentDidMount = () => {
+    this.props.getAllCities();
+  };
+
   render() {
     return sessionStorage.getItem("access-token") ? (
-      <Redirect to="/profile" />
+      <Redirect to="/user-profile" />
     ) : (
       <>
         <Header path={["/", "/login"]} items={["Главная", "Войти"]} />
@@ -116,7 +116,7 @@ class Registration extends React.Component<any, any> {
               helperText="Выберите город"
               variant="outlined"
             >
-              {this.state.city.map((city: any) => (
+              {this.props.allCities.map((city: any) => (
                 <MenuItem key={city.city} value={city._id}>
                   {`${city.city}, ${city.country}`}
                 </MenuItem>
@@ -134,7 +134,7 @@ class Registration extends React.Component<any, any> {
             </Button>
             {this.state.modalWindow ? (
               <ModalPage
-                message="Добро пожлаовать "
+                message="Добро пожаловать "
                 user={this.state.registrationUserData.name}
                 path="/login"
                 nameBtn="ok"
@@ -145,7 +145,7 @@ class Registration extends React.Component<any, any> {
             )}
             {this.state.modalWindowError ? (
               <ModalPage
-                message="Вы допустили ошибку "
+                message="Вы допустили ошибку, проверьте введенные данные "
                 path="/registration"
                 nameBtn="ok"
                 closeModalWindow={this.closeModalWindow}
@@ -162,14 +162,17 @@ class Registration extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    registrationUserData: {...store.registrationUserData.registrationUserData}
-  }
-}
+    allCities: store.allCities.cities
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    registrationUser: (body: any) => dispatch(registrationUser(body))
-  }
-}
+    getAllCities: () => dispatch(getAllCities())
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Registration));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Registration));

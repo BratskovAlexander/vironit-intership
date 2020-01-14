@@ -4,7 +4,7 @@ import style from "./userProfile.module.css";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUser } from "../../actions/getUserAction";
+import { getUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
@@ -15,7 +15,8 @@ class UserProfile extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.userProfile },
+      // user: { ...this.props.userProfile },
+      user: {},
       louder: true
     };
   }
@@ -23,10 +24,13 @@ class UserProfile extends React.Component<any, any> {
   componentDidMount = () => {
       this.props.setUserAction();
       store.subscribe(() => {
-        if (store.getState().authorizationUserData.userProfile) {
+        if (store.getState().authorizationUserData) {
           this.setState({
-            louder: false
+            louder: false,
+            user: this.props.userProfile
           });
+          console.log(this.state);
+          console.log(this.props);
         }
       });
   };
@@ -55,10 +59,8 @@ class UserProfile extends React.Component<any, any> {
             </div>
             <div className={style.dataUser}>
               <span>Место проживания: </span>
-              {store.getState().userData.user.city[0].city},{" "}
-              {store.getState().userData.user.city[0].country}
               {/* {this.props.userProfile.city[0].city},{" "}
-              {this.props.userProfile.city[0].country}{" "} */}
+              {this.props.userProfile.city[0].country} */}
             </div>
           </div>
         </main>
@@ -75,7 +77,7 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: (body: any) => dispatch(getUser(body)),
+    setUserAction: () => dispatch(getUser()),
     getTokens: () => dispatch(getNewTokens())
   };
 };
