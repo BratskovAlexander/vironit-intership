@@ -6,7 +6,7 @@ import Registration from "./pages/Registration/Registration";
 import Authorization from "./pages/Authorization/Authorization";
 import PrivateRouter from "./component/PrivateRouter/PrivateRouter";
 import Messages from "./component/Messages/Messages";
-import AdminPage from "./component/Admin/AdminPage";
+import Friends from "./component/Friends/Friends";
 import UserProfile from "./component/UserProfile/UserProfile";
 import SettingsUser from "./component/SettingsUser/SettingsUser";
 import { connect } from "react-redux";
@@ -28,7 +28,7 @@ class App extends React.Component<any, any> {
           <PrivateRouter
             exact
             path="/friends"
-            component={AdminPage}
+            component={Friends}
             redirect="/login"
           />
           <PrivateRouter
