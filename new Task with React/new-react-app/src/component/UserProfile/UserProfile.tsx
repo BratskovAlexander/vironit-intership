@@ -22,6 +22,7 @@ class UserProfile extends React.Component<any, any> {
 
   componentDidMount = () => {
     this.props.getUser();
+    this.props.getTokens();
     store.subscribe(() => {
       if (store.getState().userData.user) {
         this.setState({
@@ -30,7 +31,6 @@ class UserProfile extends React.Component<any, any> {
         });
       }
     });
-    this.props.getTokens();
   };
 
   render() {

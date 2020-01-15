@@ -11,16 +11,16 @@ import { getUser, updateUser, deleteUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
+import { getAllCities } from "../../actions/citiesAction";
 
 class SettingsUser extends React.Component<any, any> {
   static propTypes: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.userProfile, cityID: this.props.userProfile.cityID },
+      user: { ...this.props.user, cityID: '' },
       louder: true,
       updateUserData: {},
-      city: { ...this.props.allCities },
       modalWindowUpdate: false,
       modalWindowDelete: false
     };
@@ -87,7 +87,7 @@ class SettingsUser extends React.Component<any, any> {
     });
   };
 
-  updateUser = async () => {
+  updateUser = () => {
     try {
       this.props.updateUser(this.state.user._id, {
         ...this.state.updateUserData
@@ -104,11 +104,11 @@ class SettingsUser extends React.Component<any, any> {
     }
   };
 
-  deleteUser = async () => {
+  deleteUser = () => {
     try {
       this.props.deleteUser(this.state.user._id);
       store.subscribe(() => {
-        if (store.getState().userProfile._id) {
+        if (store.getState().user._id) {
           this.setState({
             modalWindowDelete: true
           });
@@ -132,11 +132,23 @@ class SettingsUser extends React.Component<any, any> {
   };
 
   componentDidMount = () => {
-    this.props.setUserAction();
+    this.props.getUser();
+    this.props.getAllCities();
     this.setState({
-      louder: false
+      user: this.props.user
+    });
+    store.subscribe(() => {
+      if (store.getState().userData.user) {
+        this.setState({
+          louder: false
+        });
+      }
     });
   };
+
+  componentWillUnmount = () => {
+    
+  }
 
   render() {
     return this.state.louder ? (
@@ -221,8 +233,14 @@ class SettingsUser extends React.Component<any, any> {
                   helperText="Изменить город"
                   variant="outlined"
                 >
-                  {this.state.users.map((city: any, index: number) => (
+                  {/* {this.props.listAllCities.map((city: any, index: number) => (
                     <MenuItem key={index} value={city._id}>
+                      {`${city.city}, ${city.country}`}
+                    </MenuItem>
+                  ))} */}
+
+                  {this.props.listAllCities.map((city: any) => (
+                    <MenuItem key={city.city} value={city._id}>
                       {`${city.city}, ${city.country}`}
                     </MenuItem>
                   ))}
@@ -274,15 +292,15 @@ class SettingsUser extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    userProfile: store.userData.user,
-    allCities: store.allCities.cities
+    user: store.userData.user,
+    listAllCities: store.listAllCities.cities
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: () => dispatch(getUser()),
-    // getAllCities: () => dispatch(getAllCities()),
+    getUser: () => dispatch(getUser()),
+    getAllCities: () => dispatch(getAllCities()),
     updateUser: (id: any, body: any) => dispatch(updateUser(id, body)),
     deleteUser: (id: any) => dispatch(deleteUser(id))
   };

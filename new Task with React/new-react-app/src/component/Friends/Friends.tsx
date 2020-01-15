@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import style from "./Friends.module.css";
 import { IUser } from "../../types/types";
 import UserList from "../UserList/UserList";
@@ -16,7 +15,7 @@ class Friends extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.users, cityID: "" },
+      // user: { ...this.props.user, cityID: "" },
       users: { ...this.props.listAllUsers },
       louder: true,
       pageSize: 3,
@@ -38,32 +37,31 @@ class Friends extends React.Component<any, any> {
   componentDidMount = () => {
     this.props.getUser();
     this.props.setAllUsersAction();
+
+    let pageNumber = Math.ceil(
+      this.props.listAllUsers.length / this.state.pageSize
+    );
+    if (this.props.listAllUsers.length > 3) {
+      this.setState({
+        pageNumber: pageNumber
+      });
+      for (let i = 1; i <= pageNumber; i++) {
+        this.state.pages.push(i);
+      }
+    }
+    this.props.getTokens();
     store.subscribe(() => {
-      if (store.getState().userData.user) {
+      if (store.getState().listAllUsers.users) {
         this.setState({
           louder: false,
           users: this.props.listAllUsers,
           totalUsersCount: this.props.listAllUsers.length
         });
-        // this.state.users.forEach((user: any, idx: number) => {
-        //   if (user.login === this.props.user.login) {
-        //     this.props.allUsers.splice(idx, 1);
-        //   }
-        // });
-      }
-
-      let pageNumber = Math.ceil(this.state.users.length / this.state.pageSize);
-      if (this.state.users.length > 3) {
-        this.setState({
-          pageNumber
-        });
-        for (let i = 1; i <= pageNumber; i++) {
-          this.state.pages.push(i);
-        }
       }
     });
-    this.props.getTokens();
   };
+
+  componentWillUnmount = () => {};
 
   render() {
     return this.state.louder ? (
@@ -76,12 +74,6 @@ class Friends extends React.Component<any, any> {
           <div className={style.blockPage}>
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
-              {/* {this.state.visible ?  */}
-              {/* {this.state.users.map((user: IUser) => (
-                <UserList key={user.login} user={user} />
-              ))} */}
-              {/* : null} */}
-
               {this.state.pageNumber > 1 ? (
                 <>
                   <div>
@@ -124,7 +116,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Friends));
+export default connect(mapStateToProps, mapDispatchToProps)(Friends);

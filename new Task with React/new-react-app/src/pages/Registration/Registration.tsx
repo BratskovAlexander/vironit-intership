@@ -52,7 +52,7 @@ class Registration extends React.Component<any, any> {
     }
   };
 
-  closeModalWindow = async () => {
+  closeModalWindow = () => {
     this.setState({
       modalWindowError: false,
       modalWindow: false

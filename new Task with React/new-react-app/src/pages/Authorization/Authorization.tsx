@@ -33,6 +33,7 @@ class Login extends React.Component<any, any> {
   authorizationUser = (event: any) => {
     event.preventDefault();
     this.props.setAuthorizationUser(this.state.authorizationUserData);
+    
   };
 
   closeModalWindowErrorLogin = () => {
