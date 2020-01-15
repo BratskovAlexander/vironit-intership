@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import style from "./Authorization.module.css";
 import ModalPage from "../../component/ModalPage/ModalPage";
 import Header from "../../component/Header/Header";
-import { getAuthorizationUser, getUser } from "../../actions/userAction";
+import { getAuthorizationUser } from "../../actions/userAction";
 
 class Login extends React.Component<any, any> {
   constructor(props: any) {
@@ -21,7 +21,7 @@ class Login extends React.Component<any, any> {
     };
   }
 
-  getInputValue = async (event: any) => {
+  getInputValue = (event: any) => {
     this.setState({
       authorizationUserData: {
         ...this.state.authorizationUserData,
@@ -30,19 +30,18 @@ class Login extends React.Component<any, any> {
     });
   };
 
-  authorizationUser = async (event: any) => {
+  authorizationUser = (event: any) => {
     event.preventDefault();
-    this.props.getUser();
     this.props.setAuthorizationUser(this.state.authorizationUserData);
   };
 
-  closeModalWindowErrorLogin = async () => {
+  closeModalWindowErrorLogin = () => {
     this.setState({
       modalWindowErrorLogin: !this.state.modalWindowErrorLogin
     });
   };
 
-  closeModalWindowErrorPassword = async () => {
+  closeModalWindowErrorPassword = () => {
     this.setState({
       modalWindowErrorPassword: !this.state.modalWindowErrorPassword
     });
@@ -50,7 +49,7 @@ class Login extends React.Component<any, any> {
 
   render() {
     return sessionStorage.getItem("access-token") ? (
-      <Redirect to="/user-profile" />
+      <Redirect to="/profile"/>
     ) : (
       <>
         <Header
@@ -116,9 +115,8 @@ class Login extends React.Component<any, any> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    getUser: () => dispatch(getUser()),
     setAuthorizationUser: (body: any) => dispatch(getAuthorizationUser(body))
   };
 };
 
-export default connect( null , mapDispatchToProps)(withRouter(Login));
+export default connect( null, mapDispatchToProps)(withRouter(Login));

@@ -1,13 +1,12 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import style from "./userProfile.module.css";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
+import { getUser } from "../../actions/userAction";
 import { getNewTokens } from "../../actions/getTokensActions";
 
 class UserProfile extends React.Component<any, any> {
@@ -15,24 +14,23 @@ class UserProfile extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      // user: { ...this.props.userProfile },
       user: {},
-      louder: true
+      louder: true,
+      city: []
     };
   }
 
   componentDidMount = () => {
-      this.props.setUserAction();
-      store.subscribe(() => {
-        if (store.getState().authorizationUserData) {
-          this.setState({
-            louder: false,
-            user: this.props.userProfile
-          });
-          console.log(this.state);
-          console.log(this.props);
-        }
-      });
+    this.props.getUser();
+    store.subscribe(() => {
+      if (store.getState().userData.user) {
+        this.setState({
+          louder: false,
+          user: this.props.user
+        });
+      }
+    });
+    this.props.getTokens();
   };
 
   render() {
@@ -51,16 +49,20 @@ class UserProfile extends React.Component<any, any> {
             />
             <div className={style.dataUser}>
               <span>Пользователь: </span>
-              {this.props.userProfile.name} {this.props.userProfile.surname}
+              {this.props.user.name} {this.props.user.surname}
             </div>
             <div className={style.dataUser}>
               <span>Логин: </span>
-              {this.props.userProfile.login}{" "}
+              {this.props.user.login}{" "}
             </div>
             <div className={style.dataUser}>
               <span>Место проживания: </span>
-              {/* {this.props.userProfile.city[0].city},{" "}
-              {this.props.userProfile.city[0].country} */}
+              Пока нигде
+              {/* это капец.... все подтягивается из пропсов, а города нет =( */}
+              {/* {this.state.user.city[0].city},{" "}
+              {this.state.user.city[0].country} */}
+              {/* {this.props.user.city[0].city},{" "}
+              {this.props.user.city[0].country} */}
             </div>
           </div>
         </main>
@@ -71,22 +73,21 @@ class UserProfile extends React.Component<any, any> {
 
 const mapStateToProps = (store: any) => {
   return {
-    userProfile: store.authorizationUserData.userProfile
+    user: store.userData.user
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUserAction: () => dispatch(getUser()),
+    getUser: () => dispatch(getUser()),
     getTokens: () => dispatch(getNewTokens())
   };
 };
 
 UserProfile.propTypes = {
-  userProfile: PropTypes.object
+  user: PropTypes.object,
+  getUser: PropTypes.func,
+  getTokens: PropTypes.func
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(UserProfile));
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

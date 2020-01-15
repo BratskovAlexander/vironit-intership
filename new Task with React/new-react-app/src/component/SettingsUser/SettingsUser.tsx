@@ -10,7 +10,6 @@ import PropTypes from "prop-types";
 import { getUser, updateUser, deleteUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
-// import { getAllCities } from "../../actions/getAllCitiesAction";
 import { store } from "../../store/configureStore";
 
 class SettingsUser extends React.Component<any, any> {
@@ -101,7 +100,7 @@ class SettingsUser extends React.Component<any, any> {
         }
       });
     } catch (error) {
-      this.props.history.push("/user-profile");
+      this.props.history.push("/profile");
     }
   };
 

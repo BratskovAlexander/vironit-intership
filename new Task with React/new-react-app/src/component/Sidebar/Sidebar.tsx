@@ -20,7 +20,7 @@ class Sidebar extends React.Component<any, any> {
               style={{ fontSize: 30, paddingRight: 5 }}
             />
             <ListItemText
-              onClick={() => this.props.history.push("/user-profile")}
+              onClick={() => this.props.history.push("/profile")}
               primary="Моя страничка"
             />
           </ListItem>

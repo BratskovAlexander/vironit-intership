@@ -29,7 +29,7 @@ class Messages extends React.Component<any, any> {
     console.log(this.state.post.message);
   };
 
-  componentDidMount = async () => {};
+  componentDidMount = () => {};
 
   render() {
     return (

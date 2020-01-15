@@ -4,11 +4,7 @@ import service from "../service/service";
 export const getNewTokens = () => async (dispatch: any) => {
   try {
     if (localStorage.getItem("refresh-token")) {
-        console.log("refersh");
-      const getNewTokens = await service.getTokens(
-        localStorage.getItem("refresh-token")
-      );
-
+      const getNewTokens = await service.getTokens(sessionStorage.getItem("access-token"));
       if (getNewTokens) {
         localStorage.setItem("refresh-token", getNewTokens.refresh_token);
         sessionStorage.setItem("access-token", getNewTokens.access_token);
@@ -18,6 +14,18 @@ export const getNewTokens = () => async (dispatch: any) => {
       }
     }
   } catch (error) {
-    console.log("error");
+    console.log("зашел сюда так как токен аксесс не валидный и надо сделать новый из рефреш токена");
+    const getNewTokens = await service.getTokens(
+      localStorage.getItem("refresh-token")
+    );
+
+    if (getNewTokens) {
+      localStorage.setItem("refresh-token", getNewTokens.refresh_token);
+      sessionStorage.setItem("access-token", getNewTokens.access_token);
+      dispatch({
+        type: GET_TOKENS
+      });
+    }
+    console.log("error in action getTokens");
   }
 };

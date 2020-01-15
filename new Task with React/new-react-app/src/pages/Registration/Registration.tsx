@@ -74,7 +74,7 @@ class Registration extends React.Component<any, any> {
 
   render() {
     return sessionStorage.getItem("access-token") ? (
-      <Redirect to="/user-profile" />
+      <Redirect to="/profile" />
     ) : (
       <>
         <Header path={["/", "/login"]} items={["Главная", "Войти"]} />
