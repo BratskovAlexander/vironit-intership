@@ -55,15 +55,27 @@ const post = async body => {
 };
 
 const authUser = async body => {
-  const user = await User.findOne({ login: body.login });
+  const user = await User.aggregate([
+    {
+      $match: { login: body.login }
+    },
+    {
+      $lookup: {
+        from: "cities",
+        localField: "cityID",
+        foreignField: "_id",
+        as: "city"
+      }
+    }
+  ]);
   if (!user) {
     throw new Error("Нет пользователя с таким Login");
   }
-  const checkLoginPass = await bcrypt.compare(body.password, user.password);
+  const checkLoginPass = await bcrypt.compare(body.password, user[0].password);
   if (checkLoginPass) {
     const access_token = jwt.sign(
       {
-        id: ObjectId(user.id)
+        login: body.login
       },
       "secretKey",
       { expiresIn: 60 },
@@ -71,24 +83,25 @@ const authUser = async body => {
     );
     const refresh_token = jwt.sign(
       {
-        id: ObjectId(user.id)
+        login: body.login
       },
       "secretKey",
       { expiresIn: 600 },
       { algorithm: "HS256" }
     );
-    return { 
-      userProfile: user,
+    return {
+      userProfile: user[0],
       access_token,
-      refresh_token };
+      refresh_token
+    };
   }
   throw new Error("Неправильный пароль");
 };
 
-const getTokens = async id => {
+const getTokens = async body => {
   const access_token = jwt.sign(
     {
-      id: ObjectId(id)
+      login: body.login
     },
     "secretKey",
     { expiresIn: 60 },
@@ -96,7 +109,7 @@ const getTokens = async id => {
   );
   const refresh_token = jwt.sign(
     {
-      id: ObjectId(id)
+      login: body.login
     },
     "secretKey",
     { expiresIn: 600 },

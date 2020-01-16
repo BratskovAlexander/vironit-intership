@@ -13,7 +13,7 @@ export const initialState = {
 export const userReducer = (state: any = initialState, action: any) => {
   switch (action.type) {
     case SET_AUTHORIZATION_USER:
-      return { ...state };
+      return { ...state, user: action.payload };
     case SET_USER:
       return { ...state, user: action.payload };
     case UPDATE_USER:

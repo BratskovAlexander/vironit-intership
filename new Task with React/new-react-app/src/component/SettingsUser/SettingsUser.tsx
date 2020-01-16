@@ -18,7 +18,7 @@ class SettingsUser extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      user: { ...this.props.user, cityID: '' },
+      user: { ...this.props.user, cityID: "" },
       louder: true,
       updateUserData: {},
       modalWindowUpdate: false,
@@ -107,8 +107,9 @@ class SettingsUser extends React.Component<any, any> {
   deleteUser = () => {
     try {
       this.props.deleteUser(this.state.user._id);
+      this.props.history.push("/login");
       store.subscribe(() => {
-        if (store.getState().user._id) {
+        if (store.getState().user) {
           this.setState({
             modalWindowDelete: true
           });
@@ -138,19 +139,49 @@ class SettingsUser extends React.Component<any, any> {
       user: this.props.user
     });
     store.subscribe(() => {
-      if (store.getState().userData.user) {
+      if (this.props.user  !== store.getState().userData.user) {
         this.setState({
           louder: false
         });
       }
     });
-  };
 
-  componentWillUnmount = () => {
-    
+
+
+    // console.log("до условия", store.getState().userData.user);
+    // console.log("до условия",this.props.user);
+    // if (sessionStorage.getItem("access-token")) {
+      
+    //   this.props.getUser();
+    //   store.subscribe(() => {
+      
+    //   console.log("в условии",store.getState().userData.user);
+    //   console.log("в условии",this.props.user);  
+      
+    //   if (this.props.user.name  !== store.getState().userData.user.name) {
+          
+    //     console.log("в в субскрайбе",store.getState().userData.user);
+    //     console.log("в в субскрайбе",this.props.user);
+    //       this.setState({
+    //         louder: false
+    //       });
+    //     } else {
+    //       console.log("in else");
+    //       this.setState({
+    //         louder: false
+    //       });
+    //     }
+    //   });
+    // }
+
+
+
+
   }
 
-  render() {
+  componentWillUnmount = () => {};
+
+  render() { 
     return this.state.louder ? (
       <Louder />
     ) : (

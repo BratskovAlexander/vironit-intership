@@ -10,10 +10,59 @@ import Friends from "./component/Friends/Friends";
 import UserProfile from "./component/UserProfile/UserProfile";
 import SettingsUser from "./component/SettingsUser/SettingsUser";
 import { connect } from "react-redux";
+import { getUser } from "./actions/userAction";
+import Louder from "./component/Louder/Louder";
+import { getNewTokens } from "./actions/getTokensActions";
+
+let interval: NodeJS.Timeout;
 
 class App extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      louder: true
+    };
+  }
+
+  componentDidMount = () => {
+    if (localStorage.getItem("refresh-token")) {
+      if (sessionStorage.getItem("access-token")) {
+        this.props.getUser();
+        this.setState({ louder: false });
+        this.props.getTokens();
+        interval = setInterval(() => {
+          this.props.getTokens();
+        }, 5000);
+      } else {
+        this.props.getTokens();
+        this.props.getUser();
+        this.setState({ louder: false });
+        // this.props.getUser();
+        interval = setInterval(() => {
+          this.props.getTokens();
+        }, 50000);
+      }
+    } else {
+      
+      this.setState({ louder: false });
+      clearInterval(interval);
+      // store.subscribe(() => {
+      //   if (localStorage.getItem("refresh-token")) {
+      //     if (sessionStorage.getItem("access-token")) {
+      //       this.setState({ louder: false });
+      //       interval = setInterval(() => {
+      //         this.props.getTokens();
+      //       }, 50000);
+      //     }
+      //   }
+      // });
+    }
+  };
+
   render() {
-    return (
+    return this.state.louder ? (
+      <Louder />
+    ) : (
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -49,4 +98,17 @@ class App extends React.Component<any, any> {
   }
 }
 
-export default connect()(App);
+const mapStateToProps = (store: any) => {
+  return {
+    user: store.userData.user
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    getUser: () => dispatch(getUser()),
+    getTokens: () => dispatch(getNewTokens())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

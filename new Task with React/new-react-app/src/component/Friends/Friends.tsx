@@ -15,11 +15,10 @@ class Friends extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      // user: { ...this.props.user, cityID: "" },
       users: { ...this.props.listAllUsers },
       louder: true,
       pageSize: 3,
-      totalUsersCount: this.props.listAllUsers.length,
+      totalUsersCount: 1,
       pageNumber: 1,
       pages: [],
       strIdx: 0
@@ -35,33 +34,30 @@ class Friends extends React.Component<any, any> {
   };
 
   componentDidMount = () => {
-    this.props.getUser();
     this.props.setAllUsersAction();
-
-    let pageNumber = Math.ceil(
-      this.props.listAllUsers.length / this.state.pageSize
-    );
-    if (this.props.listAllUsers.length > 3) {
-      this.setState({
-        pageNumber: pageNumber
-      });
-      for (let i = 1; i <= pageNumber; i++) {
-        this.state.pages.push(i);
+      let pageNumber = Math.ceil(
+        this.props.listAllUsers.length / this.state.pageSize
+      );
+      if (this.props.listAllUsers.length > 3) {
+        this.setState({
+          pageNumber: pageNumber
+        });
+        for (let i = 1; i <= pageNumber; i++) {
+          this.state.pages.push(i);
+        }
       }
-    }
-    this.props.getTokens();
     store.subscribe(() => {
-      if (store.getState().listAllUsers.users) {
+
+      if (this.props.listAllUsers) {
+        this.setState({totalUsersCount: this.props.listAllUsers.length})
         this.setState({
           louder: false,
           users: this.props.listAllUsers,
-          totalUsersCount: this.props.listAllUsers.length
+          // totalUsersCount: this.props.listAllUsers.length
         });
       }
     });
   };
-
-  componentWillUnmount = () => {};
 
   render() {
     return this.state.louder ? (
@@ -74,7 +70,6 @@ class Friends extends React.Component<any, any> {
           <div className={style.blockPage}>
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
-              {this.state.pageNumber > 1 ? (
                 <>
                   <div>
                     {this.props.listAllUsers
@@ -92,7 +87,6 @@ class Friends extends React.Component<any, any> {
                     ))}
                   </div>
                 </>
-              ) : null}
             </div>
           </div>
         </main>

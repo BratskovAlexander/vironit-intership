@@ -5,9 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
-import { store } from "../../store/configureStore";
 import { getUser } from "../../actions/userAction";
-import { getNewTokens } from "../../actions/getTokensActions";
 
 class UserProfile extends React.Component<any, any> {
   static propTypes: any;
@@ -21,16 +19,22 @@ class UserProfile extends React.Component<any, any> {
   }
 
   componentDidMount = () => {
-    this.props.getUser();
-    this.props.getTokens();
-    store.subscribe(() => {
-      if (store.getState().userData.user) {
-        this.setState({
-          louder: false,
-          user: this.props.user
-        });
-      }
-    });
+    if (this.props.user) {
+      this.setState({
+        louder: false,
+        user: this.props.user
+      });
+    }
+    // store.subscribe(() => {
+    //   if (this.props.userData !== store.getState().userData.user) {
+    //     this.setState({
+    //       louder: false,
+    //       user: this.props.user
+    //     });
+    //   }
+    // });
+
+    
   };
 
   render() {
@@ -80,7 +84,6 @@ const mapStateToProps = (store: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     getUser: () => dispatch(getUser()),
-    getTokens: () => dispatch(getNewTokens())
   };
 };
 
