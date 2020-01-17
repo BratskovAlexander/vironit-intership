@@ -53,7 +53,6 @@ class Friends extends React.Component<any, any> {
         this.setState({
           louder: false,
           users: this.props.listAllUsers,
-          // totalUsersCount: this.props.listAllUsers.length
         });
       }
     });

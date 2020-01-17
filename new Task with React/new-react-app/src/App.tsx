@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { getUser } from "./actions/userAction";
 import Louder from "./component/Louder/Louder";
 import { getNewTokens } from "./actions/getTokensActions";
+import { store } from "./store/configureStore";
 
 let interval: NodeJS.Timeout;
 
@@ -28,34 +29,30 @@ class App extends React.Component<any, any> {
     if (localStorage.getItem("refresh-token")) {
       if (sessionStorage.getItem("access-token")) {
         this.props.getUser();
+        store.subscribe(() => {
+          if (store.getState().userData.user !== this.props.user) {
+            this.setState({
+              louder: false
+            });
+          }
+        });
+
         this.setState({ louder: false });
         this.props.getTokens();
         interval = setInterval(() => {
           this.props.getTokens();
-        }, 5000);
+        }, 50000);
       } else {
         this.props.getTokens();
         this.props.getUser();
         this.setState({ louder: false });
-        // this.props.getUser();
         interval = setInterval(() => {
           this.props.getTokens();
         }, 50000);
       }
     } else {
-      
       this.setState({ louder: false });
       clearInterval(interval);
-      // store.subscribe(() => {
-      //   if (localStorage.getItem("refresh-token")) {
-      //     if (sessionStorage.getItem("access-token")) {
-      //       this.setState({ louder: false });
-      //       interval = setInterval(() => {
-      //         this.props.getTokens();
-      //       }, 50000);
-      //     }
-      //   }
-      // });
     }
   };
 

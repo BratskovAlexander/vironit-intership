@@ -133,55 +133,37 @@ class SettingsUser extends React.Component<any, any> {
   };
 
   componentDidMount = () => {
-    this.props.getUser();
-    this.props.getAllCities();
-    this.setState({
-      user: this.props.user
-    });
-    store.subscribe(() => {
-      if (this.props.user  !== store.getState().userData.user) {
-        this.setState({
-          louder: false
+    if (store.getState().listAllCities.cities.length === 0) {
+      if (store.getState().userData.user) {
+        this.props.getAllCities();
+        store.subscribe(() => {
+          this.setState({
+            louder: false
+          });
         });
       }
-    });
+      store.subscribe(() => {
+        if (store.getState().listAllCities.cities.length > 0) {
+          this.setState({
+            user: this.props.user,
+            louder: false
+          });
+        }
+      });
+    } else {
+      if (store.getState().userData.user) {
+        store.subscribe(() => {
+          this.setState({
+            user: this.props.user,
+            louder: false
+          });
+        });
+      }
+      this.setState({ louder: false });
+    }
+  };
 
-
-
-    // console.log("до условия", store.getState().userData.user);
-    // console.log("до условия",this.props.user);
-    // if (sessionStorage.getItem("access-token")) {
-      
-    //   this.props.getUser();
-    //   store.subscribe(() => {
-      
-    //   console.log("в условии",store.getState().userData.user);
-    //   console.log("в условии",this.props.user);  
-      
-    //   if (this.props.user.name  !== store.getState().userData.user.name) {
-          
-    //     console.log("в в субскрайбе",store.getState().userData.user);
-    //     console.log("в в субскрайбе",this.props.user);
-    //       this.setState({
-    //         louder: false
-    //       });
-    //     } else {
-    //       console.log("in else");
-    //       this.setState({
-    //         louder: false
-    //       });
-    //     }
-    //   });
-    // }
-
-
-
-
-  }
-
-  componentWillUnmount = () => {};
-
-  render() { 
+  render() {
     return this.state.louder ? (
       <Louder />
     ) : (
@@ -264,13 +246,13 @@ class SettingsUser extends React.Component<any, any> {
                   helperText="Изменить город"
                   variant="outlined"
                 >
-                  {/* {this.props.listAllCities.map((city: any, index: number) => (
+                  {/* {this.props.allCities.map((city: any, index: number) => (
                     <MenuItem key={index} value={city._id}>
                       {`${city.city}, ${city.country}`}
                     </MenuItem>
                   ))} */}
 
-                  {this.props.listAllCities.map((city: any) => (
+                  {this.props.allCities.map((city: any) => (
                     <MenuItem key={city.city} value={city._id}>
                       {`${city.city}, ${city.country}`}
                     </MenuItem>
@@ -324,7 +306,7 @@ class SettingsUser extends React.Component<any, any> {
 const mapStateToProps = (store: any) => {
   return {
     user: store.userData.user,
-    listAllCities: store.listAllCities.cities
+    allCities: store.listAllCities.cities
   };
 };
 
