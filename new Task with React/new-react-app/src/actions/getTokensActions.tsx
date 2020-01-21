@@ -5,7 +5,7 @@ export const getNewTokens = () => async (dispatch: any) => {
   try {
     if (localStorage.getItem("refresh-token")) {
       const getNewTokens = await service.getTokens(
-        sessionStorage.getItem("access-token")
+        localStorage.getItem("refresh-token")
       );
       if (getNewTokens) {
         localStorage.setItem("refresh-token", getNewTokens.refresh_token);

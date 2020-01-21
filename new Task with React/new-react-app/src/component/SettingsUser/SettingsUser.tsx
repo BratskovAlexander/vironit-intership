@@ -12,6 +12,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
 import { getAllCities } from "../../actions/citiesAction";
+import { Unsubscribe } from "redux";
 
 class SettingsUser extends React.Component<any, any> {
   static propTypes: any;
@@ -77,7 +78,7 @@ class SettingsUser extends React.Component<any, any> {
   getValueInputCity = (event: any) => {
     this.setState({
       user: {
-        ...this.state.user,
+        ...this.props.user,
         cityID: event.target.value
       },
       updateUserData: {
@@ -105,19 +106,16 @@ class SettingsUser extends React.Component<any, any> {
   };
 
   deleteUser = () => {
-    try {
-      this.props.deleteUser(this.state.user._id);
-      this.props.history.push("/login");
-      store.subscribe(() => {
-        if (store.getState().user) {
-          this.setState({
-            modalWindowDelete: true
-          });
-        }
-      });
-    } catch (error) {
-      this.props.history.push("/login");
-    }
+    this.props.history.push("/login");
+    store.subscribe(() => {
+      if (store.getState().user) {
+        this.setState({
+          modalWindowDelete: true
+        });
+      }
+    });
+    this.props.deleteUser(this.state.user._id);
+    console.log(1);
   };
 
   closeModalWindowUpdate = () => {
@@ -132,36 +130,47 @@ class SettingsUser extends React.Component<any, any> {
     });
   };
 
+  subs: Unsubscribe[] = [];
+
   componentDidMount = () => {
     if (store.getState().listAllCities.cities.length === 0) {
-      if (store.getState().userData.user) {
-        this.props.getAllCities();
+      this.props.getAllCities();
+      this.subs.push(
         store.subscribe(() => {
-          this.setState({
-            louder: false
-          });
-        });
-      }
-      store.subscribe(() => {
-        if (store.getState().listAllCities.cities.length > 0) {
           this.setState({
             user: this.props.user,
             louder: false
           });
-        }
-      });
+        })
+      );
+      this.subs.push(
+        store.subscribe(() => {
+          if (store.getState().listAllCities.cities.length > 0) {
+            this.setState({
+              user: this.props.user,
+              louder: false
+            });
+          }
+        })
+      );
     } else {
       if (store.getState().userData.user) {
-        store.subscribe(() => {
-          this.setState({
-            user: this.props.user,
-            louder: false
-          });
-        });
+        this.subs.push(
+          store.subscribe(() => {
+            this.setState({
+              user: this.props.user,
+              louder: false
+            });
+          })
+        );
       }
       this.setState({ louder: false });
     }
   };
+
+  componentWillUnmount() {
+    this.subs.forEach(sub => sub());
+  }
 
   render() {
     return this.state.louder ? (

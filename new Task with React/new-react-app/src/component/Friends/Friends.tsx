@@ -10,6 +10,7 @@ import { getAllUsers } from "../../actions/getAllUsersAction";
 import { store } from "../../store/configureStore";
 import { getUser } from "../../actions/userAction";
 import { getNewTokens } from "../../actions/getTokensActions";
+import { Unsubscribe } from "redux";
 
 class Friends extends React.Component<any, any> {
   constructor(props: any) {
@@ -33,30 +34,37 @@ class Friends extends React.Component<any, any> {
     });
   };
 
+  subs: Unsubscribe[] = [];
+
   componentDidMount = () => {
     this.props.setAllUsersAction();
-      let pageNumber = Math.ceil(
-        this.props.listAllUsers.length / this.state.pageSize
-      );
-      if (this.props.listAllUsers.length > 3) {
-        this.setState({
-          pageNumber: pageNumber
-        });
-        for (let i = 1; i <= pageNumber; i++) {
-          this.state.pages.push(i);
+    let pageNumber = Math.ceil(
+      this.props.listAllUsers.length / this.state.pageSize
+    );
+    if (this.props.listAllUsers.length > 3) {
+      this.setState({
+        pageNumber: pageNumber
+      });
+      for (let i = 1; i <= pageNumber; i++) {
+        this.state.pages.push(i);
+      }
+    }
+    this.subs.push(
+      store.subscribe(() => {
+        if (this.props.listAllUsers) {
+          this.setState({ totalUsersCount: this.props.listAllUsers.length });
+          this.setState({
+            louder: false,
+            users: this.props.listAllUsers
+          });
         }
-      }
-    store.subscribe(() => {
-
-      if (this.props.listAllUsers) {
-        this.setState({totalUsersCount: this.props.listAllUsers.length})
-        this.setState({
-          louder: false,
-          users: this.props.listAllUsers,
-        });
-      }
-    });
+      })
+    );
   };
+
+  componentWillUnmount() {
+    this.subs.forEach(sub => sub());
+  }
 
   render() {
     return this.state.louder ? (
@@ -69,23 +77,23 @@ class Friends extends React.Component<any, any> {
           <div className={style.blockPage}>
             <h2 className={style.header}>Список пользователей</h2>
             <div className={style.users}>
-                <>
-                  <div>
-                    {this.props.listAllUsers
-                      .slice(this.state.strIdx, this.state.strIdx + 3)
-                      .map((user: IUser) => (
-                        <UserList key={user.login} user={user} />
-                      ))}
-                  </div>
-                  <div>
-                    {this.state.pages.map((pages: any, idx: any) => (
-                      <span onClick={this.getUserList} key={idx}>
-                        {" "}
-                        {pages}{" "}
-                      </span>
+              <>
+                <div>
+                  {this.props.listAllUsers
+                    .slice(this.state.strIdx, this.state.strIdx + 3)
+                    .map((user: IUser) => (
+                      <UserList key={user.login} user={user} />
                     ))}
-                  </div>
-                </>
+                </div>
+                <div>
+                  {this.state.pages.map((pages: any, idx: any) => (
+                    <span onClick={this.getUserList} key={idx}>
+                      {" "}
+                      {pages}{" "}
+                    </span>
+                  ))}
+                </div>
+              </>
             </div>
           </div>
         </main>

@@ -4,14 +4,16 @@ const city_router = require("./routers/city-router");
 const mongoose = require("mongoose");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const cors = require('cors')
+const cors = require('cors');
+require('dotenv').config();
+// const db =  require('db');
 
 const PORT = process.env.PORT || 3030;
 
 const app = express();
 
 mongoose.connect(
-  "mongodb+srv://Alexander:monutor93@cluster0-zvaiu.mongodb.net/user",
+  process.env.DB_HOST,
   {
     useNewUrlParser: true,
     useFindAndModify: false,
