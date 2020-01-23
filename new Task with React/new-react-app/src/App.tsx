@@ -41,14 +41,14 @@ class App extends React.Component<any, any> {
         this.props.getTokens();
         interval = setInterval(() => {
           this.props.getTokens();
-        }, 50000);
+        }, 590000);
       } else {
         this.props.getTokens();
         this.props.getUser();
         this.setState({ louder: false });
         interval = setInterval(() => {
           this.props.getTokens();
-        }, 50000);
+        }, 590000);
       }
     } else {
       this.setState({ louder: false });
