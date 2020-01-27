@@ -1,4 +1,9 @@
-import { SET_USER, UPDATE_USER, DELETE_USER, SET_AUTHORIZATION_USER } from "../const/const";
+import {
+  SET_USER,
+  UPDATE_USER,
+  DELETE_USER,
+  SET_AUTHORIZATION_USER_COMPLETED
+} from "../const/const";
 
 export const initialState = {
   user: {
@@ -12,7 +17,7 @@ export const initialState = {
 
 export const userReducer = (state: any = initialState, action: any) => {
   switch (action.type) {
-    case SET_AUTHORIZATION_USER:
+    case SET_AUTHORIZATION_USER_COMPLETED:
       return { ...state, user: action.payload };
     case SET_USER:
       return { ...state, user: action.payload };

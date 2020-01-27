@@ -10,7 +10,7 @@ import Friends from "./component/Friends/Friends";
 import UserProfile from "./component/UserProfile/UserProfile";
 import SettingsUser from "./component/SettingsUser/SettingsUser";
 import { connect } from "react-redux";
-import { getUser } from "./actions/userAction";
+// import { getUser } from "./actions/userAction";
 import Louder from "./component/Louder/Louder";
 import { getNewTokens } from "./actions/getTokensActions";
 import { store } from "./store/configureStore";
@@ -21,40 +21,40 @@ class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      louder: true
+      louder: false
     };
   }
 
-  componentDidMount = () => {
-    if (localStorage.getItem("refresh-token")) {
-      if (sessionStorage.getItem("access-token")) {
-        this.props.getUser();
-        store.subscribe(() => {
-          if (store.getState().userData.user !== this.props.user) {
-            this.setState({
-              louder: false
-            });
-          }
-        });
+  // componentDidMount = () => {
+  //   if (localStorage.getItem("refresh-token")) {
+  //     if (sessionStorage.getItem("access-token")) {
+  //       // this.props.getUser();
+  //       store.subscribe(() => {
+  //         if (store.getState().userData.user !== this.props.user) {
+  //           this.setState({
+  //             louder: false
+  //           });
+  //         }
+  //       });
 
-        this.setState({ louder: false });
-        this.props.getTokens();
-        interval = setInterval(() => {
-          this.props.getTokens();
-        }, 590000);
-      } else {
-        this.props.getTokens();
-        this.props.getUser();
-        this.setState({ louder: false });
-        interval = setInterval(() => {
-          this.props.getTokens();
-        }, 590000);
-      }
-    } else {
-      this.setState({ louder: false });
-      clearInterval(interval);
-    }
-  };
+  //       this.setState({ louder: false });
+  //       this.props.getTokens();
+  //       interval = setInterval(() => {
+  //         this.props.getTokens();
+  //       }, 590000);
+  //     } else {
+  //       this.props.getTokens();
+  //       // this.props.getUser();
+  //       this.setState({ louder: false });
+  //       interval = setInterval(() => {
+  //         this.props.getTokens();
+  //       }, 590000);
+  //     }
+  //   } else {
+  //     this.setState({ louder: false });
+  //     clearInterval(interval);
+  //   }
+  // };
 
   render() {
     return this.state.louder ? (
@@ -103,8 +103,8 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    getUser: () => dispatch(getUser()),
-    getTokens: () => dispatch(getNewTokens())
+    // getUser: () => dispatch(getUser()),
+    // getTokens: () => dispatch(getNewTokens())
   };
 };
 

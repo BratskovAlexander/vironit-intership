@@ -7,7 +7,7 @@ import ModalPage from "../ModalPage/ModalPage";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getUser, updateUser, deleteUser } from "../../actions/userAction";
+import { /* updateUser,*/ deleteUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
@@ -321,9 +321,9 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    getUser: () => dispatch(getUser()),
+    // getUser: () => dispatch(getUser()),
     getAllCities: () => dispatch(getAllCities()),
-    updateUser: (id: any, body: any) => dispatch(updateUser(id, body)),
+    // updateUser: (id: any, body: any) => dispatch(updateUser(id, body)),
     deleteUser: (id: any) => dispatch(deleteUser(id))
   };
 };

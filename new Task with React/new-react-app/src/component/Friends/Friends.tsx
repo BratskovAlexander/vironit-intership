@@ -8,7 +8,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { getAllUsers } from "../../actions/getAllUsersAction";
 import { store } from "../../store/configureStore";
-import { getUser } from "../../actions/userAction";
+// import { getUser } from "../../actions/userAction";
 import { getNewTokens } from "../../actions/getTokensActions";
 import { Unsubscribe } from "redux";
 
@@ -112,7 +112,7 @@ const mapStateToProps = (store: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     setAllUsersAction: () => dispatch(getAllUsers()),
-    getUser: () => dispatch(getUser()),
+    // getUser: () => dispatch(getUser()),
     getTokens: () => dispatch(getNewTokens())
   };
 };

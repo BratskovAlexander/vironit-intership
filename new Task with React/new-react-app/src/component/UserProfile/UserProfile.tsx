@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
-import { getUser } from "../../actions/userAction";
+// import { getUser } from "../../actions/userAction";
 import { store } from "../../store/configureStore";
 
 class UserProfile extends React.Component<any, any> {
@@ -80,13 +80,13 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    getUser: () => dispatch(getUser())
+    // getUser: () => dispatch(getUser())
   };
 };
 
 UserProfile.propTypes = {
   user: PropTypes.object,
-  getUser: PropTypes.func,
+  // getUser: PropTypes.func,
   getTokens: PropTypes.func
 };
 
