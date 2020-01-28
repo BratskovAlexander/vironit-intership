@@ -33,7 +33,6 @@ class Login extends React.Component<any, any> {
   authorizationUser = (event: any) => {
     event.preventDefault();
     this.props.setAuthorizationUser(this.state.authorizationUserData);
-    
   };
 
   closeModalWindowErrorLogin = () => {
@@ -50,7 +49,7 @@ class Login extends React.Component<any, any> {
 
   render() {
     return sessionStorage.getItem("access-token") ? (
-      <Redirect to="/profile"/>
+      <Redirect to="/profile" />
     ) : (
       <>
         <Header
@@ -120,4 +119,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect( null, mapDispatchToProps)(withRouter(Login));
+export default connect(null, mapDispatchToProps)(withRouter(Login));

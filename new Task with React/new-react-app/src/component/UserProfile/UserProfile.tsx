@@ -2,10 +2,8 @@ import React from "react";
 import style from "./userProfile.module.css";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
-// import { getUser } from "../../actions/userAction";
 import { store } from "../../store/configureStore";
 
 class UserProfile extends React.Component<any, any> {
@@ -15,19 +13,21 @@ class UserProfile extends React.Component<any, any> {
     this.state = {
       user: {},
       louder: true,
-      city: []
+      city: ""
     };
   }
 
   componentDidMount = () => {
-    if (this.props.user) {
+    if (this.props.user.city) {
       this.setState({
-        louder: false
+        louder: false,
+        city: this.props.user.city[0]
       });
     }
     store.subscribe(() => {
-      if (store.getState().userData.user !== this.props.user) {
+      if (store.getState().userData.user.city !== this.props.user.city) {
         this.setState({
+          city: store.getState().userData.user.city[0],
           louder: false
         });
       }
@@ -58,12 +58,7 @@ class UserProfile extends React.Component<any, any> {
             </div>
             <div className={style.dataUser}>
               <span>Место проживания: </span>
-              Пока нигде
-              {/* это капец.... все подтягивается из пропсов, а города нет =( */}
-              {/* {store.getState().userData.user.city[0].city},{" "}
-              {store.getState().userData.user.city[0].country} */}
-              {/* {this.props.user.city},{" "} */}
-              {/* {this.props.user.city[0].country} */}
+              {this.state.city.city}, {this.state.city.country},{" "}
             </div>
           </div>
         </main>
@@ -78,16 +73,4 @@ const mapStateToProps = (store: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    // getUser: () => dispatch(getUser())
-  };
-};
-
-UserProfile.propTypes = {
-  user: PropTypes.object,
-  // getUser: PropTypes.func,
-  getTokens: PropTypes.func
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps)(UserProfile);
