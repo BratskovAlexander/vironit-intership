@@ -1,23 +1,27 @@
 import {
     AXIOS_AUTHORIZATION_USER_START,
-    UPDATE_USER,
+    AXIOS_UPDATE_USER,
     DELETE_USER,
     SET_USER,
-    SET_ALL_USERS,
-    SET_ALL_CITIES,
-    GET_TOKENS
+    SET_ALL_USERS,  
+    GET_TOKENS,
+    AXIOS_ALL_CITIES
   } from "../const/const";
   import { takeEvery } from 'redux-saga/effects'
 import getAuthorizationUser from "./getAuthorizationUser";
+import getUser from "./getUser";
+import getAllCities from "./getAllCities";
+import deleteUser from "./deleteUser";
+import updateUser from "./updateUser";
 
 
 function* mySaga() {
   yield takeEvery(AXIOS_AUTHORIZATION_USER_START, getAuthorizationUser);
-  yield takeEvery(UPDATE_USER, getToken);
-  yield takeEvery(DELETE_USER, getToken);
-  yield takeEvery(SET_USER, getToken);
+  yield takeEvery(SET_USER, getUser);
+  yield takeEvery(AXIOS_UPDATE_USER, updateUser);
+  yield takeEvery(DELETE_USER, deleteUser);
   yield takeEvery(SET_ALL_USERS, getToken);
-  yield takeEvery(SET_ALL_CITIES, getToken);
+  yield takeEvery(AXIOS_ALL_CITIES, getAllCities);
   yield takeEvery(GET_TOKENS, getToken);
 }
 

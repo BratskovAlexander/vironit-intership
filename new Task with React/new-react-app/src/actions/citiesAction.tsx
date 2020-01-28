@@ -1,16 +1,21 @@
-import { SET_ALL_CITIES } from "../const/const";
-import service from "../service/service";
+import { SET_ALL_CITIES, AXIOS_ALL_CITIES, AXIOS_ALL_CITIES_ERROR } from "../const/const";
 
-export const getAllCities = () => async (dispatch: any) => {
-  try {
-    const getCity = await service.getCity();
-    if (getCity) {
-      dispatch({
-        type: SET_ALL_CITIES,
-        payload: getCity
-      });
-    }
-  } catch (error) {
-    console.log("error in getAllCitiesAction");
+export const setAllCities = () => {
+  return {
+    type: AXIOS_ALL_CITIES
   }
+}
+
+export const getListAllCities = (allCities: any) => {
+  return {
+    type: SET_ALL_CITIES,
+    payload: allCities
+  }
+}
+
+export const errorCitiesAccess = () => {
+  return {
+    type: AXIOS_ALL_CITIES_ERROR,
+    payload: undefined
+  };
 };

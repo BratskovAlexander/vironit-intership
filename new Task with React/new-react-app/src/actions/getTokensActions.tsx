@@ -1,5 +1,5 @@
-import { GET_TOKENS } from "../const/const";
-import service from "../service/service";
+// import { GET_TOKENS } from "../const/const";
+// import service from "../service/service";
 
 export const getNewTokens = () => {
   // try {

@@ -10,12 +10,13 @@ import Friends from "./component/Friends/Friends";
 import UserProfile from "./component/UserProfile/UserProfile";
 import SettingsUser from "./component/SettingsUser/SettingsUser";
 import { connect } from "react-redux";
-// import { getUser } from "./actions/userAction";
 import Louder from "./component/Louder/Louder";
-import { getNewTokens } from "./actions/getTokensActions";
-import { store } from "./store/configureStore";
+import { setUserAction } from "./actions/userAction";
+// import { getUser } from "./actions/userAction";
+// import { getNewTokens } from "./actions/getTokensActions";
+// import { store } from "./store/configureStore";
 
-let interval: NodeJS.Timeout;
+// let interval: NodeJS.Timeout;
 
 class App extends React.Component<any, any> {
   constructor(props: any) {
@@ -23,6 +24,11 @@ class App extends React.Component<any, any> {
     this.state = {
       louder: false
     };
+  }
+
+
+  componentDidMount =() => {
+    this.props.getUser()
   }
 
   // componentDidMount = () => {
@@ -103,8 +109,7 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    // getUser: () => dispatch(getUser()),
-    // getTokens: () => dispatch(getNewTokens())
+    getUser: () => dispatch(setUserAction())
   };
 };
 

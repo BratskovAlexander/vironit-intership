@@ -9,7 +9,6 @@ function getUser(payload: any) {
 function* getAuthorizationUser(body: any) {
   try {
     const user = yield call(getUser, body.payload);
-    console.log(user);
     if (user) {
       sessionStorage.setItem("access-token", user.access_token);
       localStorage.setItem("refresh-token", user.refresh_token);

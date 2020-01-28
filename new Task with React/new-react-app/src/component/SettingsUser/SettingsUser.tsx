@@ -6,12 +6,11 @@ import { Button, MenuItem } from "@material-ui/core";
 import ModalPage from "../ModalPage/ModalPage";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { /* updateUser,*/ deleteUser } from "../../actions/userAction";
+import { axiosDeleteUser, setUpdateUser} from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
-import { getAllCities } from "../../actions/citiesAction";
+import { setAllCities } from "../../actions/citiesAction";
 import { Unsubscribe } from "redux";
 
 class SettingsUser extends React.Component<any, any> {
@@ -21,7 +20,7 @@ class SettingsUser extends React.Component<any, any> {
     this.state = {
       user: { ...this.props.user, cityID: "" },
       louder: true,
-      updateUserData: {},
+      updateUserData: { cityID: ""},
       modalWindowUpdate: false,
       modalWindowDelete: false
     };
@@ -95,6 +94,7 @@ class SettingsUser extends React.Component<any, any> {
       });
       store.subscribe(() => {
         if (store.getState().updateUserData) {
+          console.log(1);
           this.setState({
             modalWindowUpdate: true
           });
@@ -106,16 +106,16 @@ class SettingsUser extends React.Component<any, any> {
   };
 
   deleteUser = () => {
-    this.props.history.push("/login");
+    this.props.deleteUser(this.state.user._id);
     store.subscribe(() => {
       if (store.getState().user) {
+        console.log(1223);
+        this.props.history.push("/login");
         this.setState({
           modalWindowDelete: true
         });
       }
     });
-    this.props.deleteUser(this.state.user._id);
-    console.log(1);
   };
 
   closeModalWindowUpdate = () => {
@@ -137,34 +137,24 @@ class SettingsUser extends React.Component<any, any> {
       this.props.getAllCities();
       this.subs.push(
         store.subscribe(() => {
-          this.setState({
-            user: this.props.user,
-            louder: false
-          });
-        })
-      );
-      this.subs.push(
-        store.subscribe(() => {
-          if (store.getState().listAllCities.cities.length > 0) {
+          if (store.getState().userData.user !== this.props.user) {
             this.setState({
-              user: this.props.user,
+              user: store.getState().userData.user,
+              louder: false
+            });
+          } else {
+            this.setState({
+              user: store.getState().userData.user,
               louder: false
             });
           }
         })
       );
     } else {
-      if (store.getState().userData.user) {
-        this.subs.push(
-          store.subscribe(() => {
-            this.setState({
-              user: this.props.user,
-              louder: false
-            });
-          })
-        );
-      }
-      this.setState({ louder: false });
+      this.setState({
+        user: store.getState().userData.user,
+        louder: false
+      });
     }
   };
 
@@ -255,12 +245,6 @@ class SettingsUser extends React.Component<any, any> {
                   helperText="Изменить город"
                   variant="outlined"
                 >
-                  {/* {this.props.allCities.map((city: any, index: number) => (
-                    <MenuItem key={index} value={city._id}>
-                      {`${city.city}, ${city.country}`}
-                    </MenuItem>
-                  ))} */}
-
                   {this.props.allCities.map((city: any) => (
                     <MenuItem key={city.city} value={city._id}>
                       {`${city.city}, ${city.country}`}
@@ -321,20 +305,10 @@ const mapStateToProps = (store: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    // getUser: () => dispatch(getUser()),
-    getAllCities: () => dispatch(getAllCities()),
-    // updateUser: (id: any, body: any) => dispatch(updateUser(id, body)),
-    deleteUser: (id: any) => dispatch(deleteUser(id))
+    getAllCities: () => dispatch(setAllCities()),
+    updateUser: (id: any, body: any) => dispatch(setUpdateUser(id, body)),
+    deleteUser: (id: any) => dispatch(axiosDeleteUser(id))
   };
-};
-
-SettingsUser.propTypes = {
-  userProfile: PropTypes.object,
-  allCities: PropTypes.array,
-  setUserAction: PropTypes.func,
-  getAllCities: PropTypes.func,
-  updateUser: PropTypes.func,
-  deleteUser: PropTypes.func
 };
 
 export default connect(

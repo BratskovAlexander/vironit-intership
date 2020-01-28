@@ -1,72 +1,64 @@
 import {
   SET_AUTHORIZATION_USER_COMPLETED,
   UPDATE_USER,
+  AXIOS_UPDATE_USER,
   DELETE_USER,
   SET_USER,
-  AXIOS_AUTHORIZATION_USER_START
+  AXIOS_AUTHORIZATION_USER_START,
+  AXIOS_AUTHORIZATION_USER_ERROR,
+  GET_USER
 } from "../const/const";
-import service from "../service/service";
 
-// export const getUser = () => async (dispatch: any) => {
-//   if (sessionStorage.getItem("access-token")) {
-//     const getAuthorizationUser = await service.getAuthorizationUser();
-//     if (getAuthorizationUser) {
-//       dispatch({
-//         type: SET_USER,
-//         payload: getAuthorizationUser
-//       });
-//     } else {
-//       console.log("error in getUserAction getUser");
-//     }
-//   }
-// };
-
-
-export const getTokenOne = (one: any) => {
+export const setUserAction = () => {
   return {
-    type: 'SET_TOKEN',
-    payload: one
-  }
-}
+    type: SET_USER
+  };
+};
+
+export const getUserAction = (user: any) => {
+  return {
+    type: GET_USER,
+    payload: user
+  };
+};
 
 export const errorUserAccess = () => {
   return {
-    type: 'AXIOS_AUTHORIZATION_USER_ERROR',
+    type: AXIOS_AUTHORIZATION_USER_ERROR,
     payload: undefined
-    
-  }
-}
+  };
+};
 
 export const getAuthorizationUser = (body: any) => {
   return {
     type: AXIOS_AUTHORIZATION_USER_START,
     payload: body
-  }
-
-  // const authorizationUser = await service.authorizationUser(body);
-  // if (authorizationUser /*|| body === undefined*/) {
-  //   sessionStorage.setItem("access-token", authorizationUser.access_token);
-  //   localStorage.setItem("refresh-token", authorizationUser.refresh_token);
-  //   dispatch({
-  //     type: SET_AUTHORIZATION_USER,
-  //     payload: authorizationUser.userProfile
-  //   });
-  // } else {
-  //   console.log("error in getUserAction getAuthorizationUser");
-  // }
+  };
 };
 
-  export const setAuthorizationUser = (userProfile: any) => {
-    return{
-      type: SET_AUTHORIZATION_USER_COMPLETED,
-      payload: userProfile
-    }
+export const setAuthorizationUser = (userProfile: any) => {
+  return {
+    type: SET_AUTHORIZATION_USER_COMPLETED,
+    payload: userProfile
+  };
+};
+
+
+
+export const setUpdateUser = (id: any, body: any) => {
+  console.log(id, body);
+  return {
+    type: AXIOS_UPDATE_USER,
+    payload: {id, body}
+  };
+};
+
+
+export const getUpdateUser = (id: any, body: any) => {
+  return{
+    type: UPDATE_USER,
+    payload: {id, body}
   }
-
-
-
-
-export const updateUser = (id: any, body: any) => {
   // const updateUser = await service.updateUser(id, body);
   // if (updateUser) {
   //   dispatch({
@@ -78,7 +70,12 @@ export const updateUser = (id: any, body: any) => {
   // }
 };
 
-export const deleteUser = (id: any) => {
+export const axiosDeleteUser = (id: any) => {
+  console.log(id);
+  return {
+    type: DELETE_USER,
+    payload: id
+  }
   // const deleteUser = await service.deleteUser(id);
   // if (deleteUser) {
   //   sessionStorage.removeItem("access-token");
