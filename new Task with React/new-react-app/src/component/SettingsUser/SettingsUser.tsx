@@ -6,7 +6,7 @@ import { Button, MenuItem } from "@material-ui/core";
 import ModalPage from "../ModalPage/ModalPage";
 import Header from "../Header/Header";
 import { connect } from "react-redux";
-import { axiosDeleteUser, setUpdateUser} from "../../actions/userAction";
+import { deleteUserAction, setUpdateUser } from "../../actions/userAction";
 import Sidebar from "../Sidebar/Sidebar";
 import Louder from "../Louder/Louder";
 import { store } from "../../store/configureStore";
@@ -20,7 +20,8 @@ class SettingsUser extends React.Component<any, any> {
     this.state = {
       user: { ...this.props.user, cityID: "" },
       louder: true,
-      updateUserData: { cityID: ""},
+      // updateUserData: { cityID: "" },
+      updateUserData: { },
       modalWindowUpdate: false,
       modalWindowDelete: false
     };
@@ -93,6 +94,8 @@ class SettingsUser extends React.Component<any, any> {
         ...this.state.updateUserData
       });
       store.subscribe(() => {
+        console.log(store.getState().updateUserData);
+        console.log(store.getState().user);
         if (store.getState().updateUserData) {
           console.log(1);
           this.setState({
@@ -107,15 +110,19 @@ class SettingsUser extends React.Component<any, any> {
 
   deleteUser = () => {
     this.props.deleteUser(this.state.user._id);
-    store.subscribe(() => {
-      if (store.getState().user) {
-        console.log(1223);
-        this.props.history.push("/login");
-        this.setState({
-          modalWindowDelete: true
-        });
-      }
-    });
+    sessionStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    this.props.history.push("/login");
+    // store.subscribe(() => {
+    //   console.log(store.getState().user)
+    //   console.log(this.props.user)
+    //   if (store.getState().user) {
+    //     console.log(1223);;
+    //     this.setState({
+    //       modalWindowDelete: true
+    //     });
+    //   }
+    // });
   };
 
   closeModalWindowUpdate = () => {
@@ -307,7 +314,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     getAllCities: () => dispatch(setAllCities()),
     updateUser: (id: any, body: any) => dispatch(setUpdateUser(id, body)),
-    deleteUser: (id: any) => dispatch(axiosDeleteUser(id))
+    deleteUser: (id: any) => dispatch(deleteUserAction(id))
   };
 };
 

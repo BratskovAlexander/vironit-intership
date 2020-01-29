@@ -6,10 +6,11 @@ function requestUpdateUser(id: any, body: any) {
   return service.updateUser(id, body);
 }
 
-function* updateUser(payload: any) {
-    console.log(payload.id, payload.body);
+function* updateUser(action: {payload: string, type: string}) {
+  let obj: any = action.payload;
+    console.log(obj.id, obj.body);
   try {
-   yield call(requestUpdateUser, payload.id, payload.body);
+   yield call(requestUpdateUser, obj.id, obj.body);
 //   if (updateU) {
     //   yield put(getUpdateUser(payload.id, payload.body));
 //   }

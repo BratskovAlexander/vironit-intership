@@ -135,6 +135,7 @@ class Profile extends React.Component<any, any> {
   // };
 
   componentDidMount = async () => {
+    console.log("profile");
     if (sessionStorage.getItem("access-token")) {
       // const changeCity = await service.getCity();
       // const getAuthorizationUser = await service.getAuthorizationUser();

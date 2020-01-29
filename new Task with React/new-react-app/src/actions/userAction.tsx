@@ -70,8 +70,7 @@ export const getUpdateUser = (id: any, body: any) => {
   // }
 };
 
-export const axiosDeleteUser = (id: any) => {
-  console.log(id);
+export const deleteUserAction = (id: any) => {
   return {
     type: DELETE_USER,
     payload: id

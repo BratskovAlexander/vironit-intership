@@ -28,7 +28,9 @@ class App extends React.Component<any, any> {
 
 
   componentDidMount =() => {
-    this.props.getUser()
+    if(localStorage.getItem("refresh-token")){
+      this.props.getUser();
+    }
   }
 
   // componentDidMount = () => {
