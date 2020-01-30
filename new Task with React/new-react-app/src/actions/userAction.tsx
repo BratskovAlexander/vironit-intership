@@ -46,7 +46,6 @@ export const setAuthorizationUser = (userProfile: any) => {
 
 
 export const setUpdateUser = (id: any, body: any) => {
-  console.log(id, body);
   return {
     type: AXIOS_UPDATE_USER,
     payload: {id, body}
@@ -59,15 +58,6 @@ export const getUpdateUser = (id: any, body: any) => {
     type: UPDATE_USER,
     payload: {id, body}
   }
-  // const updateUser = await service.updateUser(id, body);
-  // if (updateUser) {
-  //   dispatch({
-  //     type: UPDATE_USER,
-  //     payload: updateUser
-  //   });
-  // } else {
-  //   console.log("error in getUserAction updateUser");
-  // }
 };
 
 export const deleteUserAction = (id: any) => {
@@ -75,14 +65,4 @@ export const deleteUserAction = (id: any) => {
     type: DELETE_USER,
     payload: id
   }
-  // const deleteUser = await service.deleteUser(id);
-  // if (deleteUser) {
-  //   sessionStorage.removeItem("access-token");
-  //   localStorage.removeItem("refresh-token");
-  //   dispatch({
-  //     type: DELETE_USER
-  //   });
-  // } else {
-  //   console.log("error in getUserAction deleteUser");
-  // }
 };

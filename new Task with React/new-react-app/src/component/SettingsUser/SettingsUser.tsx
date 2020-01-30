@@ -21,7 +21,7 @@ class SettingsUser extends React.Component<any, any> {
       user: { ...this.props.user, cityID: "" },
       louder: true,
       // updateUserData: { cityID: "" },
-      updateUserData: { },
+      updateUserData: null,
       modalWindowUpdate: false,
       modalWindowDelete: false
     };
@@ -93,16 +93,20 @@ class SettingsUser extends React.Component<any, any> {
       this.props.updateUser(this.state.user._id, {
         ...this.state.updateUserData
       });
+      console.log(this.state.updateUserData);
+      console.log(this.props.user);
+
+      // if(this.state.updateUserData !== null){
+      //  console.log(42); 
       store.subscribe(() => {
-        console.log(store.getState().updateUserData);
-        console.log(store.getState().user);
-        if (store.getState().updateUserData) {
+        console.log(3);
+        if (this.state.updateUserData !== null) {
           console.log(1);
-          this.setState({
-            modalWindowUpdate: true
-          });
         }
       });
+      // }
+
+
     } catch (error) {
       this.props.history.push("/profile");
     }

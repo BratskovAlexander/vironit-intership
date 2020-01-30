@@ -6,18 +6,9 @@ function requestDeleteUser(id: any) {
   return service.deleteUser(id);
 }
 
-function* deleteUser(action: {payload: string, type: string}) {
+function* deleteUser(action: { payload: string; type: string }) {
   try {
- const delUser =  yield call(requestDeleteUser, action.payload);
-if (delUser) {
-    sessionStorage.removeItem("access-token");
-    localStorage.removeItem("refresh-token");
-    console.log("del token");
-}
-    // yield call(requestUpdateUser, id, body);
-    //   if (updateUser) {
-    //     yield put(getUserAction(user));
-    //   }
+    yield call(requestDeleteUser, action.payload);
   } catch (error) {
     yield put(errorUserAccess());
   }
