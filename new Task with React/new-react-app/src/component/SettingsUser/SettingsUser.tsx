@@ -90,23 +90,21 @@ class SettingsUser extends React.Component<any, any> {
 
   updateUser = () => {
     try {
-      this.props.updateUser(this.state.user._id, {
+     const a = this.props.updateUser(this.state.user._id, {
         ...this.state.updateUserData
       });
+      console.log(a.payload.body);
       console.log(this.state.updateUserData);
       console.log(this.props.user);
-
-      // if(this.state.updateUserData !== null){
-      //  console.log(42); 
       store.subscribe(() => {
         console.log(3);
         if (this.state.updateUserData !== null) {
           console.log(1);
+          this.setState({
+            user: {...a.payload.body}
+          })
         }
       });
-      // }
-
-
     } catch (error) {
       this.props.history.push("/profile");
     }
@@ -117,16 +115,6 @@ class SettingsUser extends React.Component<any, any> {
     sessionStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
     this.props.history.push("/login");
-    // store.subscribe(() => {
-    //   console.log(store.getState().user)
-    //   console.log(this.props.user)
-    //   if (store.getState().user) {
-    //     console.log(1223);;
-    //     this.setState({
-    //       modalWindowDelete: true
-    //     });
-    //   }
-    // });
   };
 
   closeModalWindowUpdate = () => {
